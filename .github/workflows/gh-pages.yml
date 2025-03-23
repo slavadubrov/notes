@@ -1,4 +1,4 @@
-name: Deploy MkDocs to GitHub Pages
+name: Deploy Jekyll to GitHub Pages
 
 on:
   push:
@@ -13,20 +13,22 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
         with:
-          python-version: '3.x'
+          ruby-version: '3.2'
+          bundler-cache: true
 
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
+          gem install bundler
+          bundle install
 
       - name: Build site
-        run: mkdocs build --verbose --clean
+        run: bundle exec jekyll build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./site 
+          publish_dir: ./_site 

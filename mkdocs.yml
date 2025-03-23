@@ -1,8 +1,0 @@
-site_name: "Shared Intelligence: Tips & Tricks in Machine Learning"
-
-theme:
-  name: material
-
-nav:
-  - Home: index.md
-  - First Post: first-post.md

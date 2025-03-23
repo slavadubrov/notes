@@ -1,0 +1,20 @@
+title: "Shared Intelligence: Tips & Tricks in Machine Learning"
+description: "A blog about Machine Learning tips, tricks, and experiences"
+url: "https://slavadubrov.github.io"
+baseurl: ""
+github_username: slavadubrov
+
+# Build settings
+markdown: kramdown
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+# Exclude from processing
+exclude:
+  - Makefile
+  - README.md
+  - LICENSE
+  - .gitignore
+  - mkdocs.yml 

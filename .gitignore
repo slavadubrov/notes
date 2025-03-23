@@ -23,4 +23,13 @@ site/
 
 # OS
 .DS_Store
-Thumbs.db 
+Thumbs.db
+
+# Jekyll specific
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+# Ruby environment
+.bundle/
+vendor/ 
