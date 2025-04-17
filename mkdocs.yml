@@ -1,4 +1,5 @@
 site_name: "Shared Intelligence: Tips & Tricks in Machine Learning"
+site_url: https://slavadubrov.github.io/
 
 theme:
   name: material

@@ -25,8 +25,10 @@ jobs:
       - name: Build site
         run: mkdocs build --verbose --clean
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy to user site
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          personal_token: ${{ secrets.GH_PAT }}
+          external_repository: slavadubrov/slavadubrov.github.io
+          publish_branch: main
           publish_dir: ./site 
