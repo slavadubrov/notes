@@ -19,7 +19,8 @@ plugins:
   - search
   - blog
   - tags
-  - macros
+  - macros:
+      module_name: main
 
 nav:
   - Home: index.md
