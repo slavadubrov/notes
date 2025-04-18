@@ -1,18 +1,27 @@
-# Welcome to Shared Intelligence
+# Shared Intelligence
 
-Welcome to my blog about Machine Learning tips, tricks, and experiences. Here, I share insights and knowledge gained from working with ML technologies.
+> Tips & war stories from the ML‑engineering trenches.
 
-## Latest Posts
+{% apply blog %}
 
-- [My First Post](first-post.md) - An introduction to this blog and what to expect
+## 📌 Featured
 
-## About This Blog
+{{ latest_post }}
 
-This blog serves as a knowledge-sharing platform where I document my journey in Machine Learning, sharing:
+## 🆕 Latest&nbsp;(last 5)
 
-- Technical insights and discoveries
-- Practical tips and solutions
-- Best practices and lessons learned
-- Useful resources and tools
+{{ latest_posts(count=5) }}
 
-Feel free to explore the posts and learn along with me!
+---
+
+## 🔎 Browse by Topic
+
+{{ tag_cloud }}
+
+---
+
+## 👋 About
+
+I’m Slava, an MLE who documents the tricks, traps, and dopamine hits
+I meet while shipping models to production.
+{% endapply %}
