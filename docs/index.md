@@ -21,7 +21,7 @@
 
 {% if blog_posts %}
 {%     for post in blog_posts[:5] %}
-* [{{ post.title }}]({{ post.url | url }}) – {{ post.date.strftime('%B %d, %Y') }}
+* [{{ post.title }}]({{ post.url }}) – {{ post.date.strftime('%B %d, %Y') }}
 {%     endfor %}
 {% endif %}
 

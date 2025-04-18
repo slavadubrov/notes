@@ -19,6 +19,7 @@ plugins:
   - search
   - blog
   - tags
+  - macros
 
 nav:
   - Home: index.md
