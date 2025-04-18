@@ -1,7 +1,7 @@
 ---
 title: Managing Python on macOS with uv
 date: 2025-04-17
-tags: [Tooling, MLE, Python, macOS, "Virtual Environments", CLI, Tutorial]
+tags: [Tooling, Python, Tutorial]
 summary: Lightning-fast Python installs with Rust-powered uv.
 ---
 

@@ -30,12 +30,6 @@
 
 ---
 
-## 🔎 Browse by Topic
-
-<!-- material/tags -->
-
----
-
 ## 👋 About
 
 I'm Slava, an MLE who documents the tricks, traps, and dopamine hits

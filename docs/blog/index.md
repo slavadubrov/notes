@@ -4,24 +4,10 @@
 
 {% if blog_posts %}
 
+<ul>
 {% for post in blog_posts %}
-
-## [{{ post.title }}]({{ post.url }})
-
-<p>{{ post.date.strftime('%B %d, %Y') }}
-   {% if post.categories %}
-   • {% for category in post.categories %}
-   <a href="{{ category.url }}">{{ category }}</a>{% if not loop.last %}, {% endif %}
-   {% endfor %}
-   {% endif %}
-</p>
-
-{{ post.content | striptags | truncate(200) }}
-
-[Read more]({{ post.url }})
-
----
-
+  <li><a href="{{ post.url }}">{{ post.title }}</a></li>
 {% endfor %}
+</ul>
 
 {% endif %}
