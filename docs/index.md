@@ -2,6 +2,13 @@
 
 > Tips & war stories from the ML‑engineering trenches.
 
+## 👋 About
+
+I'm Slava, an MLE who documents the tricks, traps, and dopamine hits
+I meet while shipping models to production.
+
+---
+
 ## 📌 Featured
 
 {% if blog_posts %}
@@ -27,10 +34,3 @@
 - [{{ post.title }}]({{ post.url }}) – {{ post.date.strftime('%B %d, %Y') }}
   {%     endfor %}
   {% endif %}
-
----
-
-## 👋 About
-
-I'm Slava, an MLE who documents the tricks, traps, and dopamine hits
-I meet while shipping models to production.
