@@ -18,11 +18,11 @@ uv self upgrade        # update uv itself
 
 `uv` is a lightning-fast, all-in-one Python project tool written in Rust, combining package management, interpreter installation, and virtual environment creation. Key features include:
 
-* Installing and switching between multiple CPython (and PyPy) builds
-* Creating lightweight virtual environments
-* Resolving dependencies with an absurdly fast pip-compatible resolver
-* A `uvx` shim for running tools like Ruff or Black in isolated sandboxes:
-  * `uvx black .` or `uvx ruff format .`
+- Installing and switching between multiple CPython (and PyPy) builds
+- Creating lightweight virtual environments
+- Resolving dependencies with an absurdly fast pip-compatible resolver
+- A `uvx` shim for running tools like Ruff or Black in isolated sandboxes:
+  - `uvx black .` or `uvx ruff format .`
 
 Result: fewer moving parts, faster setups, and consistent environments across laptop and CI images.
 
@@ -34,9 +34,10 @@ Result: fewer moving parts, faster setups, and consistent environments across la
 # Install uv via Homebrew (Apple Silicon & Intel)
 brew install uv
 ```
+
 > **Note:** `uv` auto-detects your architecture (Apple Silicon or Intel).
 
-The same page shows a [one‑liner curl installer](https://docs.astral.sh/uv/installation) if you’re brew‑averse.  
+The same page shows a [one‑liner curl installer](https://docs.astral.sh/uv/installation) if you’re brew‑averse.
 Check it worked:
 
 ```bash
@@ -56,9 +57,10 @@ uv python install 3.13            # latest minor
 uv python install 3.9 3.10 3.11   # many at once
 uv python list                    # what’s already cached
 ```
+
 These archives live under `~/.cache/uv`, so they don’t fight Homebrew or Xcode.
 
-Need the interpreter for *this* project only?
+Need the interpreter for _this_ project only?
 
 ```bash
 # Pin Python version for the project
@@ -81,14 +83,16 @@ I rarely `activate` anymore as uv detects the `.venv` file and routes `uv pip`, 
 
 A few patterns that shaved minutes from my workflow:
 
-| Task | One‑liner |
-|------|-----------|
-| Install deps into the current venv | `uv pip install -r requirements.txt` |
+| Task                                      | One‑liner                               |
+| ----------------------------------------- | --------------------------------------- |
+| Install deps into the current venv        | `uv pip install -r requirements.txt`    |
 | Run a script with a different interpreter | `uv run --python 3.10 scripts/train.py` |
-| Global tool in its own sandbox | `uvx ruff format .` |
+| Global tool in its own sandbox            | `uvx ruff format .`                     |
 
 ### 3.1 Using `uvx` for tools
+
 With `uvx` you can run formatters or linters without touching your virtual environment:
+
 ```bash
 uvx black .            # format code in an isolated sandbox
 uvx ruff check src/    # lint code without installing ruff globally
@@ -98,16 +102,16 @@ uvx ruff check src/    # lint code without installing ruff globally
 
 ## 4. Co‑existing with pyenv (if you must)
 
-* **Keep pyenv** if you rely on its “shim” strategy to globally shadow `python` in your shell.  
-* **Skip pyenv** if project‑local versions and CI parity are your priority - uv handles that solo.  
+- **Keep pyenv** if you rely on its “shim” strategy to globally shadow `python` in your shell.
+- **Skip pyenv** if project‑local versions and CI parity are your priority - uv handles that solo.
 
-From uv’s perspective every interpreter in `$PATH` (even ones compiled by pyenv or Homebrew) is just “system Python”. You can pass it to any `--python` flag and mix‑and‑match as needed.  
+From uv’s perspective every interpreter in `$PATH` (even ones compiled by pyenv or Homebrew) is just “system Python”. You can pass it to any `--python` flag and mix‑and‑match as needed.
 
 ---
 
 ## 5. ML‑specific niceties
 
-* The **[PyTorch integration guide](https://docs.astral.sh/uv/guides/integration/pytorch/)** shows CUDA‑aware installs in one command - excellent for GPU vs. CPU builds on the same Mac.  
-* Binary wheels pulled by uv are cached, so re‑creating a venv to try a different version of scikit‑learn or TensorFlow feels instant.
+- The **[PyTorch integration guide](https://docs.astral.sh/uv/guides/integration/pytorch/)** shows CUDA‑aware installs in one command - excellent for GPU vs. CPU builds on the same Mac.
+- Binary wheels pulled by uv are cached, so re‑creating a venv to try a different version of scikit‑learn or TensorFlow feels instant.
 
 ---

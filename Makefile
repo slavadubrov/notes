@@ -30,4 +30,4 @@ help:
 	@echo "  make serve    - Start the development server"
 	@echo "  make build    - Build the static site"
 	@echo "  make clean    - Remove the built site directory"
-	@echo "  make setup    - Create new venv and install dependencies" 
+	@echo "  make setup    - Create new venv and install dependencies"
