@@ -1,27 +1,24 @@
-# Shared Intelligence
+# Shared Intelligence
 
 > Tips & war stories from the ML‑engineering trenches.
 
-{% apply blog %}
+## 📌 Featured
 
-## 📌 Featured
+<!-- This section displays the most recent blog post -->
 
-{{ latest_post }}
+## 🆕 Latest&nbsp;(last 5)
 
-## 🆕 Latest&nbsp;(last 5)
-
-{{ latest_posts(count=5) }}
+<!-- This section displays the five most recent blog posts -->
 
 ---
 
-## 🔎 Browse by Topic
+## 🔎 Browse by Topic
 
-{{ tag_cloud }}
+<!-- This section displays a tag cloud of topics -->
 
 ---
 
-## 👋 About
+## 👋 About
 
-I’m Slava, an MLE who documents the tricks, traps, and dopamine hits
+I'm Slava, an MLE who documents the tricks, traps, and dopamine hits
 I meet while shipping models to production.
-{% endapply %}

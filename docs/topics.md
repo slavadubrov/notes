@@ -1,10 +1,7 @@
 # Topics
 
-{% for tag in tags %}
+## MLE
+- [Managing Python on macOS with uv](blog/posts/uv_on_macos_for_mle.md)
 
-## {{ tag.name }}
-
-{{ tag.count }} posts
-
-{{ tag.list(posts=10) }}
-{% endfor %}
+## Tooling
+- [Managing Python on macOS with uv](blog/posts/uv_on_macos_for_mle.md)

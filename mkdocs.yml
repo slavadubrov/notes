@@ -3,18 +3,24 @@ site_url: https://slavadubrov.github.io/
 
 theme:
   name: material
+  features:
+    - navigation.indexes
+    - navigation.sections
+
+markdown_extensions:
+  - pymdownx.superfences
+  - attr_list
+  - md_in_html
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
 plugins:
   - search
-  - blog:
-      blog_dir: .
-      tags: true
-      pagination: true
-      pagination_per_page: 10
-  - tags
-  - rss
 
 nav:
   - Home: index.md
+  - Blog:
+    - My First Post: blog/posts/first-post.md
+    - Managing Python on macOS with uv: blog/posts/uv_on_macos_for_mle.md
   - Topics: topics.md
-  - Archive: blog/index.md
