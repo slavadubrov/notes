@@ -21,6 +21,6 @@ plugins:
 nav:
   - Home: index.md
   - Blog:
-    - My First Post: blog/posts/first-post.md
-    - Managing Python on macOS with uv: blog/posts/uv_on_macos_for_mle.md
+      - My First Post: blog/posts/first-post.md
+      - Managing Python on macOS with uv: blog/posts/uv_on_macos_for_mle.md
   - Topics: topics.md
