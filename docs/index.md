@@ -7,7 +7,9 @@
 {% if blog_posts %}
 {%     set pinned = blog_posts | selectattr('pin', 'equalto', true) | list %}
 {%     if pinned %}
+
 ### [{{ pinned[0].title }}]({{ pinned[0].url | url }})
+
 <p>{{ pinned[0].date.strftime('%B %d, %Y') }}</p>
 {{ pinned[0].content | striptags | truncate(200) }}
 {%     else %}
@@ -21,15 +23,16 @@
 
 {% if blog_posts %}
 {%     for post in blog_posts[:5] %}
-* [{{ post.title }}]({{ post.url }}) – {{ post.date.strftime('%B %d, %Y') }}
-{%     endfor %}
-{% endif %}
+
+- [{{ post.title }}]({{ post.url }}) – {{ post.date.strftime('%B %d, %Y') }}
+  {%     endfor %}
+  {% endif %}
 
 ---
 
 ## 🔎 Browse by Topic
 
-<!-- material/tags { toc: false } -->
+<!-- material/tags -->
 
 ---
 
