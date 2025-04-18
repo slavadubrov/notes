@@ -17,6 +17,8 @@ markdown_extensions:
 
 plugins:
   - search
+  - blog
+  - tags
 
 nav:
   - Home: index.md

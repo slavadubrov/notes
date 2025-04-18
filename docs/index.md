@@ -4,17 +4,32 @@
 
 ## 📌 Featured
 
-<!-- This section displays the most recent blog post -->
+{% if blog_posts %}
+{%     set pinned = blog_posts | selectattr('pin', 'equalto', true) | list %}
+{%     if pinned %}
+### [{{ pinned[0].title }}]({{ pinned[0].url | url }})
+<p>{{ pinned[0].date.strftime('%B %d, %Y') }}</p>
+{{ pinned[0].content | striptags | truncate(200) }}
+{%     else %}
+### [{{ blog_posts[0].title }}]({{ blog_posts[0].url | url }})
+<p>{{ blog_posts[0].date.strftime('%B %d, %Y') }}</p>
+{{ blog_posts[0].content | striptags | truncate(200) }}
+{%     endif %}
+{% endif %}
 
 ## 🆕 Latest&nbsp;(last 5)
 
-<!-- This section displays the five most recent blog posts -->
+{% if blog_posts %}
+{%     for post in blog_posts[:5] %}
+* [{{ post.title }}]({{ post.url | url }}) – {{ post.date.strftime('%B %d, %Y') }}
+{%     endfor %}
+{% endif %}
 
 ---
 
 ## 🔎 Browse by Topic
 
-<!-- This section displays a tag cloud of topics -->
+<!-- material/tags { toc: false } -->
 
 ---
 
