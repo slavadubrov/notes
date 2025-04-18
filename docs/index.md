@@ -24,6 +24,8 @@ I meet while shipping models to production.
 <p>{{ blog_posts[0].date.strftime('%B %d, %Y') }}</p>
 {{ blog_posts[0].content | striptags | truncate(200) }}
 {%     endif %}
+{% else %}
+<p>_No posts yet._</p>
 {% endif %}
 
 ## 🆕 Latest&nbsp;(last 5)
@@ -33,4 +35,6 @@ I meet while shipping models to production.
 
 - [{{ post.title }}]({{ post.url }}) – {{ post.date.strftime('%B %d, %Y') }}
   {%     endfor %}
-  {% endif %}
+{% else %}
+<p>_No posts yet._</p>
+{% endif %}
