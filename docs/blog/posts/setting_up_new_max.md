@@ -27,7 +27,7 @@ I believe this story is familiar to everyone. You get a new MacBook and try to r
     brew install openssl readline sqlite3 xz zlib
     ```
 
-4.  I prefer to use [iTerm2](https://www.iterm2.com) instead of the standard Terminal. iTerm provides a more flexible configuration. You can download it from the iTerm2 website.
+4.  I used to prefer [iTerm2](https://www.iterm2.com) over the standard Terminal due to its flexible configuration, but recently migrated to [Warp](https://www.warp.dev/). Warp offers a modern, Rust-based terminal experience with AI features integrated. You can download it from the Warp website. However, if you still prefer iTerm2, here's how I used to configure it:
 
 5.  For configuring iTerm I prefer to do the following:
 
@@ -72,12 +72,12 @@ I believe this story is familiar to everyone. You get a new MacBook and try to r
 
 9.  For the terminal I also install:
 
-    - [pyenv](https://github.com/pyenv/pyenv) as Python Version Manager,
-    - [pipenv](https://pipenv.pypa.io) for Python-Dev Workflow,
+    - [pyenv](https://github.com/pyenv/pyenv) for managing global Python versions via shims,
+    - [uv](https://github.com/astral-sh/uv) for managing Python project dependencies and virtual environments,
     - [htop](https://htop.dev) for process monitoring,
-    - [gitmoji](https://gitmoji.dev) for customizing my commit messages.
+    - [gitmoji](https://gitmoji.dev) for customizing commit messages.
 
-10. And of course, I always install [VSCode](https://code.visualstudio.com), [Docker](https://www.docker.com), [Nteract](https://nteract.io), and [Postman](https://www.postman.com).
+10. And of course, I always install [Cursor](https://cursor.sh) as my main IDE, [Docker](https://www.docker.com) for containerization, and [Ollama](https://ollama.com) for running LLMs locally.
 
 If you read up to this moment:
 
