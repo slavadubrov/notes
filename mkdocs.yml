@@ -30,11 +30,15 @@ markdown_extensions:  # Configures Markdown extensions for additional functional
 
 plugins:  # Configures MkDocs plugins for extended functionality
   - search  # Adds search functionality to the site
-  - blog  # Enables blog functionality
+  - blog:  # Enables blog functionality
+      post_excerpt: required          # fail the build if <!-- more --> is missing
+      post_readtime: false            # don't show reading‑time badges
+      post_excerpt_max_authors: 0     # hide author chips in the list
+      post_excerpt_max_categories: 0  # hide category chips in the list
   - tags  # Adds support for tagging content
   - macros  # Allows using variables and macros in Markdown
   - rss:  # Configures RSS feed generation
-      match_path: blog/posts/*  # Specifies which files to include in the RSS feed
+      match_path: blog/posts/.*  # Specifies which files to include in the RSS feed
       date_from_meta:  # Defines how to extract dates for RSS entries
         as_creation: date  # Uses the 'date' metadata field as creation date
       categories:  # Configures RSS feed categories
