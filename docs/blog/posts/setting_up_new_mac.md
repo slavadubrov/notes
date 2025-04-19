@@ -1,13 +1,13 @@
 ---
-title: Setting up a MacBook as AI Specialist
+title: Setting up a MacBook for AI Engineering
 date: 2025-04-19
 tags: [Tutorial, Mac]
 summary: A 10-step guide to configuring a new MacBook for AI development, covering essential tools and terminal setup.
 ---
 
-# Setting up a MacBook as AI Specialist
+# Setting up a MacBook for AI Engineering
 
-I believe this story is familiar to everyone. You get a new MacBook and try to recall what exactly do you need there. This happened to me recently. So, I decided to summarize in 10 simple steps what I usually do with my new MacBook. Below you can find the subjective answer to the question, what Data Scientists need to install, and what do they need to configure to simplify their daily routines.
+Here’s my distilled, 10‑step workflow to transform a vanilla macOS install into a ready to-go AI engineering working station.
 
 1.  First of all, let's install Xcode Command Line Tools. These tools are the foundation for any type of software development (including DS).
 
@@ -79,7 +79,6 @@ I believe this story is familiar to everyone. You get a new MacBook and try to r
 
 10. And of course, I always install [Cursor](https://cursor.sh) as my main IDE, [Docker](https://www.docker.com) for containerization, and [Ollama](https://ollama.com) for running LLMs locally.
 
-If you read up to this moment:
+## Final thoughts
 
-- you know what I usually use in my daily AI enginer routine;
-- it is a pretty simple basic configuration that could help you with your new system configuration.
+By now you have the exact stack I lean on every day as an AI engineer - just the essentials that remove friction between an idea and a running model.
