@@ -26,7 +26,7 @@ In this blog, you'll find:
 
 My goal is to create a valuable resource for fellow practitioners and anyone interested in the real-world application of machine learning.
 
-### Connect
+## Connect
 
 - [LinkedIn](https://www.linkedin.com/in/slavadubrov/)
 - [GitHub](https://github.com/slavadubrov)
