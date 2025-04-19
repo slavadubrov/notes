@@ -1,18 +1,25 @@
-# Welcome to Shared Intelligence
+---
+title: About Me
+date: 2025-01-15
+---
 
-Welcome to my blog about Machine Learning tips, tricks, and experiences. Here, I share insights and knowledge gained from working with ML technologies.
+# Shared Intelligence
 
-## Latest Posts
+> Tips & war stories from the ML‑engineering trenches.
 
-- [My First Post](first-post.md) - An introduction to this blog and what to expect
+👋 Hi, I'm Slava!
 
-## About This Blog
+I'm a AI Engineer passionate about navigating the complexities of shipping models to production.
 
-This blog serves as a knowledge-sharing platform where I document my journey in Machine Learning, sharing:
+This blog serves as my digital collection of tips and tricks I've learned in my journey of machine learning.
 
-- Technical insights and discoveries
-- Practical tips and solutions
-- Best practices and lessons learned
-- Useful resources and tools
+## What You'll Find Here
 
-Feel free to explore the posts and learn along with me!
+In this blog, you'll find:
+
+- Technical tutorials and guides
+- Machine Learning insights
+- Best practices and tips
+- Personal experiences and learnings
+
+My goal is to create a valuable resource for fellow practitioners and anyone interested in the real-world application of machine learning.

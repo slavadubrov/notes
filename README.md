@@ -21,17 +21,22 @@ A blog about Machine Learning tips, tricks, and experiences, built with MkDocs a
 2. Set up the development environment:
 
    ```bash
-   make setup    # Creates venv and installs dependencies
+   make setup    # Creates venv and installs base dependencies
    source .venv/bin/activate
    ```
 
-3. Start the development server:
+3. Install/upgrade MkDocs plugins and launch a local preview:
+
+   ```bash
+   pip install --upgrade -r requirements.txt
+   mkdocs serve   # open http://127.0.0.1:8000
+   ```
+
+4. Alternatively, start the development server via Make:
 
    ```bash
    make serve
    ```
-
-4. Visit `http://127.0.0.1:8000` in your browser
 
 ## 📝 Creating Content
 
@@ -53,10 +58,10 @@ Blog posts are written in Markdown and stored in the `docs/` directory. To creat
 
 ## 📦 Dependencies
 
-All dependencies are listed in `requirements.txt`. Main dependencies:
-
 - mkdocs
 - mkdocs-material
+- mkdocs-blog-plugin
+- mkdocs-rss-plugin
 
 ## 📄 License
 

@@ -1,3 +1,10 @@
+---
+title: Managing Python on macOS with uv
+date: 2025-04-17
+tags: [Tooling, Python, Tutorial]
+summary: Lightning-fast Python installs with Rust-powered uv.
+---
+
 # Managing Python like an ML Engineer on macOS with **uv**
 
 ## TL;DR Bash Cheat‑sheet
@@ -37,7 +44,7 @@ brew install uv
 
 > **Note:** `uv` auto-detects your architecture (Apple Silicon or Intel).
 
-The same page shows a [one‑liner curl installer](https://docs.astral.sh/uv/installation) if you’re brew‑averse.
+The same page shows a [one‑liner curl installer](https://docs.astral.sh/uv/installation) if you're brew‑averse.
 Check it worked:
 
 ```bash
@@ -55,10 +62,10 @@ uv self upgrade   # keep it fresh
 uv python install 3.12.4          # exact version
 uv python install 3.13            # latest minor
 uv python install 3.9 3.10 3.11   # many at once
-uv python list                    # what’s already cached
+uv python list                    # what's already cached
 ```
 
-These archives live under `~/.cache/uv`, so they don’t fight Homebrew or Xcode.
+These archives live under `~/.cache/uv`, so they don't fight Homebrew or Xcode.
 
 Need the interpreter for _this_ project only?
 
@@ -76,7 +83,7 @@ Drop that file into Git and your team (or the CI) will automatically get the sam
 ```bash
 # Create virtual environment
 uv venv                 # creates .venv with the pinned Python
-uv venv --python 3.11   # override if you’re exploring
+uv venv --python 3.11   # override if you're exploring
 ```
 
 I rarely `activate` anymore as uv detects the `.venv` file and routes `uv pip`, `uv run`, or `uvx ruff` to the right interpreter. Pure convenience.
@@ -102,10 +109,10 @@ uvx ruff check src/    # lint code without installing ruff globally
 
 ## 4. Co‑existing with pyenv (if you must)
 
-- **Keep pyenv** if you rely on its “shim” strategy to globally shadow `python` in your shell.
+- **Keep pyenv** if you rely on its "shim" strategy to globally shadow `python` in your shell.
 - **Skip pyenv** if project‑local versions and CI parity are your priority - uv handles that solo.
 
-From uv’s perspective every interpreter in `$PATH` (even ones compiled by pyenv or Homebrew) is just “system Python”. You can pass it to any `--python` flag and mix‑and‑match as needed.
+From uv's perspective every interpreter in `$PATH` (even ones compiled by pyenv or Homebrew) is just "system Python". You can pass it to any `--python` flag and mix‑and‑match as needed.
 
 ---
 
