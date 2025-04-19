@@ -4,44 +4,44 @@ site_url: https://slavadubrov.github.io/
 theme:
   name: material
   features:
-    - navigation.instant
-    - navigation.instant.prefetch
-    - navigation.tabs
-    - navigation.tabs.sticky
-    - navigation.sections
-    - navigation.expand
-    - navigation.path
-    - navigation.indexes
-    - navigation.toc
-    - navigation.toc.sticky
-    - navigation.toc.maxdepth
-    - navigation.toc.title
-    - navigation.toc.collapse
-    - navigation.toc.collapse_empty_groups
-    - navigation.toc.collapse_single_children
+    - navigation.instant  # Enables instant loading of pages when clicking navigation links
+    - navigation.instant.prefetch  # Preloads pages linked from the current page for faster navigation
+    - navigation.tabs  # Adds top-level sections as tabs in the header
+    - navigation.tabs.sticky  # Makes navigation tabs stick to the top when scrolling
+    - navigation.sections  # Renders top-level sections as groups in the sidebar
+    - navigation.expand  # Expands all collapsible subsections by default
+    - navigation.path  # Adds breadcrumbs showing the path to the current page
+    - navigation.indexes  # Enables the use of index pages in sections
+    - navigation.toc  # Enables the table of contents for each page
+    - navigation.toc.sticky  # Makes the table of contents stick to the page while scrolling
+    - navigation.toc.maxdepth  # Sets the maximum depth of the table of contents
+    - navigation.toc.title  # Displays a title for the table of contents
+    - navigation.toc.collapse  # Allows collapsing sections in the table of contents
+    - navigation.toc.collapse_empty_groups  # Collapses empty groups in the table of contents
+    - navigation.toc.collapse_single_children  # Collapses groups with only a single child
 
-markdown_extensions:
-  - pymdownx.superfences
-  - attr_list
-  - md_in_html
-  - pymdownx.emoji:
-      emoji_index: !!python/name:material.extensions.emoji.twemoji
-      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+markdown_extensions:  # Configures Markdown extensions for additional functionality
+  - pymdownx.superfences  # Adds support for code blocks with syntax highlighting
+  - attr_list  # Enables custom attributes for Markdown elements
+  - md_in_html  # Allows Markdown syntax inside HTML blocks
+  - pymdownx.emoji:  # Adds support for emoji shortcodes
+      emoji_index: !!python/name:material.extensions.emoji.twemoji  # Uses Twemoji as the emoji index
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg  # Renders emojis as SVG
 
-plugins:
-  - search
-  - blog
-  - tags
-  - macros
-  - rss:
-      match_path: blog/posts/.*
-      date_from_meta:
-        as_creation: date
-      categories:
-        - categories
-        - tags
+plugins:  # Configures MkDocs plugins for extended functionality
+  - search  # Adds search functionality to the site
+  - blog  # Enables blog functionality
+  - tags  # Adds support for tagging content
+  - macros  # Allows using variables and macros in Markdown
+  - rss:  # Configures RSS feed generation
+      match_path: blog/posts/*  # Specifies which files to include in the RSS feed
+      date_from_meta:  # Defines how to extract dates for RSS entries
+        as_creation: date  # Uses the 'date' metadata field as creation date
+      categories:  # Configures RSS feed categories
+        - categories  # Uses 'categories' metadata field
+        - tags  # Uses 'tags' metadata field as categories
 
-nav:
-  - Home: index.md
-  - Topics: topics.md
-  - Blog: blog/index.md
+nav:  # Defines the navigation structure of the site
+  - Home: index.md  # Links the Home navigation item to index.md
+  - Topics: topics.md  # Links the Topics navigation item to topics.md
+  - Blog: blog/index.md  # Links the Blog navigation item to blog/index.md
