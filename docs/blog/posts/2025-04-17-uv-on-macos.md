@@ -5,7 +5,9 @@ tags: [Tooling, Python, Tutorial]
 summary: Lightning-fast Python installs with Rust-powered uv.
 ---
 
-# Managing Python like an ML Engineer on macOS with **uv**
+# Managing Python like an AI Engineer on macOS with **uv**
+
+<!-- more -->
 
 ## TL;DR Bash Cheat‑sheet
 
