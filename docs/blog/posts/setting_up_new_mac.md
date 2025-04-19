@@ -81,5 +81,5 @@ I believe this story is familiar to everyone. You get a new MacBook and try to r
 
 If you read up to this moment:
 
-- you know what I usually use in my daily data science routine;
+- you know what I usually use in my daily AI enginer routine;
 - it is a pretty simple basic configuration that could help you with your new system configuration.
