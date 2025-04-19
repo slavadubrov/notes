@@ -4,8 +4,21 @@ site_url: https://slavadubrov.github.io/
 theme:
   name: material
   features:
-    - navigation.indexes
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.tabs
+    - navigation.tabs.sticky
     - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.indexes
+    - navigation.toc
+    - navigation.toc.sticky
+    - navigation.toc.maxdepth
+    - navigation.toc.title
+    - navigation.toc.collapse
+    - navigation.toc.collapse_empty_groups
+    - navigation.toc.collapse_single_children
 
 markdown_extensions:
   - pymdownx.superfences
@@ -20,8 +33,15 @@ plugins:
   - blog
   - tags
   - macros
+  - rss:
+      match_path: blog/posts/.*
+      date_from_meta:
+        as_creation: date
+      categories:
+        - categories
+        - tags
 
 nav:
   - Home: index.md
-  - Blog: blog/index.md
   - Topics: topics.md
+  - Blog: blog/index.md

@@ -1,40 +1,25 @@
+---
+title: About Me
+date: 2025-01-15
+---
+
 # Shared Intelligence
 
 > Tips & war stories from the ML‑engineering trenches.
 
-## 👋 About
+👋 Hi, I'm Slava!
 
-I'm Slava, an MLE who documents the tricks, traps, and dopamine hits
-I meet while shipping models to production.
+I'm a AI Engineer passionate about navigating the complexities of shipping models to production.
 
----
+This blog serves as my digital collection of tips and tricks I've learned in my journey of machine learning.
 
-## 📌 Featured
+## What You'll Find Here
 
-{% if blog_posts %}
-{%     set pinned = blog_posts | selectattr('pin', 'equalto', true) | list %}
-{%     if pinned %}
+In this blog, you'll find:
 
-### [{{ pinned[0].title }}]({{ pinned[0].url | url }})
+- Technical tutorials and guides
+- Machine Learning insights
+- Best practices and tips
+- Personal experiences and learnings
 
-<p>{{ pinned[0].date.strftime('%B %d, %Y') }}</p>
-{{ pinned[0].content | striptags | truncate(200) }}
-{%     else %}
-### [{{ blog_posts[0].title }}]({{ blog_posts[0].url | url }})
-<p>{{ blog_posts[0].date.strftime('%B %d, %Y') }}</p>
-{{ blog_posts[0].content | striptags | truncate(200) }}
-{%     endif %}
-{% else %}
-<p>_No posts yet._</p>
-{% endif %}
-
-## 🆕 Latest&nbsp;(last 5)
-
-{% if blog_posts %}
-{%     for post in blog_posts[:5] %}
-
-- [{{ post.title }}]({{ post.url }}) – {{ post.date.strftime('%B %d, %Y') }}
-  {%     endfor %}
-{% else %}
-<p>_No posts yet._</p>
-{% endif %}
+My goal is to create a valuable resource for fellow practitioners and anyone interested in the real-world application of machine learning.
