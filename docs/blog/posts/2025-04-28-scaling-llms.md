@@ -129,16 +129,90 @@ graph TD
 
 ### Mixture of Experts (MoE)
 
-Only a subset of model parameters (experts) are active during a forward pass, reducing computation.
+MoE layers contain dozens (or even hundreds) of parallel **experts** (small feed‑forward sub‑networks).
+For every token a lightweight **gating network** selects the top‑_k_ experts, so only that subset runs.
+This decouples **model capacity** (total parameters) from **per‑token compute/FLOPs**.
 
-- **Use Case**: Efficiently scaling models with sparse activation.
-- **Tools**: [DeepSpeed-MoE](https://www.deepspeed.ai/tutorials/mixture-of-experts/), [GShard](https://arxiv.org/abs/2006.16668).
+**Key ideas**
+
+- **Sparse activation** – With _k = 2_ out of 64 experts each token touches ~3 % of the parameters, yet the model still "sees" the full capacity during training.
+- **Conditional computation** – Tokens route to different experts, letting each specialize (e.g., code vs poetry).
+- **Load‑balancing loss** – Extra loss term keeps expert usage uniform to avoid stragglers.
+- **Scale to trillions** – Total parameters scale linearly with #experts, compute stays roughly constant.
+
+**Mermaid Diagram**
+
+```mermaid
+flowchart LR
+    subgraph Input_Tokens["Input Tokens"]
+        T1["T₁"]
+        T2["T₂"]
+        T3["T₃"]
+    end
+    G["Gating Network"]
+    subgraph Experts["Experts"]
+        E1["Expert 1"]
+        E2["Expert 2"]
+        E3["Expert 3"]
+        E4["⋯"]
+    end
+    T1 --> G
+    T2 --> G
+    T3 --> G
+    G -->|top-k routes| E1
+    G -->|top-k routes| E2
+    G -->|top-k routes| E3
+    E1 & E2 & E3 --> O["Concatenate + Mix"]
+```
+
+- **Use Case**: Scaling to 100 B–1 T+ parameters without proportional compute cost.
+- **Tools**: [DeepSpeed‑MoE](https://www.deepspeed.ai/tutorials/mixture-of-experts/), [GShard / Switch Transformer](https://arxiv.org/abs/2001.04451).
+
+---
 
 ### 4D Parallelism
 
-Combines all four parallelism techniques (Data, Tensor, Pipeline, and Context) for maximum efficiency.
+"4D" composes **Data (D)**, **Tensor (T)**, **Pipeline (P)**, and **Context (C)** parallelism so every axis of the workload can be distributed.
+Picture the GPUs as a 4‑D lattice: _N = D×T×P×C_ ranks.
 
-- **Use Case**: Training extremely large models with long context windows.
+**Key ideas**
+
+- **Extreme scale** – Easily maps 10³–10⁴ GPUs for 100 B‑parameter, 8 k‑context models.
+- **Topology aware** – Tune each dimension to match intra‑node (NVLink), inter‑node (IB), and rack‑level bandwidth.
+- **Memory & compute balance** – TP shards big matrices, CP splits long sequences, PP handles depth, DP feeds throughput.
+
+**Mermaid Diagram**
+
+```mermaid
+graph TD
+    %% Example 2×2×2×2 grid (16 GPUs)
+    subgraph Stage0["Pipeline Stage 0"]
+        subgraph TP0["Tensor Group 0"]
+            R0000["GPU D0-C0"]
+            R0001["GPU D0-C1"]
+        end
+        subgraph TP1["Tensor Group 1"]
+            R0010["GPU D0-C0"]
+            R0011["GPU D0-C1"]
+        end
+    end
+    subgraph Stage1["Pipeline Stage 1"]
+        subgraph TP0S1["Tensor Group 0"]
+            R0100["GPU D1-C0"]
+            R0101["GPU D1-C1"]
+        end
+        subgraph TP1S1["Tensor Group 1"]
+            R0110["GPU D1-C0"]
+            R0111["GPU D1-C1"]
+        end
+    end
+    A["Micro-batches (DP)"] --> R0000
+    R0000 -->|TP| R0010
+    R0010 -->|PP| R0100
+    R0100 -->|CP assemble| Z["Output"]
+```
+
+- **Use Case**: Training > 100 B‑parameter models with multi‑node clusters and long context windows.
 - **Tools**: [Picotron](https://github.com/huggingface/picotron), [Nanotron](https://github.com/huggingface/nanotron).
 
 ## 2. Training Strategies
