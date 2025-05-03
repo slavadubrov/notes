@@ -269,51 +269,67 @@ graph TD
 - **Use Case**: Training > 100 B‑parameter models with multi‑node clusters and long context windows.
 - **Tools**: [Picotron](https://github.com/huggingface/picotron), [Nanotron](https://github.com/huggingface/nanotron).
 
-## 2. Training Strategies
+## 2. Training Strategies (2025 update)
 
-### Single-Node, Multi-GPU
+> **Rule of thumb** – pick the simplest scheme that fits in memory **and** saturates your interconnect.
+> Start with a shard‑aware data‑parallel variant (FSDP/ZeRO‑3).
+> Add **Tensor ↔ Pipeline ↔ Context** axes only when the model or the sequence length forces you.
 
-Ideal for workstations or servers with multiple GPUs connected via high-speed interconnects like [NVLink](https://www.nvidia.com/en-us/data-center/nvlink/).
+| Hardware scope                                  | Fastest link | Go‑to recipe                                    | When to switch                      |
+| ----------------------------------------------- | ------------ | ----------------------------------------------- | ----------------------------------- |
+| **1 node** (2‑8 GPUs, NVLink / PCIe Gen5)       | 200‑900 GB/s | **FSDP + small TP** via `torchrun` or DeepSpeed | Model > 1 × GPU                     |
+| **2‑16 nodes** (≤128 GPUs, NVLink + InfiniBand) | 25‑200 GB/s  | **"TP inside, DP across" + optional PP**        | Model > 1 × node                    |
+| **>16 nodes** (hundreds–thousands GPUs)         | ≤25 GB/s     | **4‑D grid (DP×TP×PP×CP)**                      | 70 B + params **and** 32 k + tokens |
 
-- **Approach**: Combine DP with TP or PP to maximize GPU utilization.
-- **Example**:
+### 2.1 Single‑Node, Multi‑GPU
 
-```sh
-deepspeed train.py --deepspeed_config ds_config.json
+Combine zeRO‑style **Fully‑Sharded Data Parallelism (FSDP)** with a low‑degree **Tensor Parallelism** group that stays inside the node.
+
+```bash
+# Four H100s, ZeRO‑3 memory footprint
+torchrun --standalone --nproc_per_node 4 train.py \
+  --fsdp full_shard --mixed_precision bf16 \
+  --gradient_accumulation_steps 8 --batch_size 4
 ```
 
-- **Documentation**: [DeepSpeed Getting Started](https://www.deepspeed.ai/getting-started/#running-deepspeed)
-- **Tools**: DeepSpeed, PyTorch FSDP.
+- FSDP shards params + grads + optimizer states ⇒ memory grows ~1/_n_.
+- TP protects matmul kernels from weight‑gather latency; keep `tp<=2` on PCIe, up to `tp<=4` on NVLink.
+- Use `fsdp.forward_prefetch=True` and overlap weight gathering with compute.
 
-### Multi-Node, Multi-GPU
+### 2.2 Multi‑Node, Multi‑GPU
 
-Suitable for large-scale training across multiple machines.
+Start with **Tensor Parallelism inside a node** and **Data Parallelism across nodes**; introduce **Pipeline Parallelism** when the model no longer fits on one node.
 
-- **Approach**: Integrate DP, TP, and PP as needed.
-- **Example**:
-
-```sh
-deepspeed --hostfile hostfile train.py --deepspeed_config ds_config.json
+```bash
+# 4 nodes × 8 GPUs
+torchrun --nnodes 4 --nproc_per_node 8 \
+  --rdzv_backend=c10d --rdzv_endpoint node0:29500 \
+  train.py --tp 2 --dp 4
 ```
 
-- **Documentation**: [DeepSpeed Multi-Node Training](https://www.deepspeed.ai/tutorials/multi-node/)
-- **Tools**: DeepSpeed, Megatron-LM, Horovod.
+- Keep TP collectives inside the node to avoid slow inter‑node all‑reduces.
+- Tune **micro‑batch = 4 × PP degree** as recommended by the Ultra‑Scale Playbook to limit the pipeline bubble.
 
-### 4D Parallelism Training
+### 2.3 4‑D Parallelism
 
-For training extremely large models with long context windows across multiple nodes.
+When **weights** and **sequence length** both exceed a node, use every axis (DP × TP × PP × CP).
 
-- **Approach**: Utilize all four parallelism techniques (DP, TP, PP, CP) simultaneously.
-- **Example**:
+```bash
+# Generates config & launches Picotron across 4 nodes (32 GPUs)
+python create_config.py \
+  --out_dir cfg --dp 4 --tp 2 --pp 2 --cp 2 \
+  --model_name meta-llama/Llama-3-70B --seq_len 32768
 
-```sh
-# Using Picotron
-python create_config.py --out_dir tmp --exp_name llama-7B --dp 4 --tp 2 --pp 2 --cp 2 --model_name meta-llama/Llama-2-7b-hf --grad_acc_steps 32 --mbs 4 --seq_len 8192 --hf_token <HF_TOKEN>
-torchrun --nproc_per_node 8 train.py --config tmp/llama-7B/config.json
+torchrun --nnodes 4 --nproc_per_node 8 picotron/train.py --config cfg/config.json
 ```
 
-- **Documentation**: [Picotron GitHub](https://github.com/huggingface/picotron)
-- **Tools**: Picotron, Nanotron.
+Guidelines:
+
+- **TP** groups stay inside nodes; **PP/CP** may span nodes.
+- Increase **DP** first when you need a larger global batch; it is the cheapest axis communication‑wise.
+- Expect ~75 % scaling efficiency up to 512 GPUs on InfiniBand clusters (HF benchmarks, Feb 2025).
+
+---
 
 ## 3. Inference Strategies
 
