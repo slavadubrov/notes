@@ -7,8 +7,6 @@ summary: Lightning-fast Python installs with Rust-powered uv.
 
 # Managing Python like an AI Engineer on macOS with **uv**
 
-<!-- more -->
-
 ## TL;DR Bash Cheat‑sheet
 
 ```bash
@@ -22,6 +20,8 @@ uv self upgrade        # update uv itself
 ```
 
 ---
+
+<!-- more -->
 
 ## 🌙 Why I Migrated to `uv` (And You Should Too)
 
