@@ -91,10 +91,41 @@ graph TD
 
 ### Fully Sharded Data Parallelism (FSDP)
 
-Extends DP by sharding model states (parameters, gradients, optimizer states) across GPUs to reduce memory footprint.
+FSDP, conceptually equivalent to ZeRO Stage 3, shards all model states - parameters, gradients and optimizer states - across the GPUs in a data-parallel group. Each GPU therefore keeps only `1 / N` of the model in memory, gathers the parameters of the current layer just-in-time, computes, and immediately reshards them before moving on. Gradients are reduce-scattered so every rank finishes the backward pass owning only its shard, and optimizer updates are applied locally.
 
-- **Use Case**: Training very large models that don't fit into a single GPU's memory.
-- **Tools**: [PyTorch's FSDP](https://pytorch.org/docs/stable/fsdp.html), [DeepSpeed's ZeRO](https://www.deepspeed.ai/tutorials/zero/).
+**Key ideas**
+
+- **Memory scaling**: O(total params / NGPU) - enables multi-billion-parameter models to fit on 24 GB cards.
+- **Zero redundancy**: No GPU ever holds a full copy of the model; identical to DeepSpeed ZeRO-3.
+- **Overlap compute & communication**: PyTorch overlaps the all-gather with computation to hide latency.
+- **Granularity control**: You can wrap the whole model or nest FSDP wrappers on sub-modules for finer control.
+
+**Mermaid Diagram**
+
+```mermaid
+graph TD
+    subgraph GPU1
+        P1[Shard P₁] --- G1[Shard G₁] --- O1[Shard O₁]
+    end
+    subgraph GPU2
+        P2[Shard P₂] --- G2[Shard G₂] --- O2[Shard O₂]
+    end
+    subgraph GPU3
+        P3[Shard P₃] --- G3[Shard G₃] --- O3[Shard O₃]
+    end
+
+    A[Start micro-batch] --> B[All-gather layer weights]
+    B --> C[Forward compute]
+    C --> D[Reshard weights]
+    D --> E[Backward compute]
+    E --> F[Reduce-scatter gradients]
+    F --> G[Local optimizer update]
+```
+
+> **Note**: In the diagram above, P represents Parameters (model weights), G represents Gradients, and O represents Optimizer states. These are the three main components of model state that are sharded across GPUs in FSDP.
+
+- **Use Case**: Training very large models (> 10 B parameters) that do not fit on a single GPU.
+- **Tools**: [PyTorch FSDP](https://pytorch.org/docs/stable/fsdp.html), [DeepSpeed ZeRO-3](https://www.deepspeed.ai/tutorials/zero/).
 
 ### Mixture of Experts (MoE)
 
