@@ -15,79 +15,133 @@ As LLMs continue to grow in complexity and size, efficient training and inferenc
 
 ### Data Parallelism (DP)
 
-Each GPU holds a full copy of the model and processes different data batches. Gradients are averaged across GPUs.
+In classic data‑parallel training **every GPU keeps a full copy of the model**.
+A large batch is split into _N_ micro‑batches; each rank runs forward + backward on its piece and then gradients are **all‑reduced (averaged)** so that all replicas stay in sync before the optimizer step.
 
-- **Use Case**: Suitable for models that fit into a single GPU's memory.
-- **Tools**: [PyTorch's DistributedDataParallel](https://pytorch.org/docs/stable/notes/ddp.html), [Horovod](https://horovod.ai/).
+**Key ideas**
 
-**Mermaid Diagram:**
+- **Simplicity first** – almost zero code changes; works everywhere.
+- **Redundant memory** – O(total params) on every GPU, so model size is bounded by a single card.
+- **Communication cost** – one gradient all‑reduce per step (~2 × parameter size).
+- **Throughput scaling** – global batch = per‑GPU batch × *N*; watch out for generalization when scaling batch too far.
+
+**Mermaid Diagram**
 
 ```mermaid
-graph TD
-    A[Input Data] --> B[Split into Batches]
-    B --> C1[GPU 1: Model Copy]
-    B --> C2[GPU 2: Model Copy]
-    C1 --> D1[Forward & Backward Pass]
-    C2 --> D2[Forward & Backward Pass]
-    D1 --> E[Gradient Averaging]
-    D2 --> E
-    E --> F[Model Update]
+flowchart LR
+    subgraph DataLoader
+        D[Global batch] --> |split| MB1[Micro‑batch 1]
+        D --> |split| MB2[Micro‑batch 2]
+        D --> |…| MBN[Micro‑batch N]
+    end
+    subgraph GPU1
+        MB1 --> M1[Model copy]
+    end
+    subgraph GPU2
+        MB2 --> M2[Model copy]
+    end
+    subgraph GPUN
+        MBN --> MN[Model copy]
+    end
+    M1 & M2 & MN --> G[All‑reduce → average gradients]
+    G --> U[Synchronised weight update]
 ```
+
+- **Tools**: [PyTorch DDP](https://pytorch.org/docs/stable/notes/ddp.html), [Horovod](https://horovod.ai/).
+
+---
 
 ### Tensor Parallelism (TP)
 
-Model tensors (e.g., weight matrices) are split across GPUs. Each GPU computes a portion of the operation.
+TP **slices individual weight tensors across GPUs** so each rank stores only a shard (e.g., specific columns or rows). During the forward pass each rank computes its partial matrix multiplication; intermediate activations are **all‑gathered or reduced** to produce the layer output.
 
-- **Use Case**: Beneficial when model layers are too large for a single GPU.
-- **Tools**: [Megatron-LM](https://github.com/NVIDIA/Megatron-LM), [NVIDIA's TensorRT-LLM](https://github.com/NVIDIA/TensorRT-LLM).
+**Key ideas**
+
+- **Shards compute & memory** – enables layers larger than a single GPU.
+- **Layer‑wise collectives** – all‑reduce/all‑gather inside every TP layer adds latency; frameworks overlap comms with compute.
+- **Orthogonal to DP** – combine TP × DP for higher scale (Megatron uses a 2‑D «TP × DP» grid).
+- **Best for dense GEMM‑heavy blocks** – attention & FFN matrices.
 
 **Mermaid Diagram**
 
 ```mermaid
-graph TD
-    A[Model Layer] --> B[Split Tensors]
-    B --> C1[GPU 1: Partial Computation]
-    B --> C2[GPU 2: Partial Computation]
-    C1 --> D[Combine Results]
-    C2 --> D
-    D --> E[Next Layer]
+flowchart LR
+    A[X activations] --> |broadcast| X1[GPU1]
+    A --> |broadcast| X2[GPU2]
+    A --> |…| XN[GPUN]
+    subgraph ShardedWeights
+        W1[W shard₁] --- X1
+        W2[W shard₂] --- X2
+        WN[W shardₙ] --- XN
+    end
+    X1 --> P1[Partial Y₁]
+    X2 --> P2[Partial Y₂]
+    XN --> PN[Partial Yₙ]
+    P1 & P2 & PN --> C[Concat / reduce → Y]
 ```
+
+- **Tools**: [Megatron‑LM](https://github.com/NVIDIA/Megatron-LM), [TensorRT‑LLM](https://github.com/NVIDIA/TensorRT-LLM), [ColossalAI](https://github.com/hpcaitech/ColossalAI).
+
+---
 
 ### Pipeline Parallelism (PP)
 
-Model layers are divided among GPUs, and data flows sequentially through them.
+PP **distributes consecutive blocks of layers to different GPUs** (pipeline stages).
+Micro‑batches flow through stages like an assembly line, so computation and communication overlap.
 
-- **Use Case**: Effective for very deep models.
-- **Tools**: [DeepSpeed's pipeline parallelism](https://www.deepspeed.ai/tutorials/pipeline/), [Megatron-LM](https://github.com/NVIDIA/Megatron-LM).
+**Key ideas**
+
+- **Memory relief** – each rank stores only its slice of the network depth.
+- **Bubble latency** – first and last few micro‑batches see idle time; mitigate with enough micro‑batches or sophisticated scheduling.
+- **Inter‑stage activations** – tensors must be transferred between GPUs at stage boundaries.
+- **Composable with DP/TP** – e.g., 2 × TP inside each stage × 4 × PP across depth.
 
 **Mermaid Diagram**
 
 ```mermaid
-graph TD
-    A[Input Data] --> B[GPU 1: Layers 1-4]
-    B --> C[GPU 2: Layers 5-8]
-    C --> D[GPU 3: Layers 9-12]
-    D --> E[Output]
+sequenceDiagram
+    participant S0 as GPU-Stage 0 (Layers 1-4)
+    participant S1 as GPU-Stage 1 (Layers 5-8)
+    participant S2 as GPU-Stage 2 (Layers 9-12)
+    Note over S0,S2: ← time →
+    S0->>S0: Fwd/Bwd µ-batch 0
+    S0->>S1: send activations
+    S1->>S1: Fwd/Bwd µ-batch 0
+    S1->>S2: send activations
+    S0->>S0: Fwd/Bwd µ-batch 1
+    S2->>S2: Fwd/Bwd µ-batch 0
 ```
+
+- **Tools**: [DeepSpeed PP](https://www.deepspeed.ai/tutorials/pipeline/), [Megatron‑LM](https://github.com/NVIDIA/Megatron-LM), [GPipe](https://arxiv.org/abs/1811.06965).
+
+---
 
 ### Context Parallelism (CP)
 
-A newer parallelism technique that splits the sequence dimension across GPUs, allowing for processing longer sequences.
+CP (a.k.a. **sequence parallelism**) splits the **sequence length / token dimension** across GPUs so each rank handles a contiguous block of tokens, enabling context windows far beyond single‑GPU memory.
 
-- **Use Case**: Training models with very long context windows.
-- **Tools**: [Picotron](https://github.com/huggingface/picotron), [Nanotron](https://github.com/huggingface/nanotron).
+**Key ideas**
+
+- **Long‑context enabler** – reach 32 k, 64 k+ tokens.
+- **Attention communication** – GPUs exchange keys/values (all‑gather) for cross‑token attention each layer.
+- **Pairs well with TP & PP** – CP handles tokens while others handle model axes.
+- **Early‑stage technique** – currently in research code (Picotron / Nanotron).
 
 **Mermaid Diagram**
 
 ```mermaid
-graph TD
-    A[Long Sequence] --> B[Split by Context Length]
-    B --> C1[GPU 1: First Segment]
-    B --> C2[GPU 2: Second Segment]
-    C1 --> D[Combine Results]
-    C2 --> D
-    D --> E[Next Layer]
+flowchart LR
+    S[Sequence 0‑8191] --> |split| T0[GPU1: tokens 0‑4095]
+    S --> |split| T1[GPU2: tokens 4096‑8191]
+    T0 --> A0[Self‑attn]
+    T1 --> A1[Self‑attn]
+    A0 -. keys/values .- A1
+    A0 & A1 --> M[Merge logits]
 ```
+
+- **Tools**: [Picotron](https://github.com/huggingface/picotron), [Nanotron](https://github.com/huggingface/nanotron).
+
+---
 
 ### Fully Sharded Data Parallelism (FSDP)
 
