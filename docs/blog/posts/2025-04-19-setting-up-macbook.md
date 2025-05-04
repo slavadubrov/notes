@@ -7,9 +7,9 @@ summary: A 10-step guide to configuring a new MacBook for AI development, coveri
 
 # Setting up a MacBook for AI Engineering
 
-<!-- more -->
-
 Here’s my distilled, 10‑step workflow to transform a vanilla macOS install into a ready to-go AI engineering working station.
+
+<!-- more -->
 
 1.  First of all, let's install Xcode Command Line Tools. These tools are the foundation for any type of software development (including DS).
 
