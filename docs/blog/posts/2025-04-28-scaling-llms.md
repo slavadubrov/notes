@@ -51,7 +51,7 @@ flowchart LR
 
 #### 1.1.1 Fully Sharded Data Parallelism (FSDP)
 
-FSDP, conceptually equivalent to ZeRO Stage 3, shards all model states - parameters, gradients and optimizer states - across the GPUs in a data-parallel group. Each of N GPUs therefore keeps only `1 / N` of the model in memory, gathers the parameters of the current layer just-in-time, computes, and immediately reshards them before moving on. Gradients are reduce-scattered so every rank finishes the backward pass owning only its shard, and optimizer updates are applied locally.
+FSDP is a type of data-parallel training, but unlike traditional data-parallel, which maintains a per-GPU copy of a model’s parameters, gradients and optimizer states, it shards all of these states across data-parallel workers and can optionally offload the sharded model parameters to CPUs. [Pytorch](https://pytorch.org/blog/introducing-pytorch-fully-sharded-data-parallel-api)
 
 **Key ideas**
 
@@ -64,7 +64,7 @@ FSDP, conceptually equivalent to ZeRO Stage 3, shards all model states - paramet
 
 ```mermaid
 flowchart TD
-    %% GPU‑local state
+    %% GPU-local state
     subgraph "GPU 1"
         direction TB
         P1[Param shard P₁]
@@ -84,12 +84,12 @@ flowchart TD
         ON[Opt shard Oₙ]
     end
 
-    %% Mini‑batch pipeline
-    start([Start micro‑batch]) --> gather{{1️⃣ All‑Gather<br/>P shards}}
+    %% Mini-batch pipeline
+    start([Start micro-batch]) --> gather{{1️⃣ All-Gather<br/>P shards}}
     gather --> fwd{{2️⃣ Forward compute}}
-    fwd --> reshard{{3️⃣ Re‑shard P}}
+    fwd --> reshard{{3️⃣ Re-shard P}}
     reshard --> bwd{{4️⃣ Backward compute}}
-    bwd --> reduce{{5️⃣ Reduce‑Scatter<br/>G shards}}
+    bwd --> reduce{{5️⃣ Reduce-Scatter<br/>G shards}}
     reduce --> update{{6️⃣ Local optimizer update}}
 
     %% Collective edges (dotted to indicate broadcast)
@@ -322,9 +322,8 @@ graph TD
 
 Combine zeRO-style **Fully-Sharded Data Parallelism (FSDP)** with a low-degree **Tensor Parallelism** group that stays inside the node.
 
-- FSDP shards params + grads + optimizer states ⇒ memory grows ~1/_n_.
+- FSDP shards parameters, gradients, and optimizer states across all GPUs, so each GPU uses only about 1/n of the total model memory — significantly reducing memory usage per GPU.
 - TP protects matmul kernels from weight-gather latency; keep `tp<=2` on PCIe, up to `tp<=4` on NVLink.
-- Use `fsdp.forward_prefetch=True` and overlap weight gathering with compute.
 
 ### 2.2 Multi-Node, Multi-GPU
 
@@ -333,7 +332,7 @@ Start with **Tensor Parallelism inside a node** and **Data Parallelism across no
 - Keep TP collectives inside the node to avoid slow inter-node all-reduces.
 - Tune **micro-batch = 4 x PP degree** as recommended by the Ultra-Scale Playbook to limit the pipeline bubble.
 
-### 2.3 4-D Parallelism
+### 2.3 4D-5D Parallelism
 
 When **weights** and **sequence length** both exceed a node, use every axis (DP x TP x PP x CP).
 
@@ -345,31 +344,7 @@ Guidelines:
 
 ---
 
-## 3. Inference Strategies
-
-> **Pick the engine that solves your current bottleneck**
->
-> - Latency-critical? → **TensorRT-LLM**.
-> - Memory-bound? → **DeepSpeed Inference** with ZeRO-Offload.
-> - Throughput-at-scale? → **vLLM** or **HF TGI**.
-
-### 3.1 Engine-at-a-glance
-
-| Engine                  | Best for                     | Parallelism          | Quantisation    | Observability  | OSS licence     |
-| ----------------------- | ---------------------------- | -------------------- | --------------- | -------------- | --------------- |
-| **TensorRT-LLM**        | < 2 ms/token, GPU-rich nodes | TP (in-node)         | INT8, FP8       | Triton metrics | NVIDIA - custom |
-| **vLLM**                | Batched QPS, long contexts   | TP + paged attention | AWQ, GPTQ, FP8  | Prometheus     | Apache-2.0      |
-| **DeepSpeed Inference** | Models > GPU RAM             | ZeRO-Offload         | INT8 (bnb)      | JSON logs      | MIT             |
-| **HF TGI**              | Ops-friendly REST / gRPC     | TP shards            | INT8, GPTQ, AWQ | Prom-ready     | Apache-2.0      |
-
-### Hugging Face Text Generation Inference (TGI)
-
-A production-ready inference server for LLMs with features like model sharding and streaming.
-
-- **Use Case**: Deploying LLMs with minimal setup.
-- **Link**: [TGI](https://github.com/huggingface/text-generation-inference)
-
-### 4. Recommended Tools and Libraries
+### 3. Recommended Tools and Libraries
 
 | Tool/Library            | Description                                                                         | Link                                                    |
 | ----------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------- |
@@ -383,7 +358,7 @@ A production-ready inference server for LLMs with features like model sharding a
 | Picotron                | Minimalistic 4D-parallelism distributed training framework for educational purposes | [Picotron](https://github.com/huggingface/picotron)     |
 | Nanotron                | Minimalistic large language model 3D-parallelism training framework                 | [Nanotron](https://github.com/huggingface/nanotron)     |
 
-### 5. Choosing the Right Strategy
+### 4. Choosing the Right Strategy
 
 | Scenario                                        | Recommended Approach                                      |
 | ----------------------------------------------- | --------------------------------------------------------- |
