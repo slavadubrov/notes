@@ -5,7 +5,7 @@ tags: [LLM, Distributed Training, Deep Learning, GPU, Parallelism]
 summary: A comprehensive guide on scaling large language models using multi-GPU and multi-node strategies, incorporating insights from Hugging Face's Ultra-Scale Playbook.
 ---
 
-# Scaling Large Language Models: Multi-GPU and Multi-Node Strategies in 2025
+# Scaling Large Language Models. Multi-GPU and Multi-Node Strategies in 2025
 
 As LLMs continue to grow in complexity and size, efficient training and inference require leveraging multiple GPUs and, often, multiple systems. This guide explores prevalent strategies and tools in 2025 that facilitate such scalability, incorporating insights from Hugging Face's [Ultra-Scale Playbook](https://huggingface.co/spaces/nanotron/ultrascale-playbook).
 
@@ -51,7 +51,7 @@ flowchart LR
 
 #### 1.1.1 Fully Sharded Data Parallelism (FSDP)
 
-FSDP is a type of data-parallel training, but unlike traditional data-parallel, which maintains a per-GPU copy of a model’s parameters, gradients and optimizer states, it shards all of these states across data-parallel workers and can optionally offload the sharded model parameters to CPUs. [Pytorch](https://pytorch.org/blog/introducing-pytorch-fully-sharded-data-parallel-api)
+FSDP is a type of data-parallel training, but unlike traditional data-parallel, which maintains a per-GPU copy of a model's parameters, gradients and optimizer states, it shards all of these states across data-parallel workers and can optionally offload the sharded model parameters to CPUs. [Pytorch](https://pytorch.org/blog/introducing-pytorch-fully-sharded-data-parallel-api)
 
 **Key ideas**
 
@@ -85,12 +85,12 @@ flowchart TD
     end
 
     %% Mini-batch pipeline
-    start([Start micro-batch]) --> gather{{1️⃣ All-Gather<br/>P shards}}
-    gather --> fwd{{2️⃣ Forward compute}}
-    fwd --> reshard{{3️⃣ Re-shard P}}
-    reshard --> bwd{{4️⃣ Backward compute}}
-    bwd --> reduce{{5️⃣ Reduce-Scatter<br/>G shards}}
-    reduce --> update{{6️⃣ Local optimizer update}}
+    start([Start micro-batch]) --> gather[Step 1: All-Gather]
+    gather --> fwd[Step 2: Forward compute]
+    fwd --> reshard[Step 3: Re-shard P]
+    reshard --> bwd[Step 4: Backward compute]
+    bwd --> reduce[Step 5: Reduce-Scatter]
+    reduce --> update[Step 6: Optimizer update]
 
     %% Collective edges (dotted to indicate broadcast)
     P1 -.-> gather
