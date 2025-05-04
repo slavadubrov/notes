@@ -13,7 +13,7 @@ As LLMs continue to grow in complexity and size, efficient training and inferenc
 
 ## 1. Parallelism Techniques
 
-### Data Parallelism (DP)
+### 1.1 Data Parallelism (DP)
 
 In classic data-parallel training **every GPU keeps a full copy of the model**.
 A large batch is split into _N_ micro-batches; each rank runs forward + backward on its piece and then gradients are **all-reduced (averaged)** so that all replicas stay in sync before the optimizer step.
@@ -49,9 +49,61 @@ flowchart LR
 
 - **Tools**: [PyTorch DDP](https://pytorch.org/docs/stable/notes/ddp.html), [Horovod](https://horovod.ai/).
 
----
+#### 1.1.1 Fully Sharded Data Parallelism (FSDP)
 
-### Tensor Parallelism (TP)
+FSDP, conceptually equivalent to ZeRO Stage 3, shards all model states - parameters, gradients and optimizer states - across the GPUs in a data-parallel group. Each of N GPUs therefore keeps only `1 / N` of the model in memory, gathers the parameters of the current layer just-in-time, computes, and immediately reshards them before moving on. Gradients are reduce-scattered so every rank finishes the backward pass owning only its shard, and optimizer updates are applied locally.
+
+**Key ideas**
+
+- **Memory scaling**: O(total params / NGPU) - enables multi-billion-parameter models to fit on 24 GB cards.
+- **Zero redundancy**: No GPU ever holds a full copy of the model; identical to DeepSpeed ZeRO-3.
+- **Overlap compute & communication**: PyTorch overlaps the all-gather with computation to hide latency.
+- **Granularity control**: You can wrap the whole model or nest FSDP wrappers on sub-modules for finer control.
+
+**Mermaid Diagram**
+
+```mermaid
+flowchart TD
+    %% GPU‑local state
+    subgraph "GPU 1"
+        direction TB
+        P1[Param shard P₁]
+        G1[Grad shard G₁]
+        O1[Opt shard O₁]
+    end
+    subgraph "GPU 2"
+        direction TB
+        P2[Param shard P₂]
+        G2[Grad shard G₂]
+        O2[Opt shard O₂]
+    end
+    subgraph "GPU N"
+        direction TB
+        PN[Param shard Pₙ]
+        GN[Grad shard Gₙ]
+        ON[Opt shard Oₙ]
+    end
+
+    %% Mini‑batch pipeline
+    start([Start micro‑batch]) --> gather{{1️⃣ All‑Gather<br/>P shards}}
+    gather --> fwd{{2️⃣ Forward compute}}
+    fwd --> reshard{{3️⃣ Re‑shard P}}
+    reshard --> bwd{{4️⃣ Backward compute}}
+    bwd --> reduce{{5️⃣ Reduce‑Scatter<br/>G shards}}
+    reduce --> update{{6️⃣ Local optimizer update}}
+
+    %% Collective edges (dotted to indicate broadcast)
+    P1 -.-> gather
+    P2 -.-> gather
+    PN -.-> gather
+```
+
+> **Note**: In the diagram above, P represents Parameters (model weights), G represents Gradients, and O represents Optimizer states. These are the three main components of model state that are sharded across GPUs in FSDP.
+
+- **Use Case**: Training very large models (> 10 B parameters) that do not fit on a single GPU.
+- **Tools**: [PyTorch FSDP](https://pytorch.org/docs/stable/fsdp.html), [DeepSpeed ZeRO-3](https://www.deepspeed.ai/tutorials/zero/).
+
+### 1.2 Tensor Parallelism (TP)
 
 TP **slices individual weight tensors across GPUs** so each rank stores only a shard (e.g., specific columns or rows). During the forward pass each rank computes its partial matrix multiplication; intermediate activations are **all-gathered or reduced** to produce the layer output.
 
@@ -83,7 +135,7 @@ flowchart LR
 
 ---
 
-### Pipeline Parallelism (PP)
+### 1.3 Pipeline Parallelism (PP)
 
 PP **distributes consecutive blocks of layers to different GPUs** (pipeline stages).
 Micro-batches flow through stages like an assembly line, so computation and communication overlap.
@@ -112,9 +164,7 @@ sequenceDiagram
 
 - **Tools**: [DeepSpeed PP](https://www.deepspeed.ai/tutorials/pipeline/), [Megatron-LM](https://github.com/NVIDIA/Megatron-LM), [GPipe](https://arxiv.org/abs/1811.06965).
 
----
-
-### Context Parallelism (CP)
+### 1.4 Context Parallelism (CP)
 
 CP (a.k.a. **sequence parallelism**) splits the **sequence length / token dimension** across GPUs so each rank handles a contiguous block of tokens, enabling context windows far beyond single-GPU memory.
 
@@ -167,47 +217,7 @@ flowchart LR
 
 - **Tools**: [Picotron](https://github.com/huggingface/picotron), [Nanotron](https://github.com/huggingface/nanotron).
 
----
-
-### Fully Sharded Data Parallelism (FSDP)
-
-FSDP, conceptually equivalent to ZeRO Stage 3, shards all model states - parameters, gradients and optimizer states - across the GPUs in a data-parallel group. Each of N GPUs therefore keeps only `1 / N` of the model in memory, gathers the parameters of the current layer just-in-time, computes, and immediately reshards them before moving on. Gradients are reduce-scattered so every rank finishes the backward pass owning only its shard, and optimizer updates are applied locally.
-
-**Key ideas**
-
-- **Memory scaling**: O(total params / NGPU) - enables multi-billion-parameter models to fit on 24 GB cards.
-- **Zero redundancy**: No GPU ever holds a full copy of the model; identical to DeepSpeed ZeRO-3.
-- **Overlap compute & communication**: PyTorch overlaps the all-gather with computation to hide latency.
-- **Granularity control**: You can wrap the whole model or nest FSDP wrappers on sub-modules for finer control.
-
-**Mermaid Diagram**
-
-```mermaid
-graph TD
-    subgraph GPU1
-        P1[Shard P₁] --- G1[Shard G₁] --- O1[Shard O₁]
-    end
-    subgraph GPU2
-        P2[Shard P₂] --- G2[Shard G₂] --- O2[Shard O₂]
-    end
-    subgraph GPU3
-        P3[Shard P₃] --- G3[Shard G₃] --- O3[Shard O₃]
-    end
-
-    A[Start micro-batch] --> B[All-gather layer weights]
-    B --> C[Forward compute]
-    C --> D[Reshard weights]
-    D --> E[Backward compute]
-    E --> F[Reduce-scatter gradients]
-    F --> G[Local optimizer update]
-```
-
-> **Note**: In the diagram above, P represents Parameters (model weights), G represents Gradients, and O represents Optimizer states. These are the three main components of model state that are sharded across GPUs in FSDP.
-
-- **Use Case**: Training very large models (> 10 B parameters) that do not fit on a single GPU.
-- **Tools**: [PyTorch FSDP](https://pytorch.org/docs/stable/fsdp.html), [DeepSpeed ZeRO-3](https://www.deepspeed.ai/tutorials/zero/).
-
-### Mixture of Experts (MoE)
+### 1.5 Expert Parallelism (or Mixture of Experts)
 
 MoE layers contain dozens (or even hundreds) of parallel **experts** (small feed-forward sub-networks).
 For every token a lightweight **gating network** selects the top-_k_ experts, so only that subset runs.
@@ -250,10 +260,11 @@ flowchart LR
 
 ---
 
-### 4D Parallelism
+### 1.6 4D-5D Parallelism
 
-"4D" composes **Data (D)**, **Tensor (T)**, **Pipeline (P)**, and **Context (C)** parallelism so every axis of the workload can be distributed.
-Picture the GPUs as a 4-D lattice: _N = DxTxPxC_ ranks.
+- **4D** composes **Data (D)**, **Tensor (T)**, **Pipeline (P)**, and **Context (C)** parallelism so every axis of the workload can be distributed.
+  Picture the GPUs as a 4-D lattice: _N = DxTxPxC_ ranks.
+- **5D** combines **4D** + **Expert Parallelism**.
 
 **Key ideas**
 
@@ -311,13 +322,6 @@ graph TD
 
 Combine zeRO-style **Fully-Sharded Data Parallelism (FSDP)** with a low-degree **Tensor Parallelism** group that stays inside the node.
 
-```bash
-# Four H100s, ZeRO-3 memory footprint
-torchrun --standalone --nproc_per_node 4 train.py \
-  --fsdp full_shard --mixed_precision bf16 \
-  --gradient_accumulation_steps 8 --batch_size 4
-```
-
 - FSDP shards params + grads + optimizer states ⇒ memory grows ~1/_n_.
 - TP protects matmul kernels from weight-gather latency; keep `tp<=2` on PCIe, up to `tp<=4` on NVLink.
 - Use `fsdp.forward_prefetch=True` and overlap weight gathering with compute.
@@ -326,13 +330,6 @@ torchrun --standalone --nproc_per_node 4 train.py \
 
 Start with **Tensor Parallelism inside a node** and **Data Parallelism across nodes**; introduce **Pipeline Parallelism** when the model no longer fits on one node.
 
-```bash
-# 4 nodes x 8 GPUs
-torchrun --nnodes 4 --nproc_per_node 8 \
-  --rdzv_backend=c10d --rdzv_endpoint node0:29500 \
-  train.py --tp 2 --dp 4
-```
-
 - Keep TP collectives inside the node to avoid slow inter-node all-reduces.
 - Tune **micro-batch = 4 x PP degree** as recommended by the Ultra-Scale Playbook to limit the pipeline bubble.
 
@@ -340,20 +337,11 @@ torchrun --nnodes 4 --nproc_per_node 8 \
 
 When **weights** and **sequence length** both exceed a node, use every axis (DP x TP x PP x CP).
 
-```bash
-# Generates config & launches Picotron across 4 nodes (32 GPUs)
-python create_config.py \
-  --out_dir cfg --dp 4 --tp 2 --pp 2 --cp 2 \
-  --model_name meta-llama/Llama-3-70B --seq_len 32768
-
-torchrun --nnodes 4 --nproc_per_node 8 picotron/train.py --config cfg/config.json
-```
-
 Guidelines:
 
 - **TP** groups stay inside nodes; **PP/CP** may span nodes.
 - Increase **DP** first when you need a larger global batch; it is the cheapest axis communication-wise.
-- Expect ~75 % scaling efficiency up to 512 GPUs on InfiniBand clusters (HF benchmarks, Feb 2025).
+- Expect ~75 % scaling efficiency up to 512 GPUs on InfiniBand clusters [(HF benchmarks, Feb 2025)](https://huggingface.co/spaces/nanotron/ultrascale-playbook).
 
 ---
 
@@ -374,64 +362,11 @@ Guidelines:
 | **DeepSpeed Inference** | Models > GPU RAM             | ZeRO-Offload         | INT8 (bnb)      | JSON logs      | MIT             |
 | **HF TGI**              | Ops-friendly REST / gRPC     | TP shards            | INT8, GPTQ, AWQ | Prom-ready     | Apache-2.0      |
 
-### 3.2 Launch cheat-sheet (H100 80 GB, seq = 4 k)
-
-```bash
-# TensorRT-LLM 9.1
-trtllm-build --model_dir llama-3-8b --tp_size 4 --enable_fp8
-trtllm-server --engine_dir llama-3-8b/tp_4 --port 8000
-```
-
-```bash
-# vLLM 0.4.x
-python -m vllm.entrypoints.openai.api_server \
-  --model mistral-8x22b-instruct \
-  --tensor-parallel-size 8 --max-model-len 16384
-```
-
-```bash
-# DeepSpeed Inference (ZeRO-Offload)
-deepspeed --num_gpus 4 inference.py \
-  --dtype bf16 --replace-with-kernel-inject \
-  --max_tokens 4096
-```
-
-```bash
-# Hugging Face TGI 1.4
-text-generation-launcher \
-  --model meta-llama/Llama-3-8B --num-shards 4 \
-  --dtype auto --port 8080
-```
-
-### 3.3 Tuning tips
-
-- **KV cache matters** - test `--gpu-memory-utilization` (vLLM) or ring-KV fusion (TensorRT-LLM 10+) before quantising.
-- **Thread placement** - set `CUDA_DEVICE_MAX_CONNECTIONS=4` and pin worker threads with `--affinity=granularity=fine,compact,1,0` for Triton backends.
-- **Network** - for multi-node TP shards, enable **NCCL_IB_SL=1** and use **UCX_P2P_SRQ=cyclic** to avoid head-of-line stalls.
-
-### 3.4 Performance snapshot (H100-80 GB, tp = 4, seq = 4 k)
-
-| Engine             | Prefill tokens/s | Generate tokens/s | Notes                      |
-| ------------------ | ---------------- | ----------------- | -------------------------- |
-| TensorRT-LLM 9.1   | 23 k             | **730**           | FP8 kernels, fused RMSNorm |
-| vLLM 0.4           | 21 k             | 660               | paged attention            |
-| HF TGI 1.4         | 19 k             | 610               | compiled backend           |
-| DeepSpeed Inf 0.13 | 7 k              | 260               | ZeRO-Offload to host       |
-
-(Measurements from **Ultra-Scale Playbook** and internal HF benchmarks, Feb-Apr 2025.)
-
 ### Hugging Face Text Generation Inference (TGI)
 
 A production-ready inference server for LLMs with features like model sharding and streaming.
 
 - **Use Case**: Deploying LLMs with minimal setup.
-- **Example**:
-
-```sh
-text-generation-launcher --model meta-llama/Llama-3-8B --num-shards 4
-```
-
-- **Documentation**: [TGI Server Launch](https://github.com/huggingface/text-generation-inference#launch-server)
 - **Link**: [TGI](https://github.com/huggingface/text-generation-inference)
 
 ### 4. Recommended Tools and Libraries
