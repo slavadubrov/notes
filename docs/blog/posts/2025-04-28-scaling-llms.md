@@ -370,7 +370,7 @@ Guidelines:
 | Inference for very large models                 | Use DeepSpeed Inference with ZeRO-Offload.                |
 | Quick deployment of models                      | Leverage Hugging Face TGI.                                |
 
-### Cheatsheet from HuggingFace Folks
+## Cheatsheet from HuggingFace Folks
 
 ![Ultra-Scale LLM Cheatsheet](https://nanotron-ultrascale-playbook.static.hf.space/dist/assets/images/ultra-cheatsheet.svg)
 
