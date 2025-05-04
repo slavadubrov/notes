@@ -51,7 +51,7 @@ flowchart LR
 
 #### 1.1.1 Fully Sharded Data Parallelism (FSDP)
 
-FSDP is a type of data-parallel training, but unlike traditional data-parallel, which maintains a per-GPU copy of a model's parameters, gradients and optimizer states, it shards all of these states across data-parallel workers and can optionally offload the sharded model parameters to CPUs. [Pytorch](https://pytorch.org/blog/introducing-pytorch-fully-sharded-data-parallel-api)
+FSDP is a type of data-parallel training, but unlike traditional data-parallel, which maintains a per-GPU copy of a model's parameters, gradients and optimizer states, it shards all of these states across data-parallel workers and can optionally offload the sharded model parameters to CPUs. [[Pytorch](https://pytorch.org/blog/introducing-pytorch-fully-sharded-data-parallel-api)]
 
 **Key ideas**
 
@@ -306,7 +306,7 @@ graph TD
 - **Use Case**: Training > 100 B-parameter models with multi-node clusters and long context windows.
 - **Tools**: [Picotron](https://github.com/huggingface/picotron), [Nanotron](https://github.com/huggingface/nanotron).
 
-## 2. Training Strategies (2025 update)
+## 2. Training Strategies
 
 > **Rule of thumb** - pick the simplest scheme that fits in memory **and** saturates your interconnect.
 > Start with a shard-aware data-parallel variant (FSDP/ZeRO-3).
@@ -344,7 +344,7 @@ Guidelines:
 
 ---
 
-### 3. Recommended Tools and Libraries
+## 3. Recommended Tools and Libraries
 
 | Tool/Library            | Description                                                                         | Link                                                    |
 | ----------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------- |
@@ -358,7 +358,7 @@ Guidelines:
 | Picotron                | Minimalistic 4D-parallelism distributed training framework for educational purposes | [Picotron](https://github.com/huggingface/picotron)     |
 | Nanotron                | Minimalistic large language model 3D-parallelism training framework                 | [Nanotron](https://github.com/huggingface/nanotron)     |
 
-### 4. Choosing the Right Strategy
+## 4. Choosing the Right Strategy
 
 | Scenario                                        | Recommended Approach                                      |
 | ----------------------------------------------- | --------------------------------------------------------- |
