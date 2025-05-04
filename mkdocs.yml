@@ -19,9 +19,36 @@ theme:
     - navigation.toc.collapse # Allows collapsing sections in the table of contents
     - navigation.toc.collapse_empty_groups # Collapses empty groups in the table of contents
     - navigation.toc.collapse_single_children # Collapses groups with only a single child
+  # Add custom JavaScript files
+  javascript:
+    - javascripts/mermaid.js
+  font:
+    text: Roboto
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+# Enable Mermaid diagrams
+markdown_diagrams:
+  mermaid:
+    src: https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.8.0/mermaid.min.js
 
 markdown_extensions: # Configures Markdown extensions for additional functionality
-  - pymdownx.superfences # Adds support for code blocks with syntax highlighting
+  - pymdownx.superfences: # Adds support for code blocks with syntax highlighting
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - attr_list # Enables custom attributes for Markdown elements
   - md_in_html # Allows Markdown syntax inside HTML blocks
   - pymdownx.emoji: # Adds support for emoji shortcodes
