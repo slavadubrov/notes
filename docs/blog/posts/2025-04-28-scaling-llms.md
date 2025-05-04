@@ -1,5 +1,5 @@
 ---
-title: Scaling Large Language Models: Multi-GPU and Multi-Node Strategies in 2025
+title: Scaling Large Language Models. Multi-GPU and Multi-Node Strategies in 2025
 date: 2025-04-28
 tags: [LLM, Distributed Training, Deep Learning, GPU, Parallelism]
 summary: A comprehensive guide on scaling large language models using multi-GPU and multi-node strategies, incorporating insights from Hugging Face's Ultra-Scale Playbook.
