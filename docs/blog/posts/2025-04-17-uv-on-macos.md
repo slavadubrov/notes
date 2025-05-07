@@ -1,11 +1,11 @@
 ---
-title: Managing Python on macOS with uv
+title: Quick-Guide on managing Python on macOS with uv
 date: 2025-04-17
-tags: [Tooling, Python, Tutorial]
+tags: [tooling, python, guide]
 summary: Lightning-fast Python installs with Rust-powered uv.
 ---
 
-# Managing Python like an AI Engineer on macOS with **uv**
+# Quick-Guide on managing Python like an AI Engineer on macOS with **uv**
 
 ## TL;DR Bash Cheat‑sheet
 

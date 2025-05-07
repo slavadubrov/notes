@@ -1,7 +1,7 @@
 ---
 title: Quick-Guide on setting up a MacBook for AI Engineering
 date: 2025-04-19
-tags: [tutorial, macos]
+tags: [macos, tooling, guide]
 summary: A 10-step guide to configuring a new MacBook for AI development, covering essential tools and terminal setup.
 ---
 
