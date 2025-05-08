@@ -60,7 +60,7 @@ Use both in tandem: keep your environment reliable with **`~/.zprofile`**, and y
 
 ## 4. Minimal Template 📋
 
-```zsh
+```sh
 # ~/.zprofile  --------------------------------
 # Environment & once-per-session setup
 export PATH="$HOME/.local/bin:$PATH"
