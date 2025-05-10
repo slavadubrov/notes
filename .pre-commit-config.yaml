@@ -71,3 +71,9 @@ repos:
     hooks:
       - id: prettier
         types_or: [javascript, jsx, ts, tsx, json, css, scss, html, yaml]
+
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.38.0
+    hooks:
+      - id: markdownlint
+        args: ["--fix"]
