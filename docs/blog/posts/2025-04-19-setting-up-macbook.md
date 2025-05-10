@@ -32,7 +32,7 @@ Then install [Homebrew](https://brew.sh). It is a package manager for macOS. You
 Then I install these dependencies with brew:
 
 ```bash
-brew install openssl readline sqlite3 xz zlib pyenv uv htop gitmoji
+brew install openssl readline sqlite3 xz zlib pyenv uv htop gitmoji pandoc yt-dlp ncdu tmux
 ```
 
 Descriptions:
@@ -46,6 +46,10 @@ Descriptions:
 - [uv](https://github.com/astral-sh/uv) for managing Python project dependencies and virtual environments,
 - [htop](https://htop.dev) for interactive process viewer and system monitor,
 - [gitmoji](https://gitmoji.dev) for customizing commit messages.
+- [pandoc](https://pandoc.org) for converting documents between various markup formats,
+- [yt-dlp](https://github.com/yt-dlp/yt-dlp) for downloading videos from online platforms,
+- [ncdu](https://dev.yorhel.nl/ncdu) for analyzing disk usage in a terminal interface,
+- [tmux](https://github.com/tmux/tmux) for terminal session multiplexing.
 
 > For more detailed information about using `uv` for Python development, check out my [Quick-Guide on managing Python on macOS with uv](2025-04-17-uv-on-macos.md).
 
