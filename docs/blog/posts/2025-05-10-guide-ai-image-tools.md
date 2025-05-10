@@ -16,12 +16,12 @@ Running generative-AI models on-device means zero cloud costs, no upload limits,
 - **Download:** [https://www.comfy.org/download](https://www.comfy.org/download)
 - **What it is:** A **node-based** graph editor that lets you wire together samplers, LoRA loaders, ControlNet, animation nodes and more.
 - **Pros**
-  - Visual graph makes complex pipelines transparent.
-  - Ships with MPS-enabled PyTorch wheels; smooth on M-series Macs.
-  - Huge community of custom nodes.
+    - Visual graph makes complex pipelines transparent.
+    - Ships with MPS-enabled PyTorch wheels; smooth on M-series Macs.
+    - Huge community of custom nodes.
 - **Cons**
-  - Steeper learning curve than point-and-click UIs.
-  - Initial setup still requires Python & Homebrew.
+    - Steeper learning curve than point-and-click UIs.
+    - Initial setup still requires Python & Homebrew.
 
 ---
 
@@ -30,11 +30,11 @@ Running generative-AI models on-device means zero cloud costs, no upload limits,
 - **Download / install guide:** [Installation on Apple Silicon](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Installation-on-Apple-Silicon)
 - **What it is:** The de-facto standard web interface, with extensions for almost everything (SDXL, ControlNet, Inpainting, DreamBooth, etc.).
 - **Pros**
-  - Feature-rich; thousands of extensions & themes.
-  - Active development and community support.
+    - Feature-rich; thousands of extensions & themes.
+    - Active development and community support.
 - **Cons**
-  - Manual, terminal-centric install (Git + Python + brew deps).
-  - UI can feel cluttered for newcomers.
+    - Manual, terminal-centric install (Git + Python + brew deps).
+    - UI can feel cluttered for newcomers.
 
 ---
 
@@ -43,11 +43,11 @@ Running generative-AI models on-device means zero cloud costs, no upload limits,
 - **Download:** [https://diffusionbee.com/download](https://diffusionbee.com/download)
 - **What it is:** A **one-click** desktop app bundling Stable Diffusion, optimized for Apple Silicon.
 - **Pros**
-  - No command line - drag-and-drop install.
-  - Pre-bundled models; useful "Upscale" & "Remove BG" tools.
+    - No command line - drag-and-drop install.
+    - Pre-bundled models; useful "Upscale" & "Remove BG" tools.
 - **Cons**
-  - Fewer tuning knobs; limited advanced workflows.
-  - Closed binary means slower updates to new samplers.
+    - Fewer tuning knobs; limited advanced workflows.
+    - Closed binary means slower updates to new samplers.
 
 ---
 
@@ -56,11 +56,11 @@ Running generative-AI models on-device means zero cloud costs, no upload limits,
 - **Download / quick-start:** [InvokeAI Quick Start](https://github.com/invoke-ai/InvokeAI/blob/main/docs/installation/quick_start.md)
 - **What it is:** A professional-leaning fork of the original "lstein" repo with both CLI and lightweight web UI.
 - **Pros**
-  - Powerful batch / workflow scripting.
-  - Good "Unified Canvas" for sketch-to-image iterations.
+    - Powerful batch / workflow scripting.
+    - Good "Unified Canvas" for sketch-to-image iterations.
 - **Cons**
-  - Conda-based install (≈4 GB environment).
-  - Heavier RAM needs (recommend 16 GB+).
+    - Conda-based install (≈4 GB environment).
+    - Heavier RAM needs (recommend 16 GB+).
 
 ---
 
@@ -69,11 +69,11 @@ Running generative-AI models on-device means zero cloud costs, no upload limits,
 - **Repo:** [https://github.com/lllyasviel/Fooocus](https://github.com/lllyasviel/Fooocus)
 - **What it is:** A simplified, Midjourney-style frontend ("just prompt") that auto-downloads models & Loras.
 - **Pros**
-  - Minimal interface - great for fast idea-sketching.
-  - Automatic model & VAE handling.
+    - Minimal interface - great for fast idea-sketching.
+    - Automatic model & VAE handling.
 - **Cons**
-  - On-device generation slower on M-series (no discrete GPU).
-  - Fewer granular controls than A1111 or ComfyUI.
+    - On-device generation slower on M-series (no discrete GPU).
+    - Fewer granular controls than A1111 or ComfyUI.
 
 ---
 

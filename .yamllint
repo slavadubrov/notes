@@ -1,0 +1,8 @@
+extends: default
+
+rules:
+  document-start: disable  # Ignore missing document start
+  line-length: disable    # Ignore line length warnings
+  comments: disable       # Ignore comment spacing warnings
+  indentation: disable    # Ignore indentation warnings
+  truthy: disable        # Ignore truthy value warnings

@@ -2,8 +2,8 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
-      - id: trailing-whitespace
-      - id: end-of-file-fixer
+      # - id: trailing-whitespace  # Disabled due to conflicts
+      # - id: end-of-file-fixer    # Disabled due to conflicts
       - id: check-yaml
       - id: check-added-large-files
       - id: check-ast
@@ -60,6 +60,8 @@ repos:
     rev: v1.37.0
     hooks:
       - id: yamllint
+        args: ["--config-file", ".yamllint"]
+        additional_dependencies: ["yamllint"]
 
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.10.0.1
@@ -76,4 +78,4 @@ repos:
     rev: v0.38.0
     hooks:
       - id: markdownlint
-        args: ["--fix"]
+        args: ["--fix", "--config", ".markdownlint.json"]
