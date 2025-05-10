@@ -62,13 +62,13 @@ I used to prefer [iTerm2](https://www.iterm2.com) over the standard Terminal due
 For configuring iTerm I prefer to do the following:
 
 - Setup Natural text editing:
-  - Go to Preferences → Profiles → Keys → Key Mappings
-  - Press Presets… dropdown button
-  - Select Natural Text Editing
+    - Go to Preferences → Profiles → Keys → Key Mappings
+    - Press Presets… dropdown button
+    - Select Natural Text Editing
 
 - For changing color select the preferred preset from this [repo](https://github.com/mbadolato/iTerm2-Color-Schemes). Then:
-  - Go to Preferences → Profiles → Colors → Color Presets… → Import (or select)
-  - After importing your new color will be displayed in Color Presets
+    - Go to Preferences → Profiles → Colors → Color Presets… → Import (or select)
+    - After importing your new color will be displayed in Color Presets
 
 ## 6. Zsh + Oh My Zsh
 
