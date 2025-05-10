@@ -1,7 +1,7 @@
 ---
 title: Quick-guide on Local Stable-Diffusion Toolkits for macOS
 date: 2025-05-10
-tags: [macos, guide]
+tags: [macos, guide, tools, genai]
 summary: Compare five Stable Diffusion interfaces for macOS - from one-click DiffusionBee to node-based ComfyUI. Find your perfect match based on ease of use, features, and Apple Silicon performance.
 ---
 

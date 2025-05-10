@@ -55,6 +55,7 @@ markdown_extensions: # Configures Markdown extensions for additional functionali
       emoji_index:
         !!python/name:material.extensions.emoji.twemoji # Uses Twemoji as the emoji index
 
+
       emoji_generator:
         !!python/name:material.extensions.emoji.to_svg # Renders emojis as SVG
 
