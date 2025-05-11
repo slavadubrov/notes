@@ -19,4 +19,5 @@ repos:
     rev: v4.0.0-alpha.8
     hooks:
       - id: prettier
-        types_or: [javascript, jsx, ts, tsx, json, css, scss, html, yaml]
+        types_or:
+          [javascript, jsx, ts, tsx, json, css, scss, html, yaml, markdown]
