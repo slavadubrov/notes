@@ -13,18 +13,22 @@ summary: A step-by-step guide that shows how to create your own lightweight feat
 
 ---
 
-## 1  Why build a custom "FeatureStoreLite" MCP server?
+## 1. Why build a custom "FeatureStoreLite" MCP server?
 
-Let's create a practical MCP server example that solves a real problem: **feature storage and retrieval for ML pipelines**. Our custom *FeatureStoreLite* server will be a micro-service responsible for storing and retrieving precomputed feature vectors via keys, allowing ML pipelines to share features efficiently without recomputation.
+Let's create a practical MCP server example that solves a real problem: **feature storage and retrieval for ML pipelines**. Our custom *FeatureStoreLite* server will be a microservice responsible for storing and retrieving precomputed feature vectors via keys, allowing ML pipelines to share features efficiently without recomputation.
 
-This tutorial demonstrates how to build the **MCP server** that could be useful in a real-world ML pipeline.
+This tutorial demonstrates how to build an **MCP server** that could be useful in a real-world ML pipeline.
 
-## 2  Setup and Installation
+## 2. Setup and Installation
 
-First, install **uv**:
+First, install **uv** (if you haven't already):
 
 ```bash
+# macOS/Linux with Homebrew
 brew install uv
+
+# Or install directly from the official installer
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
 Then create your project with virtual environment and dependencies:
@@ -33,10 +37,7 @@ Then create your project with virtual environment and dependencies:
 # Create project directory
 mkdir mcp-featurestore && cd mcp-featurestore
 
-# Create virtual environment
-uv venv
-
-# Initialize Python project
+# Initialize Python project (this creates pyproject.toml)
 uv init
 
 # Add dependencies
@@ -45,13 +46,15 @@ uv add "mcp[cli]"
 
 ---
 
-## 3  Implementing our custom FeatureStoreLite server with `FastMCP`
+## 3. Implementing our custom FeatureStoreLite server with `FastMCP`
 
 Let's build our MCP server from scratch.
 
-### 3.1  Create the database
+### 3.1. Create the database module
 
-This is a mock database that will be used to store and retrieve example feature vectors.
+This module handles all database operations for storing and retrieving feature vectors.
+
+Create `database.py` file:
 
 ```bash
 touch database.py
@@ -135,15 +138,16 @@ def get_db_connection():
 
 if __name__ == "__main__":
     init_db()
+    print("Database initialized successfully!")
 ```
 
-Run it:
+Run the database initialization:
 
 ```bash
-source .venv/bin/activate && python database.py
+uv run python database.py
 ```
 
-### 3.2  Create the MCP server
+### 3.2. Create the MCP server
 
 Create **`featurestore_server.py`**:
 
@@ -253,20 +257,26 @@ if __name__ == "__main__":
     mcp.run()
 ```
 
-Run it in development mode:
+Test the server in development mode:
 
 ```bash
-source .venv/bin/activate && mcp dev featurestore_server.py
+uv run mcp dev featurestore_server.py
 ```
 
 ---
 
-## 4  Connecting to Claude Desktop
+## 4. Connecting to Claude Desktop
 
-To use the FeatureStoreLite server with Claude Desktop, update your Claude configuration:
+To use the FeatureStoreLite server with Claude Desktop, you need to update your Claude configuration file.
 
-**macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
-**Windows**: `%APPDATA%/Claude/claude_desktop_config.json`
+### 4.1. Configuration file location
+
+- **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows**: `%APPDATA%/Claude/claude_desktop_config.json`
+
+### 4.2. Configuration setup
+
+Add the following configuration to your `claude_desktop_config.json`:
 
 ```json
 {
@@ -286,28 +296,59 @@ To use the FeatureStoreLite server with Claude Desktop, update your Claude confi
 }
 ```
 
-### 4.1  Testing the server
+> **💡 Important Tip:** If you are getting errors when connecting to the server, you can use the next command:
+> ```bash
+> mcp install featurestore_server.py
+> ``` 
+> This command will automatically install and configure the server for Claude Desktop. After running this command, check your Claude Desktop config file to see how the server has been configured.
+> 
+> This is often the easiest way to get started, especially if you're having trouble with manual configuration!
 
-After updating the config, restart Claude Desktop. You can now ask Claude to:
+### 4.3  Testing the server
 
-- "Show me the database schema"
-  - ![Question 1](../assets/2025-06-10-mcp-server-tutorial-with-uv/question-1.png)
+After updating the config:
+
+1. **Restart Claude Desktop** completely (quit and reopen)
+2. Look for connection status in Claude's interface
+3. Try asking Claude to interact with your feature store
+
+Example queries to test:
+
+- "Show me the database schema for the feature store"
+
+![Question 1](../assets/2025-06-10-mcp-server-tutorial-with-uv/question-1.png){: style="width:600px;max-width:100%;height:auto;"}
 
 - "List all available features in the store"
-  - ![Question 2](../assets/2025-06-10-mcp-server-tutorial-with-uv/question-2.png)
+
+![Question 2](../assets/2025-06-10-mcp-server-tutorial-with-uv/question-2.png){: style="width:600px;max-width:100%;height:auto;"}
 
 - "Retrieve the feature vector for product_abc"
-  - ![Question 3](../assets/2025-06-10-mcp-server-tutorial-with-uv/question-3.png)
 
-Tip: If you are getting errors when connecting to the server, use the command `mcp install featurestore_server.py` to install the server to the Claude Desktop. Then check the Claude Desktop config file to see how the server is configured.
+![Question 3](../assets/2025-06-10-mcp-server-tutorial-with-uv/question-3.png){: style="width:600px;max-width:100%;height:auto;"}
+
+- Try your own queries!
+
+### 4.4. Production deployment considerations
+
+Please note that this is a simple example to demonstrate the MCP server usage and not production-ready.
+
+For production use, consider:
+
+- Using a proper database (PostgreSQL, MySQL) instead of SQLite
+- Adding authentication and authorization
+- Implementing proper logging and monitoring
+- Adding data validation and sanitization
+- Using environment variables for configuration
 
 ---
 
-## 5  `mcp.json` configuration (client-side)
+## 5. Alternative client configurations
 
-The same configuration can be used for connecting to the server from any MCP client. For example, you can use the following configuration to connect to the server from a Google ADK agent:
+### 5.1. Generic MCP client configuration
 
-```jsonc
+For other MCP clients, you can use exactly the same configuration pattern as we did for Claude Desktop:
+
+```json
 {
   "mcpServers": {
     "FeatureStoreLite": {
@@ -327,35 +368,51 @@ The same configuration can be used for connecting to the server from any MCP cli
 
 ---
 
-## 6  Observability with **Inspector**
+## 6. Observability and debugging with Inspector
 
-As told before to run the server in development mode use the command:
+The MCP development tools provide excellent observability features.
+
+### 6.1. Running in development mode
 
 ```bash
-source .venv/bin/activate && mcp dev featurestore_server.py
+uv run mcp dev featurestore_server.py
 ```
 
-In development mode, you can use the `mcp inspector` to see the server's capabilities and the requests and responses it is sending and receiving.
+This starts the server with the MCP Inspector, which provides:
 
-Here is a screenshot of the inspector:
+- Real-time request/response monitoring
+- Tool and resource exploration
+- Interactive testing interface
+- Performance metrics
 
-![Inspector](../assets/2025-06-10-mcp-server-tutorial-with-uv/inspector.png)
+### 6.2. Using the Inspector
+
+When running in development mode, the Inspector is available at the URL shown in the terminal output (typically `http://localhost:6274`).
+
+The Inspector allows you to:
+
+- **Browse Resources**: View available resources like the database schema
+- **Test Tools**: Interactively test each tool with different parameters
+- **Monitor Traffic**: See all MCP protocol messages in real-time
+- **Debug Issues**: Identify problems with tool calls or resource access
+
+![Inspector](../assets/2025-06-10-mcp-server-tutorial-with-uv/inspector.png){: style="width:600px;max-width:100%;height:auto;"}
 
 You can check manually the resources available in the server:
 
-![Resources](../assets/2025-06-10-mcp-server-tutorial-with-uv/inspector-resources.png)
+![Resources](../assets/2025-06-10-mcp-server-tutorial-with-uv/inspector-resources.png){: style="width:600px;max-width:100%;height:auto;"}
 
 As well as the tools available:
 
-![Tools](../assets/2025-06-10-mcp-server-tutorial-with-uv/inspector-tools.png)
+![Tools](../assets/2025-06-10-mcp-server-tutorial-with-uv/inspector-tools.png){: style="width:600px;max-width:100%;height:auto;"}
 
 ---
 
-## 7  Conclusion
+## 7. Conclusion
 
-In this tutorial, we built a custom FeatureStoreLite MCP server using FastMCP, ran it through uvx, and integrated it with Claude Desktop. We also explored how to use the `mcp inspector` to see the server's capabilities and the requests and responses it is sending and receiving.
+In this tutorial, we built a custom FeatureStoreLite MCP server using FastMCP, ran it through uv, and integrated it with Claude Desktop. We also explored how to use the `mcp inspector` to see the server's capabilities and the requests and responses it is sending and receiving.
 
-## 8  References
+## 8. References
 
 - [The repo of this tutorial example](https://github.com/slavadubrov/mcp-featurestore)
 - [Introduction to MCP](https://www.anthropic.com/news/model-context-protocol)
