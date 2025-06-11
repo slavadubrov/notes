@@ -298,7 +298,7 @@ Add the following configuration to your `claude_desktop_config.json`:
 
 > **💡 Important Tip:** If you are getting errors when connecting to the server, you can use the next command:
 > ```bash
-> mcp install featurestore_server.py
+> uv run mcp install featurestore_server.py
 > ``` 
 > This command will automatically install and configure the server for Claude Desktop. After running this command, check your Claude Desktop config file to see how the server has been configured.
 > 
