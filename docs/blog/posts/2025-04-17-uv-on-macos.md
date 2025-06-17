@@ -23,7 +23,7 @@ uv venv                           # create .venv
 uv pip install -r requirements.txt # install from requirements
 uv run train.py                   # run script
 
-uv self upgrade        # update uv itself
+brew upgrade uv         # update uv itself (Homebrew install)
 ```
 
 ---
@@ -60,7 +60,7 @@ Check it worked:
 ```bash
 # Check installation
 uv --version      # should print something like 0.6.x
-uv self upgrade   # keep it fresh
+brew upgrade uv   # keep it fresh (since we installed via Homebrew)
 ```
 
 ---
