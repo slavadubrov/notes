@@ -11,7 +11,8 @@ date: 2025-01-15
 
 I’m a Senior Machine Learning Engineer II at HubSpot with over 10 years of experience building scalable AI solutions, including NLP, embeddings systems, recommender systems, forecasting, churn, scam, fraud models. In my personal time, I actively explore and prototype AI agents using frameworks like Google ADK, FastMCP, LlamaIndex, LangGraph, CrewAI, and SmolAgents.
 
-Check out my experiments on GitHub: [github.com/slavadubrov](https://github.com/slavadubrov)
+Check out my experiments on GitHub: [github.com/slavadubrov](https://github.com/slavadubrov).
+
 I write here about practical aspects of developing LLM applications and AI agents.
 
 If you're exploring LLM-powered products, agent frameworks, or robust ML platforms, let's connect—I'm always happy to swap ideas.
