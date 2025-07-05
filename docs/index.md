@@ -9,19 +9,10 @@ date: 2025-01-15
 
 👋 Hi, I'm Slava!
 
-I turn cutting‑edge research into production AI systems that save money, delight users, and open new product lines.
+I’m a Senior Machine Learning Engineer II at HubSpot with over 10 years of experience building scalable AI solutions, including NLP, embeddings systems, recommender systems, forecasting, churn, scam, fraud models. In my personal time, I actively explore and prototype AI agents using frameworks like Google ADK, FastMCP, LlamaIndex, LangGraph, CrewAI, and SmolAgents.
 
-I'm a Berlin‑based **Senior Machine Learning Engineer II at HubSpot** (PhD) with over 10 years of experience. I currently support a fleet of NLP, forecasting, churn, and customer‑embedding models. My most recent win: deploying a customer‑embedding model that is now used in a wide range of products.
-
-My work is about delivering measurable impact. For example, I have:
-
-* Saved **$4M+/year** by rebuilding a fraud‑detection stack and another **$3M+/year** with self‑supervised embedding models.
-* Shipped deep‑learning recommender systems (e.g., item2vec, ALS) that serve **millions of customers**.
-* Prototyped, built, and deployed several high-impact **embedding systems** from scratch.
-
-Beyond shipping models, I'm passionate about building teams and sharing knowledge. I've led small ML teams from whiteboard to production, created and taught internal courses on topics like Explainable AI and MLOps, and mentored fellow data scientists and engineers.
-
-What excites me most today is the frontier of **LLMs and AI agents**. I actively prototype with Google's ADK, LlamaIndex, LangGraph, and CrewAI, building agents that research leads, refactor code, and even write other agents. This blog is where I'll share what I learn.
+Check out my experiments on GitHub: [github.com/slavadubrov](https://github.com/slavadubrov)
+I write here about practical aspects of developing LLM applications and AI agents.
 
 If you're exploring LLM-powered products, agent frameworks, or robust ML platforms, let's connect—I'm always happy to swap ideas.
 
