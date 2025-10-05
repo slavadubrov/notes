@@ -27,3 +27,4 @@ Thumbs.db
 
 # prettier
 node_modules/
+tmp/

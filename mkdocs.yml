@@ -20,9 +20,7 @@ theme:
     - navigation.toc.collapse_empty_groups # Collapses empty groups in the table of contents
     - navigation.toc.collapse_single_children # Collapses groups with only a single child
     - content.code.copy
-  # Add custom JavaScript files
-  javascript:
-    - javascripts/mermaid.js
+  # Theme settings; custom JS is configured via top-level `extra_javascript`.
   font:
     text: Roboto
   palette:
@@ -39,10 +37,8 @@ theme:
         icon: material/brightness-4
         name: Switch to light mode
 
-# Enable Mermaid diagrams
-markdown_diagrams:
-  mermaid:
-    src: https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.8.0/mermaid.min.js
+extra_javascript:
+  - javascripts/mermaid.js
 
 markdown_extensions: # Configures Markdown extensions for additional functionality
   - admonition
