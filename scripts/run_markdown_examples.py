@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import pathlib
+import sys
 import textwrap
 import types
 import unittest
@@ -65,14 +66,21 @@ def build_test_case(markdown_path: pathlib.Path, blocks: Iterable[tuple[int, str
             mode="exec",
         )
 
-        def _make_test(compiled: types.CodeType) -> types.FunctionType:
+        module_name = f"markdown_example_{idx:02d}"
+
+        def _make_test(compiled: types.CodeType, name: str) -> types.FunctionType:
             def _test(self: MarkdownExamplesTest) -> None:  # type: ignore[name-defined]
-                namespace: dict[str, object] = {}
-                exec(compiled, namespace)  # noqa: S102 - deliberate dynamic exec
+                module = types.ModuleType(name)
+                module.__dict__["__builtins__"] = __builtins__
+                sys.modules[name] = module
+                try:
+                    exec(compiled, module.__dict__)  # noqa: S102 - deliberate dynamic exec
+                finally:
+                    sys.modules.pop(name, None)
 
             return _test
 
-        setattr(MarkdownExamplesTest, test_name, _make_test(compiled_code))
+        setattr(MarkdownExamplesTest, test_name, _make_test(compiled_code, module_name))
 
     return MarkdownExamplesTest
 
