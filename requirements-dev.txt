@@ -1,0 +1,2 @@
+# Development/test dependencies for example runners
+pydantic>=2

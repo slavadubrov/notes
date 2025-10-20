@@ -74,7 +74,7 @@ Large systems need explicit boundaries so the same term can safely mean differen
 
 ### Entities and value objects
 
-Entities carry identity that survives data changes—think `Task`, `Order`, or `AgentSession`. Value objects are immutable descriptions such as `TimeSlot`, `EmailAddress`, or `Priority`. Together they model state and enforce invariants close to the data.
+Entities carry identity that survives data changes - think `Task`, `Order`, or `AgentSession`. Value objects are immutable descriptions such as `TimeSlot`, `EmailAddress`, or `Priority`. Together they model state and enforce invariants close to the data.
 
 ```python
 from pydantic import BaseModel
@@ -108,7 +108,7 @@ class TimeSlot(BaseModel):
 Aggregates bundle related entities and value objects under a single transactional boundary. The aggregate root controls modifications, preserving invariants.
 
 ```python
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 class Task(BaseModel):
     id: str
@@ -116,7 +116,8 @@ class Task(BaseModel):
     completed: bool = False
 
 class Plan(BaseModel):
-    tasks: list[Task] = []
+    id: str
+    tasks: list[Task] = Field(default_factory=list)
 
     def add_task(self, task: Task) -> None:
         if any(t.id == task.id for t in self.tasks):
@@ -130,6 +131,16 @@ Repositories abstract persistence so domain code feels like working with in-memo
 
 ```python
 from abc import ABC, abstractmethod
+from pydantic import BaseModel, Field
+
+class Task(BaseModel):
+    id: str
+    description: str
+    completed: bool = False
+
+class Plan(BaseModel):
+    id: str
+    tasks: list[Task] = Field(default_factory=list)
 
 class PlanRepository(ABC):
     @abstractmethod
@@ -137,11 +148,9 @@ class PlanRepository(ABC):
         ...
 
     @abstractmethod
-    def get(self, plan_id: str) -> Plan:
+    def get(self, plan_id: str) -> Plan | None:
         ...
-```
 
-```python
 class InMemoryPlanRepository(PlanRepository):
     def __init__(self) -> None:
         self.storage: dict[str, Plan] = {}
@@ -149,7 +158,7 @@ class InMemoryPlanRepository(PlanRepository):
     def save(self, plan: Plan) -> None:
         self.storage[plan.id] = plan
 
-    def get(self, plan_id: str) -> Plan:
+    def get(self, plan_id: str) -> Plan | None:
         return self.storage.get(plan_id)
 ```
 
@@ -170,12 +179,21 @@ class TaskCompleted(BaseModel):
 
 ## Translating DDD to agent architectures
 
-- **Bounded contexts become agents or skills.** A research orchestrator might coordinate a market-trends agent, a compliance agent, and a cost estimator—each with its own vocabulary and rules.
+- **Bounded contexts become agents or skills.** A research orchestrator might coordinate a market-trends agent, a compliance agent, and a cost estimator - each with its own vocabulary and rules.
 - **Prompts honor the ubiquitous language.** Reflect domain terms in system prompts, tool descriptions, and function signatures so humans and agents stay synchronized.
 - **State becomes explicit entities.** Conversation sessions, goals, intermediate results, and tool outputs get modeled as entities or value objects, enabling validation and reuse.
-- **Aggregates express agent plans.** A `Plan` root can govern task lists, enforce limits, and maintain priorities—keeping LLM proposals within business constraints.
+- **Aggregates express agent plans.** A `Plan` root can govern task lists, enforce limits, and maintain priorities - keeping LLM proposals within business constraints.
 - **Domain events drive orchestration.** Agents raise events such as `ResearchCompleted` or `ThresholdExceeded`; listeners trigger follow-up actions without hard-coded coupling.
 - **Business rules wrap AI actions.** Run LLM outputs through domain services or entity methods so policy and safety gates remain intact even when the model improvises.
+
+```mermaid
+flowchart LR
+  Orchestrator["Research Orchestrator"] --> Trends["Trends Agent<br/>(Market data)"]
+  Orchestrator --> Compliance["Compliance Agent<br/>(Policy checks)"]
+  Orchestrator --> Cost["Cost Agent<br/>(Estimation)"]
+  classDef ctx fill:#e0f2fe,stroke:#38bdf8,color:#0c4a6e;
+  class Trends,Compliance,Cost ctx;
+```
 
 ---
 
@@ -223,11 +241,16 @@ class Task(BaseModel):
 ### 4. Shape the aggregate
 
 ```python
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+
+class Task(BaseModel):
+    id: str
+    description: str
+    completed: bool = False
 
 class TaskList(BaseModel):
     owner: str
-    tasks: list[Task] = []
+    tasks: list[Task] = Field(default_factory=list)
 
     def add_task(self, task: Task) -> None:
         if any(
@@ -245,6 +268,17 @@ class TaskList(BaseModel):
 ### 5. Wrap persistence in a repository
 
 ```python
+from pydantic import BaseModel, Field
+
+class Task(BaseModel):
+    id: str
+    description: str
+    completed: bool = False
+
+class TaskList(BaseModel):
+    owner: str
+    tasks: list[Task] = Field(default_factory=list)
+
 class TaskRepository:
     def __init__(self) -> None:
         self._data: dict[str, TaskList] = {}
@@ -254,6 +288,8 @@ class TaskRepository:
 
     def save_task_list(self, task_list: TaskList) -> None:
         self._data[task_list.owner] = task_list
+
+TaskList.model_rebuild()  # Resolve forward references for Pydantic.
 ```
 
 ### 6. Run the flow
@@ -261,6 +297,38 @@ class TaskRepository:
 ```python
 from datetime import date, timedelta
 from uuid import uuid4
+from pydantic import BaseModel, Field
+
+class Task(BaseModel):
+    id: str
+    description: str
+    due_date: date | None = None
+    completed: bool = False
+
+class TaskList(BaseModel):
+    owner: str
+    tasks: list[Task] = Field(default_factory=list)
+
+    def add_task(self, task: Task) -> None:
+        if any(
+            existing.description == task.description
+            and existing.due_date == task.due_date
+            for existing in self.tasks
+        ):
+            raise ValueError("A similar task on that date already exists.")
+        self.tasks.append(task)
+
+TaskList.model_rebuild()  # Resolve forward references for Pydantic.
+
+class TaskRepository:
+    def __init__(self) -> None:
+        self._data: dict[str, TaskList] = {}
+
+    def get_task_list(self, owner: str) -> TaskList:
+        return self._data.get(owner, TaskList(owner=owner))
+
+    def save_task_list(self, task_list: TaskList) -> None:
+        self._data[task_list.owner] = task_list
 
 repo = TaskRepository()
 user_input = "Remind me to buy milk tomorrow"
