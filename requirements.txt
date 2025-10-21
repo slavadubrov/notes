@@ -1,6 +1,0 @@
-mkdocs>=1.5.3
-mkdocs-material>=9.5.2
-pymdown-extensions>=10.15
-mkdocs-blog-plugin
-mkdocs-macros-plugin
-mkdocs-rss-plugin

@@ -18,18 +18,13 @@ A blog about Machine Learning tips, tricks, and experiences, built with MkDocs a
    cd <repo-name>
    ```
 
-2. Set up the development environment:
+2. Ensure you have [uv](https://github.com/astral-sh/uv) installed (see install instructions in the uv docs).
+
+3. Install dependencies and launch a preview:
 
    ```bash
-   make setup    # Creates venv and installs base dependencies
-   source .venv/bin/activate
-   ```
-
-3. Install/upgrade MkDocs plugins and launch a local preview:
-
-   ```bash
-   pip install --upgrade -r requirements.txt
-   mkdocs serve   # open http://127.0.0.1:8000
+   uv sync                  # Installs runtime + dev dependencies into .venv
+   uv run mkdocs serve      # open http://127.0.0.1:8000
    ```
 
 4. Alternatively, start the development server via Make:
@@ -49,7 +44,8 @@ Blog posts are written in Markdown and stored in the `docs/` directory. To creat
 ## 🛠 Available Commands
 
 - `make help` - Show all available commands
-- `make setup` - Create new venv and install dependencies
+- `make setup` - Recreate the uv environment from scratch
+- `make install` - Install dependencies declared in `pyproject.toml`
 - `make serve` - Start the development server
 - `make build` - Build the static site
 - `make clean` - Remove the built site
@@ -58,10 +54,8 @@ Blog posts are written in Markdown and stored in the `docs/` directory. To creat
 
 ## 📦 Dependencies
 
-- mkdocs
-- mkdocs-material
-- mkdocs-blog-plugin
-- mkdocs-rss-plugin
+- Runtime and development dependencies are declared in [`pyproject.toml`](pyproject.toml).
+- Use `uv add <package>` and `uv add --dev <package>` to manage them.
 
 ## 📄 License
 
