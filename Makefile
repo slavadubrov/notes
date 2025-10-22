@@ -1,41 +1,38 @@
-.PHONY: install serve build clean venv clean-venv check-python check-requirements dev check-updates
+.PHONY: install serve build clean venv clean-venv dev setup sync help
+
+UV ?= uv
+VENVDIR ?= .venv
 
 venv:
-	@if [ ! -d ".venv" ]; then \
-		python3 -m venv .venv; \
-		source .venv/bin/activate && pip install --upgrade pip; \
-		echo "Virtual environment created. Run 'source .venv/bin/activate' to activate it"; \
-	else \
-		echo "Virtual environment already exists"; \
-	fi
+	$(UV) venv $(VENVDIR)
 
 clean-venv:
-	rm -rf .venv
+	rm -rf $(VENVDIR)
 
-install: venv
-	source .venv/bin/activate && pip install -r requirements.txt
+install sync:
+	$(UV) sync
 
 serve: install
-	source .venv/bin/activate && mkdocs serve
+	$(UV) run mkdocs serve
 
 dev: install
-	source .venv/bin/activate && mkdocs serve -a 0.0.0.0:8000 --livereload
+	$(UV) run mkdocs serve -a 0.0.0.0:8000 --livereload
 
 build: install
-	source .venv/bin/activate && mkdocs build
+	$(UV) run mkdocs build
 
 clean:
 	rm -rf site/
 
-setup: clean-venv venv install
+setup: clean-venv install
 
 help:
 	@echo "Available commands:"
-	@echo "  make venv           - Create a new virtual environment"
+	@echo "  make venv           - Create a uv-managed virtual environment"
 	@echo "  make clean-venv     - Remove the virtual environment"
-	@echo "  make install        - Install dependencies from requirements.txt"
+	@echo "  make install        - Install dependencies from pyproject.toml via uv"
 	@echo "  make serve          - Start the development server"
 	@echo "  make dev            - Start development server with live reload"
 	@echo "  make build          - Build the static site"
 	@echo "  make clean          - Remove the built site directory"
-	@echo "  make setup          - Create new venv and install dependencies"
+	@echo "  make setup          - Recreate the virtual environment and install dependencies"
