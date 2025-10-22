@@ -7,53 +7,133 @@ summary: An exploration of how ML infrastructure and MLOps practices have evolve
 
 # MLOps in the Age of Foundation Models. Evolving Infrastructure for LLMs and Beyond
 
-The field of machine learning has undergone a seismic shift with the rise of large-scale foundation models - from giant language models (LLMs) like GPT-4 to image diffusion models like Stable Diffusion. As a result, the way we build and operate ML systems (MLOps) looks very different today than it did just a few years ago. In this post, we'll explore how ML infrastructure and MLOps practices have evolved - contrasting the "classic" era of MLOps with the modern paradigms emerging to support foundation models. We'll highlight what's changed, what new patterns and workflows have emerged.
+The field of machine learning has undergone a seismic shift with the rise of large-scale foundation models. From giant language models like GPT-4 to image diffusion models like Stable Diffusion, these powerful models have fundamentally changed how we build and operate ML systems. 
+
+In this post, I'll explore how ML infrastructure and MLOps practices have evolved to support foundation models. We'll contrast the "classic" era of MLOps with modern paradigms, examine what's changed, and look at the new patterns and workflows that have emerged.
 
 <!-- more -->
 
 ## 1. The MLOps Landscape a Few Years Ago (Pre-Foundation Model Era)
 
-A few years back, MLOps primarily meant applying DevOps principles to ML: automating the model lifecycle from data preparation to deployment and monitoring. Typical ML systems were built around relatively smaller models, often trained from scratch or with moderate pre-training, on domain-specific data. Key characteristics of this "classic" MLOps era included:
+A few years back, MLOps primarily meant applying DevOps principles to machine learning. The goal was simple: automate the model lifecycle from data preparation to deployment and monitoring. 
+
+Back then, ML systems were built around relatively smaller models, often trained from scratch on domain-specific data. Here's what the "classic" MLOps era looked like:
+
+```mermaid
+graph LR
+    A[Raw Data] --> B[Data Pipeline]
+    B --> C[Feature Engineering]
+    C --> D[Model Training]
+    D --> E[Model Registry]
+    E --> F[Deployment]
+    F --> G[Monitoring]
+    G --> B
+    
+    style A fill:#e1f5ff
+    style D fill:#ffe1e1
+    style F fill:#e1ffe1
+```
 
 ### 1.1. End-to-End Pipelines
 
-Teams set up end-to-end pipelines for data extraction, training, validation, and deployment. Tools like Apache Airflow orchestrated ETL and training workflows, while CI/CD systems ran automated tests and pushed models to production. The focus was on reproducibility and automation - packaging models (e.g. in Docker containers) and deploying them via REST microservices or batch jobs.
+Teams built end-to-end pipelines for data extraction, training, validation, and deployment. Apache Airflow orchestrated ETL and training workflows, while CI/CD systems ran automated tests and pushed models to production. The focus was on reproducibility and automation: package models in Docker containers, deploy them as REST microservices or batch jobs, and keep everything running smoothly.
 
 ### 1.2. Experiment Tracking and Model Versioning
 
-Even then, managing experiments and versions was critical. Platforms such as MLflow or Weights & Biases (W&B) gained popularity to log training runs, hyperparameters, and metrics. This allowed data scientists to compare experiments and reliably reproduce results. Models were registered in model registries with version numbers, making it easier to roll back to a good model if a new one underperformed.
+Managing experiments and versions was critical. Platforms like MLflow and Weights & Biases (W&B) became popular for logging training runs, hyperparameters, and metrics. Data scientists could compare experiments and reliably reproduce results. Models were registered in model registries with version numbers, making rollbacks straightforward when a new model underperformed.
 
 ### 1.3. Continuous Training & CI/CD
 
-Classic MLOps pipelines emphasized continuous integration of new data and models. For instance, a pipeline might retrain a model nightly or weekly as new data arrived, then run a battery of tests. If tests passed, the new model would be deployed via a CI/CD pipeline. Automation tools (Jenkins, GitLab CI/CD, etc.) were configured to ensure that any change in data or code would trigger the pipeline and deliver updated models reliably.
+Classic MLOps pipelines emphasized continuous integration of new data and models. A typical pipeline might retrain a model nightly or weekly as new data arrived, run a battery of tests, and if tests passed, deploy the new model automatically. Automation tools like Jenkins and GitLab CI/CD ensured that any change in data or code would trigger the pipeline reliably.
 
 ### 1.4. Infrastructure and Serving
 
-In the pre-LLM era, serving a model in production often meant a relatively small footprint - perhaps a few CPU cores or a single GPU for real-time inference. Kubernetes and Docker became the de facto way to deploy scalable inference services, allowing organizations to replicate model instances to handle load. Monitoring focused on uptime and performance metrics (latency, throughput) as well as model-specific metrics like prediction accuracy on a rolling window of data, concept drift detection, etc.
+Serving a model in production meant a relatively small footprint—perhaps a few CPU cores or a single GPU for real-time inference. Kubernetes and Docker became the standard for deploying scalable inference services. Monitoring focused on:
+
+- **Performance metrics**: latency, throughput, memory usage
+- **Model metrics**: prediction accuracy, concept drift detection
+- **System health**: uptime, error rates
 
 ### 1.5. Feature Stores and Data Management
 
-For many ML applications (especially in industries like finance or e-commerce), engineered features were as important as models. Feature stores were introduced to provide a central place to manage features used in models, ensuring consistency between training and serving. The emphasis was on structured data pipelines and feature engineering, whereas unstructured data (text, images) often required custom handling outside these stores.
+For many ML applications (especially in finance or e-commerce), engineered features were as important as models. Feature stores provided a central place to manage features, ensuring consistency between training and serving. The emphasis was on structured data pipelines and feature engineering. Unstructured data like text and images required custom handling outside these stores.
 
-In summary, "classic" MLOps revolved around relatively small-to-medium models and explicit feature engineering. The tooling was geared toward managing many experiments and deployments, and scaling out a large number of models (for different tasks) rather than scaling one enormous model. This paradigm worked well - until models started growing dramatically in size and capability, ushering in a new era.
+**In summary**: Classic MLOps revolved around small-to-medium models and explicit feature engineering. The tooling was designed for managing many experiments and deployments—scaling out a large number of models for different tasks rather than scaling one enormous model. This paradigm worked well until models started growing dramatically in size and capability.
 
 ## 2. The Paradigm Shift: Rise of Large-Scale Foundation Models
 
-Around 2018-2020, researchers began introducing foundation models - extremely large models pretrained on vast corpora, capable of being adapted to many tasks. Examples include BERT and GPT-2 (NLP), followed by GPT-3 and PaLM, as well as image models like BigGAN and later diffusion models (DALL-E, Stable Diffusion). By 2023-2024, these models became ubiquitous in ML workflows. As one practitioner noted in early 2024, "Today, foundational models are everywhere - from Hugging Face to built-in models in services like AWS Bedrock - a stark change from just two years ago". This rise of foundation models led to major shifts in ML infrastructure:
+Around 2018-2020, everything changed. Researchers began introducing foundation models—extremely large models pretrained on vast corpora, capable of being adapted to many tasks. 
 
-### 2.1. Pretrained > From Scratch
+The progression was rapid:
 
-Instead of developing many models from scratch, teams began with powerful pretrained models and fine-tuned them for specific tasks. This dramatically cut down training time and data needs for new tasks. It also meant that the largest models (with billions of parameters) were often reused via fine-tuning or even used as-is via APIs. As a result, the skillset for ML engineers started to include how to leverage and integrate these foundation models (sometimes via simple API calls) rather than only how to build new models. In fact, by 2024 some discussions suggested that ML/MLOps engineers should focus on integrating foundation models via their APIs - treating the model as a service - rather than reinventing the wheel.
+- **2018-2019**: BERT and GPT-2 showed the power of transfer learning
+- **2020-2021**: GPT-3 and PaLM demonstrated what massive scale could achieve
+- **2021-2023**: Image models like DALL-E and Stable Diffusion brought generative AI to the mainstream
+- **2023-2024**: Foundation models became ubiquitous—available everywhere from Hugging Face to AWS Bedrock
+
+As one practitioner noted in early 2024: "Foundational models are everywhere now—a stark change from just two years ago."
+
+This shift created a fundamentally different paradigm:
+
+```mermaid
+graph TD
+    subgraph "Classic MLOps"
+        A1[Your Data] --> A2[Train from Scratch]
+        A2 --> A3[Small Model]
+        A3 --> A4[Deploy]
+    end
+    
+    subgraph "Modern LLMOps"
+        B1[Pretrained Foundation Model] --> B2[Fine-tune/Adapt]
+        B3[Your Data] --> B2
+        B2 --> B4[Adapted Model]
+        B4 --> B5[Deploy with Orchestration]
+        B6[Prompts] --> B5
+        B7[Vector DB] --> B5
+    end
+    
+    style A2 fill:#ffe1e1
+    style B1 fill:#e1ffe1
+    style B2 fill:#fff4e1
+```
+
+Here's how foundation models changed ML infrastructure:
+
+### 2.1. Pretrained Beats From Scratch
+
+Instead of training models from scratch, teams started with powerful pretrained models and fine-tuned them for specific tasks. This approach:
+
+- **Cuts training time** from weeks to hours or days
+- **Reduces data requirements** from millions to thousands of examples
+- **Enables smaller teams** to build sophisticated AI applications
+
+The largest models (with billions of parameters) are often used as-is via APIs or fine-tuned minimally. By 2024, the ML engineer's skillset shifted from "how to build models" to "how to leverage and integrate foundation models"—treating the model as a service rather than reinventing the wheel.
 
 ### 2.2. Model Size and Computational Demands
 
-The sheer scale of these models introduced new challenges:
+The sheer scale of these models introduced new challenges. A model with 175 billion parameters cannot be handled with the same infrastructure as one with 50 million parameters.
 
-A model with billions of parameters cannot be handled with the same infrastructure as a model with millions. Training and even just deploying such models require powerful hardware (GPUs, TPUs) and often distributed computing. This gave rise to new techniques like model parallelism (sharding a single model across multiple GPUs) and distributed data parallel training (synchronizing multiple GPU workers). Libraries and optimizations like DeepSpeed and ZeRO (Zero Redundancy Optimizer) were developed to make training giant models feasible. Even for inference, serving a large model often meant using multiple GPUs or specialized inference runtimes to keep latency acceptable.
+**Key scaling challenges**:
+
+- **Training**: Requires powerful hardware (GPUs, TPUs) and distributed computing
+- **Model parallelism**: Sharding a single model across multiple GPUs
+- **Data parallelism**: Synchronizing multiple GPU workers during training
+- **Inference**: Often requires multiple GPUs or specialized runtimes to keep latency acceptable
+
+Libraries like DeepSpeed and ZeRO (Zero Redundancy Optimizer) were developed specifically to make training giant models feasible. The infrastructure requirements jumped by orders of magnitude.
 
 ### 2.3. Emergence of LLMOps
 
-It became clear that operating these large models in production required extensions to classic MLOps - leading to what many call LLMOps (Large Language Model Ops). LLMOps is essentially MLOps specialized for large models, especially LLMs. It builds on the same principles but "addresses the unique challenges of deploying large language model... These models require substantial computational resources, prompt engineering, and ongoing monitoring to manage performance, ethics, and latency". In other words, things that barely registered as issues for smaller models (like a single model's inference possibly producing biased text or leaking private training data) became major considerations when using LLMs at scale.
+It became clear that operating these large models in production required extensions to classic MLOps. This led to **LLMOps** (Large Language Model Operations)—essentially MLOps specialized for large models.
+
+LLMOps builds on classic MLOps principles but addresses unique challenges:
+
+- **Computational resources**: Managing expensive GPU clusters
+- **Prompt engineering**: Optimizing model behavior through input design
+- **Safety monitoring**: Detecting bias, harmful content, and data leakage
+- **Performance management**: Balancing latency, quality, and cost
+
+Issues that barely registered for smaller models—like producing biased text or leaking training data—became major considerations at LLM scale.
 
 ![Nested relationship of MLOps specialties - Machine Learning Ops (outermost), Generative AI Ops, LLM Ops, and Retrieval-Augmented Generation Ops (innermost)](https://www.nvidia.com/content/nvidiaGDC/us/en_US/glossary/mlops/_jcr_content/root/responsivegrid/nv_container_1795650_1945302252/nv_image_2134560435_.coreimg.100.1290.jpeg/1741240029246/ai-ops-hierarchy.jpeg)
 
@@ -61,103 +141,401 @@ This diagram from NVIDIA illustrates how general MLOps (outer circle) has branch
 
 ### 2.4. Foundation Models as a Service
 
-Another shift was the increasing availability of models via API or model hubs. Companies like OpenAI, Cohere, and AI21 Labs offered hosted LLMs accessible through an API call, which many applications use directly rather than deploying their own model. Likewise, the open-source community (notably Hugging Face) created hubs where thousands of pretrained models can be downloaded or even run in the cloud. This changed ML system architecture - a production pipeline might call out to an external API for inference, which introduces new considerations (latency, cost, data privacy) but saves the effort of managing the model's infrastructure. Even big cloud platforms integrated foundation models: e.g. Google's Vertex AI added Model Garden to provide pretrained LLMs and diffusion models out-of-the-box, with tools to fine-tune them on custom data, all managed on Google's infrastructure.
+Another major shift was the rise of **models as a service**. Instead of deploying their own models, many applications now call external APIs:
 
-In essence, the rise of foundation models shifted ML development from a paradigm of "your data + your model code = trained model" to "your data + adaptation of a massive pre-trained model = fine-tuned model (or sometimes just prompt the model with your data).". It also meant MLOps had to handle far more computationally intensive processes and new workflows like prompt engineering and continuous monitoring for things like ethical compliance.
+**API Providers**:
+
+- OpenAI, Cohere, AI21 Labs offer hosted LLMs
+- Google's Vertex AI provides Model Garden with pretrained models
+- AWS Bedrock hosts proprietary foundation models
+
+**Model Hubs**:
+
+- Hugging Face hosts thousands of pretrained models
+- Models can be downloaded or run in the cloud
+- Version control and community sharing became standard
+
+This changed ML architecture fundamentally. Production pipelines might call external APIs for inference, introducing new considerations:
+
+- **Latency**: Network calls add overhead
+- **Cost**: Pay-per-token pricing models
+- **Data privacy**: Sending data to third parties
+- **Vendor lock-in**: Dependency on external services
+
+But it also saves the massive effort of managing model infrastructure.
+
+**The paradigm shift**: From "your data + your model code = trained model" to "your data + adaptation of a pretrained model = fine-tuned model (or just prompt it with your data)."
 
 ## 3. New Requirements and Capabilities in Modern ML Infrastructure
 
-With foundation models and LLMs becoming central, today's ML infrastructure must support capabilities that were niche or non-existent in the past. Let's discuss some of the key new requirements and how they differ from the classic era:
+With foundation models at the center, today's ML infrastructure must support capabilities that were niche or non-existent just a few years ago. Here are the key new requirements:
 
 ### 3.1. Distributed Training and Model Parallelism
 
-Training a model with hundreds of millions or billions of parameters is beyond the capacity of a single machine in most cases. Modern ML infrastructure often needs to orchestrate distributed training, where either the data or the model is split across multiple nodes. Model parallelism in particular is critical for large models - it involves splitting the model's layers or parameters across multiple GPUs or TPUs so that each accelerates a part of the model. Frameworks like PyTorch Lightning, Horovod, and libraries from hardware vendors (NVIDIA's Megatron-LM, Google's JAX/TPU ecosystem) help manage this. This contrasts with a few years ago when most teams could train models on a single server or small cluster without these complexities. Now, an ML platform is expected to handle launching jobs on GPU clusters, managing faults, and aggregating gradients from many workers seamlessly.
+Training a model with billions of parameters is beyond the capacity of a single machine. Modern ML infrastructure orchestrates distributed training across multiple nodes:
+
+```mermaid
+graph TD
+    A[Large Model] --> B[Split Layers]
+    B --> C[GPU 1: Layers 1-10]
+    B --> D[GPU 2: Layers 11-20]
+    B --> E[GPU 3: Layers 21-30]
+    B --> F[GPU 4: Layers 31-40]
+    
+    C --> G[Synchronize Gradients]
+    D --> G
+    E --> G
+    F --> G
+    
+    style A fill:#ffe1e1
+    style G fill:#e1ffe1
+```
+
+**Two main approaches**:
+
+- **Model parallelism**: Split the model's layers across multiple GPUs (each GPU handles part of the model)
+- **Data parallelism**: Replicate the model across GPUs and split the training data (synchronize gradients)
+
+**Tools that enable this**:
+
+- PyTorch Lightning, Horovod for general distributed training
+- NVIDIA's Megatron-LM for massive transformer models
+- Google's JAX/TPU ecosystem for TPU clusters
+
+A few years ago, most teams trained models on a single server. Now, ML platforms must handle launching jobs on GPU clusters, managing faults, and aggregating gradients from dozens or hundreds of workers seamlessly.
 
 ### 3.2. Efficient Fine-Tuning Techniques
 
-As training from scratch is often impractical with huge models, fine-tuning is the name of the game. However, even fine-tuning a multi-billion parameter model on new data can be extremely resource-intensive. This has led to new techniques like LoRA (Low-Rank Adaptation) - a method that "reduces the computational cost of fine-tuning LLMs by updating only a small subset of the model's parameters (adapters) instead of the entire network". Fine-tuning today might also involve methods like Prompt Tuning or Adapter modules, which allow adding task-specific capabilities without full re-training. ML infrastructure now must support these workflows - for example, loading a giant base model from a model hub, applying a delta of fine-tuned weights, and deploying that combined model. Traditional training pipelines had to evolve significantly to accommodate such multi-step model customization.
+Training from scratch is impractical for huge models, but even fine-tuning a multi-billion parameter model can be resource-intensive. This led to parameter-efficient fine-tuning methods:
+
+**Modern fine-tuning approaches**:
+
+- **LoRA (Low-Rank Adaptation)**: Updates only a small subset of parameters (adapters) instead of the entire network, dramatically reducing computational cost
+- **Prompt Tuning**: Optimizes only the prompt embeddings, keeping the model frozen
+- **Adapter Modules**: Adds small trainable layers between frozen model layers
+
+ML infrastructure must now support complex workflows: load a base model from a hub, apply fine-tuned weight deltas, and deploy the combined model. Traditional training pipelines evolved significantly to accommodate this multi-step customization.
 
 ### 3.3. Prompt Engineering & Management
 
-One surprising new "artifact" in modern ML pipelines is the prompt. When using LLMs, a lot of the model's behavior is controlled through the text prompt or input format given to it. Engineering these prompts (and possibly chains of prompts) has become a new discipline. Teams now maintain prompt libraries or templates, and even use version control and A/B testing for prompts similar to code. This is quite different from classical ML, where the input to a model was usually just data features without this intermediate layer of natural language instructions. As a result, some MLOps setups treat prompts as a configurable part of the deployment - possibly storing prompt versions alongside model versions, and using prompt-management tools. We even see early frameworks that facilitate prompt design and optimization as first-class citizens of the ML pipeline (for example, prompt optimization modules in LangChain or prompt testing frameworks).
+One surprising new artifact in modern ML pipelines is **the prompt**. With LLMs, much of the model's behavior is controlled through the text prompt or input format you give it.
+
+This created an entirely new discipline. Teams now:
+
+- Maintain **prompt libraries** and templates
+- Use **version control** for prompts (just like code)
+- Run **A/B tests** to compare prompt variants
+- Store **prompt versions** alongside model versions
+
+This is fundamentally different from classic ML, where inputs were just data features—not natural language instructions. Frameworks like LangChain now include prompt optimization as a first-class feature.
+
+**Example prompt evolution**:
+
+```
+v1: "Classify this text as positive or negative: {text}"
+v2: "You are a sentiment analyzer. Classify: {text}"
+v3: "Analyze sentiment. Return only 'positive' or 'negative': {text}"
+```
+
+Each version can produce different results, so tracking and testing prompts became as important as tracking model weights.
 
 ### 3.4. Retrieval-Augmented Generation (RAG)
 
-Foundation models like GPT-3 have a fixed knowledge cutoff (training data) and context window. To keep responses up-to-date and accurate with external knowledge, a common pattern called retrieval-augmented generation has emerged. RAG involves using a vector database or search index to retrieve relevant documents which are then provided to the LLM as additional context (usually appended to the prompt). This pattern was rare a few years ago, but now it's "becoming a best practice for improving LLM applications", as noted in industry discussions. Instead of continuously retraining the model on new data (which is costly and slow), RAG allows the model to fetch information at query time. ML infrastructure has adapted by integrating new components: vector databases (like Pinecone, Weaviate, FAISS, or Milvus) are now part of the stack to handle fast similarity search on embeddings. Managing these embedding indexes and keeping them in sync with the latest data is a new responsibility for MLOps. In fact, in generative AI pipelines, "using embeddings and vector databases replaces feature stores that were relevant to classic MLOps", since unstructured data and semantic search have taken center stage over manual feature engineering.
+Foundation models have a fixed knowledge cutoff and limited context windows. To keep responses accurate and up-to-date, **Retrieval-Augmented Generation (RAG)** has become a best practice.
+
+**How RAG works**:
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant App
+    participant VectorDB
+    participant LLM
+    
+    User->>App: Ask question
+    App->>VectorDB: Search for relevant docs
+    VectorDB->>App: Return top matches
+    App->>LLM: Question + Retrieved context
+    LLM->>App: Generate answer
+    App->>User: Return response
+    
+    Note over VectorDB: Pinecone, Weaviate,<br/>FAISS, Milvus
+```
+
+Instead of continuously retraining the model on new data (costly and slow), RAG fetches information at query time. The retrieved documents are appended to the prompt as additional context.
+
+**New infrastructure components**:
+
+- **Vector databases** (Pinecone, Weaviate, FAISS, Milvus) for fast similarity search on embeddings
+- **Embedding models** to convert documents into vectors
+- **Index management** to keep embeddings in sync with the latest data
+
+In many ways, vector databases have replaced traditional feature stores. Unstructured data and semantic search took center stage over manual feature engineering.
 
 ### 3.5. Data Streaming and Real-Time Data Feeds
 
-Many modern applications (especially those involving LLM-powered assistants or real-time personalization) continuously ingest data - chat conversations, sensor data, event streams - and need to update either the model's knowledge (via RAG) or trigger model responses in real-time. While classic ML pipelines often assumed periodic batch processing of data (e.g. a daily training job), today's systems might need to handle streaming data in real-time. This has led to increased use of technologies like Kafka or real-time databases in ML pipelines, and online feature stores or caches that update continuously. The boundary between data engineering and MLOps blurs further when dealing with streaming data for model consumption.
+Modern applications—especially LLM-powered assistants—continuously ingest data: chat conversations, sensor data, event streams. This data needs to update the model's knowledge (via RAG) or trigger responses in real-time.
+
+**The shift**:
+
+- **Classic MLOps**: Batch processing (daily/weekly training jobs)
+- **Modern LLMOps**: Real-time streaming data pipelines
+
+**Technologies driving this**:
+
+- **Kafka** and event streaming platforms
+- **Real-time databases** (Redis, DynamoDB)
+- **Online feature stores** with continuous updates
+- **Streaming embeddings** that update vector indexes in real-time
+
+The boundary between data engineering and MLOps has blurred. Data pipelines now directly feed model inference rather than just training.
 
 ### 3.6. Scalable and Specialized Serving Infrastructure
 
-Serving a massive model is a challenge in itself. Modern ML infrastructure must support:
+Serving a massive model is challenging. Modern ML infrastructure must support three key capabilities:
 
-- High-Throughput, Low-Latency Serving
+**High-Throughput, Low-Latency Serving**
 
-For applications like interactive chatbots or image generators, users expect prompt responses. This often requires serving infrastructure that can utilize GPUs (or specialized ASICs like TPUs) to perform inference quickly. Techniques like model quantization (reducing precision to speed up inference) and GPU batching (serving multiple requests in parallel on one GPU) are employed. Some companies use model-specific serving optimizations, for example NVIDIA's TensorRT or Triton Inference Server for optimized GPU inference, or DeepSpeed-Inference for accelerated transformer model serving.
+Interactive applications (chatbots, image generators) demand fast responses. This requires:
 
-- Serverless and Elastic Scaling
+- **GPU/TPU acceleration** for quick inference
+- **Model quantization** to reduce precision and speed up serving
+- **GPU batching** to serve multiple requests in parallel
+- **Optimized serving engines** like NVIDIA's TensorRT, Triton Inference Server, or DeepSpeed-Inference
 
-Interestingly, we see a trend toward serverless ML services for inference. Platforms like Modal have emerged, which "is similar to AWS Lambda but with GPU support - a serverless platform where you provide the code and they handle infrastructure and scaling for you". In such a setup, you don't have an always-running server for your model; instead, the platform spins up compute (with GPUs if needed) on-demand to handle requests, scaling to zero when idle. This is a departure from the always-on, containerized microservice model of the past. It promises cost savings (pay only per execution) and easier scaling, though one has to manage cold-start latency and statelessness in these systems. Modern MLOps may leverage such serverless inference for irregular workloads or use cases where managing GPU clusters is overhead.
+**Serverless and Elastic Scaling**
 
-- Distributed Model Serving
+A new trend toward serverless ML has emerged. Platforms like Modal offer "AWS Lambda but with GPU support"—you provide code, they handle infrastructure and scaling.
 
-If a model is too large for one machine or one GPU to serve, inference itself can be distributed. There are frameworks to shard the model across multiple machines for serving (similar to training) so that each handles part of the forward pass. This is complex, but needed for extreme cases (like serving a 175B parameter GPT-3 model on-premises might require multiple GPUs working together). Today's ML infra must be capable of launching such distributed inference replicas and routing requests appropriately.
+Benefits:
+
+- No always-running servers
+- Compute spins up on-demand
+- Scale to zero when idle (pay only per execution)
+- Automatic scaling under load
+
+Tradeoffs:
+
+- Cold-start latency when spinning up
+- Managing statelessness
+- Less control over infrastructure
+
+This works well for irregular workloads where managing GPU clusters is overkill.
+
+**Distributed Model Serving**
+
+For models too large for a single GPU, inference itself can be distributed. The model is sharded across multiple machines, each handling part of the forward pass.
+
+Example: Serving a 175B parameter model on-premises requires multiple GPUs working together. Modern ML infrastructure must launch distributed inference replicas and route requests appropriately.
 
 ### 3.7. Monitoring, Observability, and Guardrails
 
-With great power comes great responsibility - large models can generate incorrect or inappropriate outputs in ways small models typically did not. Modern ML systems need nuanced monitoring:
+With great power comes great responsibility. Large models can generate incorrect or inappropriate outputs in ways small models never did. Modern ML systems need three layers of monitoring:
 
-- Performance and Reliability
+**Performance and Reliability**
 
-Of course, we still monitor latency, throughput, memory usage, etc., since large models can be resource hogs. Ensuring an LLM-based service meets an SLA might involve autoscaling GPUs, or falling back to a smaller model if load is high.
+The basics still matter:
 
-- Output Quality and Safety
+- Latency, throughput, memory usage
+- GPU utilization and costs
+- Autoscaling policies (scale up under load, fall back to smaller models if needed)
 
-We now also monitor the content of model outputs. For example, filtering for hate speech, PII, or other harmful content is a standard part of deploying generative models. Many pipelines include an automated moderation step - e.g., OpenAI's moderation API or custom filters - to catch problematic outputs. Bias evaluation tools might run in the background to detect drift in the model's responses or flag when the model starts producing biased results. This is part of "guardrails" that have become essential in LLMOps, intercepting adversarial inputs and ensuring outputs stay within acceptable bounds.
+**Output Quality and Safety**
 
-- Feedback Loops
+We now monitor the *content* of outputs:
 
-The notion of continuous improvement has extended to user feedback on model outputs. Modern MLops may incorporate a human feedback loop or at least a mechanism to collect user interactions (likes, corrections) with the model's outputs. This data can then be used to further fine-tune the model or adjust prompts. In the LLM world, techniques like Reinforcement Learning from Human Feedback (RLHF) explicitly use human ratings to refine model behavior. So the infrastructure must support collecting and managing this feedback data securely and effectively.
+- **Content filtering**: Detect hate speech, PII, harmful content
+- **Moderation APIs**: Use OpenAI's moderation API or custom filters
+- **Bias detection**: Continuously evaluate for biased responses
+- **Guardrails**: Intercept adversarial inputs and ensure outputs stay within bounds
 
-In summary, today's ML infrastructure goes far beyond training and deploying a single model artifact. It needs to manage entire ecosystems of model components - the base model, fine-tuning adapters, prompt templates, retrieval indexes, monitoring detectors, and more - and orchestrate them to work together. The complexity is higher, but so is the capability unlocked.
+These "guardrails" have become essential in LLMOps—they're not optional.
+
+**Feedback Loops**
+
+Continuous improvement now includes human feedback:
+
+- Collect user interactions (likes, corrections, ratings)
+- Use feedback to fine-tune models or adjust prompts
+- **RLHF (Reinforcement Learning from Human Feedback)**: Explicitly use human ratings to refine behavior
+
+The infrastructure must support collecting and managing this feedback data securely.
+
+---
+
+**In summary**: Today's ML infrastructure manages entire ecosystems—base models, fine-tuning adapters, prompt templates, retrieval indexes, monitoring detectors, and more. The complexity is higher, but so is the capability.
 
 ## 4. Evolving System Architecture and Design Patterns
 
-Given those new requirements, how are ML system architectures structured today? Let's highlight a few design patterns and compare them to earlier approaches:
+Given these new requirements, how are ML systems actually structured today? Here are the key design patterns that have emerged:
 
 ### 4.1. Modular Pipelines & Orchestration
 
-Orchestration frameworks from the past are still around - you might use Kubeflow Pipelines or Apache Airflow/Beam to orchestrate the fine-tuning process or batch scoring jobs. But for inference time orchestration (which needs low latency), lightweight frameworks or application code often replace heavyweight workflow engines. Also, new MLOps orchestration tools (like Metaflow, Flyte, or ZenML) have gained traction by focusing on Pythonic workflows that integrate well with modern ML libraries. They help manage the flow from data to deployment without forcing engineers to step out of their normal development environment.
+**Classic tools** (Kubeflow Pipelines, Apache Airflow) are still used for:
+
+- Fine-tuning workflows
+- Batch scoring jobs
+- Periodic model retraining
+
+**New tools** have emerged for modern needs:
+
+- **Metaflow, Flyte, ZenML**: Pythonic workflows that integrate seamlessly with ML libraries
+- **Lightweight orchestration**: For low-latency inference, application code often replaces heavyweight workflow engines
+
+The key difference: engineers no longer need to leave their development environment to manage the flow from data to deployment.
 
 ### 4.2. Model Hubs and Registries
 
-Model management has evolved with the rise of hubs like Hugging Face. Instead of every team hosting their own model registry, many share and fetch models from centralized hubs. Internally, companies still maintain model registries (MLflow Registry, Amazon SageMaker Model Registry, etc.) for their bespoke models, but they might also pull foundation models from an external source. Hugging Face Hub not only hosts thousands of models but also versioned datasets and scripts, becoming a one-stop shop for ML components. This encourages a more plug-and-play architecture - e.g., a sentiment analysis service might directly fetch a pre-trained model checkpoint from a hub at startup. The ease of discovering and sharing models has accelerated the pace of development and also influenced design: engineers now plan for how to fine-tune and update third-party models rather than building everything in-house.
+Model management evolved with centralized hubs:
+
+**External hubs**:
+
+- **Hugging Face Hub**: Thousands of models, datasets, and scripts
+- One-stop shop for ML components
+- Plug-and-play architecture (fetch models at startup)
+
+**Internal registries**:
+
+- MLflow Registry, SageMaker Model Registry for bespoke models
+- Combined with external foundation models
+
+**The shift**: Instead of building everything in-house, engineers now plan for how to fine-tune and adapt third-party models. This has accelerated development dramatically.
 
 ### 4.3. Feature Stores vs. Vector Databases
 
-As mentioned, the importance of traditional feature stores has slightly declined in apps where text and images are primary data. In their place, vector databases have become a new pillar in the architecture. Vector DBs (such as Pinecone, Weaviate, Chroma, or Milvus) are specialized for storing high-dimensional embeddings and performing similarity search quickly. They are used for semantic search, deduplication, recommendation, and as part of RAG for LLMs. In modern pipelines, you might see a vector DB alongside a more classical data warehouse - the former serving unstructured semantic lookup needs, the latter serving structured data analytics. An ML system might vectorize incoming data using an embedding model and continually update the vector index, enabling any LLM queries to fetch relevant context. This is a new pattern that didn't exist in older MLOps, and it's now quite common for AI applications dealing with text or image data.
+The data layer has fundamentally changed:
+
+```mermaid
+graph LR
+    subgraph "Classic MLOps"
+        A1[Feature Store] --> A2[Structured Features]
+        A2 --> A3[Model]
+    end
+    
+    subgraph "Modern LLMOps"
+        B1[Vector Database] --> B2[Embeddings]
+        B2 --> B3[LLM with RAG]
+        B4[Traditional Warehouse] --> B5[Analytics]
+    end
+    
+    style A1 fill:#ffe1e1
+    style B1 fill:#e1ffe1
+```
+
+**Traditional feature stores** handled structured data with manual feature engineering.
+
+**Modern vector databases** (Pinecone, Weaviate, Chroma, Milvus) handle:
+
+- High-dimensional embeddings
+- Fast similarity search
+- Semantic search and deduplication
+- RAG for LLMs
+
+You'll often see both: a vector DB for unstructured semantic lookup and a data warehouse for structured analytics.
 
 ### 4.4. Unified Platforms (End-to-End)
 
-The complexity of handling all these pieces has given momentum to end-to-end ML platforms that abstract many details. Cloud platforms like Google Vertex AI, AWS SageMaker, Azure Machine Learning have each evolved to support foundation model workflows. For example, Vertex AI offers training services that automatically distribute models across TPU pods, hosts a Model Garden with popular LLMs available, and provides endpoints to deploy models with one click (including scaling on GPUs). They also integrate data tools and monitoring for drift, etc. Similarly, SageMaker has added features for large model training (distributed training jobs, model parallel libraries) and even hosts proprietary models via its Bedrock service. These platforms embody the evolved best practices, providing building blocks like "fine-tune this 20B parameter model on your data" or "embed and index your text data for retrieval" as managed services. Meanwhile, open-source initiatives and startups also offer integrated solutions - for instance, MosaicML (now part of Databricks) provided tooling to train and deploy large models efficiently, Argilla and Label Studio help with data labeling and prompt dataset creation for LLMs, and ClearML or MLflow tie together experiment tracking with pipeline execution.
+The complexity of modern ML has driven adoption of end-to-end platforms that abstract infrastructure details.
+
+**Cloud platforms** evolved to support foundation models:
+
+- **Google Vertex AI**: Auto-distributed training on TPU pods, Model Garden with LLMs, one-click deployment
+- **AWS SageMaker**: Distributed training, model parallelism, and Bedrock for hosted foundation models
+- **Azure Machine Learning**: Integrated training, deployment, and monitoring
+
+These platforms provide managed services like "fine-tune this 20B parameter model on your data" or "embed and index your text data for retrieval."
+
+**Open-source and startups**:
+
+- **MosaicML** (now Databricks): Efficient training and deployment for large models
+- **Argilla, Label Studio**: Data labeling and prompt dataset creation
+- **ClearML, MLflow**: Experiment tracking tied to pipeline execution
 
 ### 4.5. Inference Gateways and APIs
 
-The proliferation of models and model sizes has led to architectures that include a model inference gateway or router. Companies might deploy multiple models (e.g., a small fast model and a large accurate model) and route requests to one or the other based on context (latency requirements, user subscription level, etc.). There are open-source tools and design patterns for these gateways, sometimes using a service mesh or simple web services to forward requests. The idea is to decouple the client-facing API from the actual model implementation behind it. This also helps in A/B testing models - a fraction of traffic can be served by a new model to compare outcomes. In legacy setups, one might simply deploy a new model at a new REST endpoint for testing. Now, more sophisticated routing is common.
+The proliferation of model sizes led to **inference gateways**—routers that intelligently direct requests:
+
+```mermaid
+graph TD
+    Client[Client Request] --> Gateway[Inference Gateway]
+    Gateway --> |Low latency needed| Small[Small Fast Model]
+    Gateway --> |High accuracy needed| Large[Large Accurate Model]
+    Gateway --> |A/B testing| Experimental[Experimental Model]
+    
+    Small --> Response[Response]
+    Large --> Response
+    Experimental --> Response
+    
+    style Gateway fill:#fff4e1
+```
+
+**Use cases**:
+
+- Route based on latency requirements
+- Different models for different subscription tiers
+- A/B testing new models on a fraction of traffic
+- Fallback to smaller models under high load
+
+This decouples the client-facing API from model implementation, allowing seamless model swaps and testing.
 
 ### 4.6. Agentic Systems
 
-A cutting-edge pattern is the rise of "agent" architectures, where an AI system can dynamically choose sequences of actions (invoking different models or tools) to accomplish a task. This goes beyond static chains. For example, an AI agent might decide it needs to call an external calculator or search engine in the middle of answering a query. Frameworks enabling this (like LangChain's agent mode, OpenAI's function calling, etc.) are nascent, but point towards future ML systems that are even more complex - essentially a workflow decided at runtime by the model. MLOps is beginning to account for such systems (sometimes dubbed "AgentOps" in concept), which require robust monitoring to ensure the agent doesn't take unwanted actions and logging to trace its decisions. While not widespread in production yet, this is an emerging design pattern fueled by the flexibility of large models.
+A cutting-edge pattern: **AI agents** that dynamically choose sequences of actions to accomplish tasks.
+
+Unlike static chains, agents can:
+
+- Call external tools (calculators, search engines, databases)
+- Decide workflows at runtime based on context
+- Invoke different models for different subtasks
+
+**Enabling frameworks**:
+
+- LangChain's agent mode
+- OpenAI's function calling
+- AutoGPT and similar systems
+
+This emerging pattern requires new operational practices (sometimes called "AgentOps"):
+
+- Robust monitoring to prevent unwanted actions
+- Detailed logging to trace decision paths
+- Safety guardrails to limit agent capabilities
+
+While not yet widespread in production, agentic systems represent the frontier of LLMOps.
 
 ## 5. Conclusion: From MLOps to LLMOps and Beyond
 
-In just a few years, we've witnessed a transformation in how we approach machine learning in production. Classic MLOps principles - automation, reproducibility, collaboration between data science and engineering - still apply, but they have been extended and reshaped to handle the scale and scope of modern ML tasks. Large foundation models brought incredible capabilities, but also complexity that demanded new solutions. This gave rise to what is now called LLMOps, a specialization of MLOps, to manage the lifecycle of these powerful models. It's not just hype - the differences are tangible in day-to-day workflows, from how we fine-tune models, to how we deploy and monitor them with new infrastructure components (like vector databases or GPU clusters).
+In just a few years, we've witnessed a transformation in how we approach machine learning in production.
 
-The evolution is ongoing. As models continue to grow and as AI systems become more "agentic" or autonomous, we'll likely see further specialization (there's already talk of "AgentOps" for AI agents). However, the end goal remains the same: to reliably deliver the benefits of machine learning to end-users and business applications, at scale and with trustworthiness.
+**What remains the same**:
 
-Teams that successfully navigate this evolution are able to harness foundation models to build products faster than ever - while maintaining the reliability and efficiency that good operations provide.
+- Automation, reproducibility, collaboration
+- Focus on reliability and efficiency
+- DevOps principles applied to ML
+
+**What changed dramatically**:
+
+- Scale: From millions to billions of parameters
+- Approach: From training from scratch to adapting foundation models
+- Infrastructure: From single servers to distributed GPU clusters
+- Data layer: From feature stores to vector databases
+- Monitoring: From performance metrics to content safety guardrails
+
+This gave rise to **LLMOps**—a specialization of MLOps for managing the lifecycle of large models. It's not just hype. The differences are tangible in day-to-day workflows:
+
+- How we fine-tune models (LoRA, adapters)
+- How we deploy them (distributed serving, serverless GPUs)
+- How we monitor them (content filtering, bias detection)
+- What infrastructure we need (vector databases, GPU clusters)
+
+**The evolution continues**. As models grow and AI systems become more autonomous, we're already seeing:
+
+- **AgentOps** for managing AI agents
+- **RAGOps** for retrieval-augmented systems
+- Even more specialized operational practices
+
+But the end goal remains: **reliably deliver the benefits of machine learning to end-users and business applications, at scale and with trustworthiness.**
+
+Teams that successfully navigate this evolution harness foundation models to build products faster than ever—while maintaining the reliability and efficiency that good operations provide.
 
 ## References
 
