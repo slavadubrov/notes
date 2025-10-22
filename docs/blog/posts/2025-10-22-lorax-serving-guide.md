@@ -1,6 +1,6 @@
 ---
 title: LoRAX Playbook - Orchestrating Thousands of LoRA Adapters on Kubernetes
-date: 2025-10-27
+date: 2025-10-22
 tags: [LLM, Deployment, LoRA, Kubernetes, Inference]
 summary: A hands-on guide for serving many fine-tuned adapters on one GPU with LoRAX, from architecture insights to Kubernetes deployments and API usage.
 ---
@@ -39,7 +39,7 @@ LoRAX builds on Hugging Face's Text Generation Inference (TGI) server, inheritin
 
 The chart below demonstrates the cost advantage. While traditional dedicated deployments (dark gray) scale linearly—double the models means double the cost—LoRAX (orange) keeps per-token costs nearly flat regardless of how many adapters you serve. Even hosted API fine-tunes from providers like OpenAI (light gray) can't match this efficiency for multi-model scenarios.
 
-![LoRAX cost per million tokens vs number of models](../assets/2025-10-27-lorax-serving-guide/lorax-performance.png)
+![LoRAX cost per million tokens vs number of models](../assets/2025-10-22-lorax-serving-guide/lorax-performance.png)
 
 *Cost per million tokens as the number of fine-tuned models increases. LoRAX maintains near-constant costs through efficient multi-adapter batching, while dedicated deployments scale linearly. Source: [LoRAX GitHub](https://github.com/predibase/lorax)*
 
