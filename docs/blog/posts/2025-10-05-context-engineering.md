@@ -1,12 +1,11 @@
 ---
-
-layout: post
 title: "Context Engineering in the Agentic‑AI Era — and How to Cook It"
-date: 2025-10-05
+date:
+  created: 2025-10-05
+  updated: 2025-10-05
 tags: [ai-engineering, agents, context-layer, rag, retrieval, memory, guardrails]
 description: A practical guide to designing, evaluating, and shipping the context layer (a.k.a. context engineering) for agentic AI systems — with diagrams, patterns, and a starter config.
 author: Viacheslav Dubrov
-series: AI Engineering Cookbook
 ---
 
 # Context Engineering in the Agentic‑AI Era — and How to Cook It
@@ -25,7 +24,7 @@ series: AI Engineering Cookbook
 
 ## Table of Contents
 
-- [Context Engineering in the Agentic‑AI Era — and How to Cook It](#context-engineering-in-the-agenticai-era--and-how-to-cook-it)
+- [Context Engineering in the Agentic‑AI Era — and How to Cook It](#context-engineering-in-the-agenticai-era-and-how-to-cook-it)
   - [TL;DR](#tldr)
   - [Table of Contents](#table-of-contents)
   - [Why now](#why-now)
@@ -34,7 +33,7 @@ series: AI Engineering Cookbook
   - [Context layer overview (diagrams)](#context-layer-overview-diagrams)
     - [The context assembly lifecycle](#the-context-assembly-lifecycle)
     - [The six components](#the-six-components)
-  - [Components \& patterns](#components--patterns)
+  - [Components \& patterns](#components-patterns)
     - [1) Instructions](#1-instructions)
       - [Schema‑Guided Reasoning (SGR)](#schemaguided-reasoning-sgr)
     - [2) Examples](#2-examples)
@@ -48,9 +47,9 @@ series: AI Engineering Cookbook
     - [Step 3: Design memory](#step-3-design-memory)
     - [Step 4: Specify tools](#step-4-specify-tools)
     - [Step 5: Install guardrails](#step-5-install-guardrails)
-    - [Step 6: Add observability \& evals](#step-6-add-observability--evals)
+    - [Step 6: Add observability \& evals](#step-6-add-observability-evals)
     - [Step 7: Iterate](#step-7-iterate)
-  - [Evaluation \& observability](#evaluation--observability)
+  - [Evaluation \& observability](#evaluation-observability)
     - [What to trace](#what-to-trace)
     - [Eval scenarios](#eval-scenarios)
     - [Metrics](#metrics)

@@ -1,8 +1,11 @@
 ---
-title: MLOps in the Age of Foundation Models. Evolving Infrastructure for LLMs and Beyond
-date: 2025-05-06
+title: "MLOps in the Age of Foundation Models. Evolving Infrastructure for LLMs and Beyond"
+date:
+  created: 2025-05-06
+  updated: 2025-05-06
 tags: [mlops, llmops, infrastructure]
-summary: An exploration of how ML infrastructure and MLOps practices have evolved in response to the rise of large-scale foundation models, contrasting classic MLOps with modern paradigms and highlighting key changes, patterns, and tools.
+description: An exploration of how ML infrastructure and MLOps practices have evolved in response to the rise of large-scale foundation models, contrasting classic MLOps with modern paradigms and highlighting key changes, patterns, and tools.
+author: Viacheslav Dubrov
 ---
 
 # MLOps in the Age of Foundation Models. Evolving Infrastructure for LLMs and Beyond

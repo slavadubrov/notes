@@ -1,8 +1,11 @@
 ---
-title: Quick-guide on Running LLMs Locally on macOS
-date: 2025-05-10
+title: "Quick-guide on Running LLMs Locally on macOS"
+date:
+  created: 2025-05-10
+  updated: 2025-05-10
 tags: [macos, guide, llm, tools]
-summary: A comparison of the top 5 local LLM toolchains for macOS, helping you choose the right solution for your needs.
+description: A comparison of the top 5 local LLM toolchains for macOS, helping you choose the right solution for your needs.
+author: Viacheslav Dubrov
 ---
 
 # Quick-guide on Running LLMs Locally on macOS

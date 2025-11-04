@@ -1,8 +1,11 @@
 ---
-title: Building a Custom FeatureStoreLite MCP Server Using uv
-date: 2025-06-10
+title: "Building a Custom FeatureStoreLite MCP Server Using uv"
+date:
+  created: 2025-06-10
+  updated: 2025-06-10
 tags: [guide, mcp]
-summary: A step-by-step guide that shows how to create your own lightweight feature store MCP server from scratch using FastMCP, run it through **uv**, and integrate it with Claude Desktop. This is a practical example of building a useful MCP server that ML engineers can actually use.
+description: A step-by-step guide that shows how to create your own lightweight feature store MCP server from scratch using FastMCP, run it through **uv**, and integrate it with Claude Desktop. This is a practical example of building a useful MCP server that ML engineers can actually use.
+author: Viacheslav Dubrov
 ---
 
 # Building a Custom FeatureStoreLite MCP Server Using uv
