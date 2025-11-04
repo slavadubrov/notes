@@ -1,181 +1,227 @@
 ---
-title: "Quick-Guide on managing Python on macOS with uv"
+title: "Quick Guide: Managing Python on macOS with uv"
 date:
   created: 2025-04-17
-  updated: 2025-04-17
+  updated: 2025-11-04
 tags: [tooling, python, guide]
 description: Lightning-fast Python installs with Rust-powered uv.
 author: Viacheslav Dubrov
 ---
 
-# Quick-Guide on managing Python like an AI Engineer on macOS with **uv**
-
-## TL;DR Bash Cheat‑sheet
+## Quick Start
 
 ```bash
-brew install uv        # install tool
-uv python install 3.12 # grab interpreter
+# Install uv
+brew install uv
+uv python install 3.12
 
-# New project workflow (modern)
-uv init                # create new project with pyproject.toml
+# For new projects
+uv init                # create project structure
 uv add pandas numpy    # add dependencies
-uv run train.py        # run with correct interpreter
+uv run train.py        # run your script
 
-# Classical project workflow (requirements.txt)
-uv venv                           # create .venv
-uv pip install -r requirements.txt # install from requirements
-uv run train.py                   # run script
+# For existing projects with pyproject.toml
+uv sync  # install dependencies
+uv run train.py  # run your script
 
-brew upgrade uv         # update uv itself (Homebrew install)
+# For existing legacy projects with requirements.txt
+uv venv                             # create virtual environment
+uv pip install -r requirements.txt  # install dependencies
+uv run train.py                     # run your script
+
+# Keep uv updated with brew
+brew upgrade uv
+
+# Keep uv updated with uv self update
+uv self update 
 ```
-
----
 
 <!-- more -->
 
-## 🌙 Why I Migrated to `uv` (And You Should Too)
+## Why uv?
 
-`uv` is a lightning-fast, all-in-one Python project tool written in Rust, combining package management, interpreter installation, and virtual environment creation. Key features include:
+`uv` is a blazing-fast Python tool written in Rust that replaces multiple tools with a single, unified experience. It handles:
 
-- Installing and switching between multiple CPython (and PyPy) builds
-- Creating lightweight virtual environments
-- Resolving dependencies with an absurdly fast pip-compatible resolver
-- Modern project management with `pyproject.toml`
-- A `uvx` shim for running tools like Ruff or Black in isolated sandboxes:
-  - `uvx black .` or `uvx ruff format .`
+- **Package management** - installs dependencies 10-100x faster than pip
+- **Python installation** - manages multiple Python versions without conflicts
+- **Virtual environments** - creates and manages isolated environments automatically
+- **Project management** - modern workflow with `pyproject.toml`
+- **Tool execution** - runs formatters and linters in isolated sandboxes
 
-Result: fewer moving parts, faster setups, and consistent environments across laptop and CI images.
+The result? Simpler workflows, faster setups, and consistent environments across your laptop and CI.
 
 ---
 
-## 1. Installing uv
+## Installing uv
+
+The easiest way to install `uv` on macOS is via Homebrew:
 
 ```bash
-# Install uv via Homebrew (Apple Silicon & Intel)
 brew install uv
 ```
 
-> **Note:** `uv` auto-detects your architecture (Apple Silicon or Intel).
+`uv` automatically detects your Mac's architecture (Apple Silicon or Intel), so no extra configuration is needed.
 
-The same page shows a [one‑liner curl installer](https://docs.astral.sh/uv/installation) if you're brew‑averse.
-Check it worked:
+**Verify the installation:**
 
 ```bash
-# Check installation
-uv --version      # should print something like 0.6.x
-brew upgrade uv   # keep it fresh (since we installed via Homebrew)
+uv --version  # should show 0.6.x or higher
 ```
+
+**Keep it updated:**
+
+```bash
+brew upgrade uv
+```
+
+> **Alternative:** If you prefer not to use Homebrew, check the [official installation docs](https://docs.astral.sh/uv/installation) for other options.
 
 ---
 
-## 2. Installing Python interpreters
+## Installing Python Versions
+
+`uv` can install and manage multiple Python versions side by side:
 
 ```bash
-# Install specific Python versions
-uv python install 3.12.4          # exact version
-uv python install 3.13            # latest minor
-uv python install 3.9 3.10 3.11   # many at once
-uv python list                    # what's already cached
+# Install a specific version
+uv python install 3.12.4
+
+# Install the latest patch of a version
+uv python install 3.13
+
+# Install multiple versions at once
+uv python install 3.9 3.10 3.11
+
+# List installed versions
+uv python list
 ```
 
-These archives live under `~/.cache/uv`, so they don't fight Homebrew or Xcode.
+Python installations are stored in `~/.cache/uv`, keeping them separate from Homebrew or Xcode Python installations.
 
-Need the interpreter for _this_ project only?
+**Pin a Python version for your project:**
 
 ```bash
-# Pin Python version for the project
-uv python pin           # writes .python-version next to your code
+uv python pin 3.12
 ```
 
-Drop that file into Git and your team (or the CI) will automatically get the same binary.
+This creates a `.python-version` file in your project directory. Commit it to Git so your team and CI use the exact same Python version.
 
 ---
 
-## 3. Two Workflows: Modern vs Classical
+## Two Ways to Work with uv
 
-### 3.1 Modern Workflow: New Projects with `pyproject.toml`
+### Option 1: Modern Projects (pyproject.toml)
 
-For new projects or when you want to embrace the modern Python packaging ecosystem:
+For new projects, `uv` uses the modern `pyproject.toml` standard:
+
+**Start a new project:**
 
 ```bash
-# Start a new project
-uv init                    # creates pyproject.toml, README.md, .gitignore
-
-# Add dependencies
-uv add pip                 # needed for Jupyter notebooks in VS Code
-uv add pandas numpy        # add your ML packages
-uv add pytest --dev       # add development dependencies
-
-# Run your code
-uv run python script.py    # run scripts
-uv run jupyter lab         # run installed tools
-uv run pytest             # run tests
+uv init
 ```
 
-**When cloning an existing uv project:**
+This creates `pyproject.toml`, `README.md`, and `.gitignore` for you.
+
+**Add dependencies:**
+
+```bash
+# Add regular dependencies
+uv add pandas numpy
+
+# Add development dependencies (testing, linting, etc.)
+uv add pytest --dev
+
+# Add pip (needed for Jupyter notebooks in VS Code)
+uv add pip
+```
+
+**Run your code:**
+
+```bash
+uv run python script.py  # run Python scripts
+uv run jupyter lab       # run installed tools
+uv run pytest           # run tests
+```
+
+**Clone an existing uv project:**
 
 ```bash
 git clone <repo>
 cd <repo>
-uv sync                    # installs all dependencies from pyproject.toml
+uv sync  # installs all dependencies with locked versions
 ```
 
-This creates a complete environment with locked dependencies, ensuring reproducible builds across your team.
+This ensures everyone on your team uses the exact same package versions.
 
-### 3.2 Classical Workflow: Existing Projects with `requirements.txt`
+### Option 2: Traditional Projects (requirements.txt)
 
-For existing projects or when working with traditional Python setups:
+For existing projects or when you prefer the traditional approach:
+
+**Set up your environment:**
 
 ```bash
-# Set up environment
-uv venv                           # creates .venv
-uv pip install -r requirements.txt # install dependencies
+# Create virtual environment
+uv venv
 
-# Run your code
-uv run python script.py           # run scripts
-uv run installed-package          # run any installed CLI tools
+# Install dependencies
+uv pip install -r requirements.txt
 ```
 
-> **Pro tip:** `uv` automatically detects the `.venv` directory, so you rarely need to manually activate environments.
-
-### 3.3 Using `uvx` for Global Tools
-
-With `uvx` you can run formatters or linters without touching your virtual environment:
+**Run your code:**
 
 ```bash
-uvx black .            # format code in an isolated sandbox
-uvx ruff check src/    # lint code without installing ruff globally
-uvx jupyter lab        # run Jupyter without installing it locally
+uv run python script.py
 ```
 
----
+> **Tip:** `uv` automatically detects the `.venv` directory, so you don't need to manually activate it.
 
-## 4. Quick Reference Table
+### Running Tools with uvx
 
-| Task                                      | Modern (`pyproject.toml`)     | Classical (`requirements.txt`)           |
-| ----------------------------------------- | ----------------------------- | ---------------------------------------- |
-| Start new project                         | `uv init`                     | `touch requirements.txt`                 |
-| Add dependency                            | `uv add package`              | `echo package >> requirements.txt`      |
-| Install dependencies                      | `uv sync`                     | `uv pip install -r requirements.txt`    |
-| Run script                                | `uv run python script.py`     | `uv run python script.py`               |
-| Run installed tool                        | `uv run tool-name`            | `uv run tool-name`                       |
-| Create environment                        | _automatic with uv init_      | `uv venv`                                |
+Use `uvx` to run tools without installing them in your project:
 
----
+```bash
+uvx black .          # format code
+uvx ruff check src/  # lint code
+uvx jupyter lab      # run Jupyter temporarily
+```
 
-## 5. Co‑existing with pyenv (if you must)
-
-- **Keep pyenv** if you rely on its "shim" strategy to globally shadow `python` in your shell.
-- **Skip pyenv** if project‑local versions and CI parity are your priority - uv handles that solo.
-
-From uv's perspective every interpreter in `$PATH` (even ones compiled by pyenv or Homebrew) is just "system Python". You can pass it to any `--python` flag and mix‑and‑match as needed.
+Each tool runs in its own isolated environment, keeping your project dependencies clean.
 
 ---
 
-## 6. ML‑specific niceties
+## Quick Reference
 
-- The **[PyTorch integration guide](https://docs.astral.sh/uv/guides/integration/pytorch/)** shows CUDA‑aware installs in one command - excellent for GPU vs. CPU builds on the same Mac.
-- Binary wheels pulled by uv are cached, so re‑creating a venv to try a different version of scikit‑learn or TensorFlow feels instant.
-- Use `uv add pip` in new projects to ensure Jupyter notebooks work seamlessly in VS Code.
+| Task                 | Modern (pyproject.toml)       | Traditional (requirements.txt)       |
+| -------------------- | ----------------------------- | ------------------------------------ |
+| Start new project    | `uv init`                     | `touch requirements.txt`             |
+| Add dependency       | `uv add package`              | `echo package >> requirements.txt`   |
+| Install dependencies | `uv sync`                     | `uv pip install -r requirements.txt` |
+| Run script           | `uv run python script.py`     | `uv run python script.py`            |
+| Run installed tool   | `uv run tool-name`            | `uv run tool-name`                   |
+| Create environment   | automatic with `uv init`      | `uv venv`                            |
+
+---
+
+## Using uv with pyenv
+
+You can use both `uv` and `pyenv` together if needed:
+
+- **Keep pyenv** if you need its shell shim strategy to globally control which `python` command is used
+- **Use uv alone** if you prefer project-specific Python versions (simpler and faster)
+
+`uv` can use any Python interpreter in your `$PATH`, including those installed by pyenv or Homebrew. Just pass `--python <path>` when needed.
+
+---
+
+## Machine Learning Tips
+
+**PyTorch with CUDA:**
+Check out the [PyTorch integration guide](https://docs.astral.sh/uv/guides/integration/pytorch/) for installing GPU-optimized versions.
+
+**Fast experimentation:**
+`uv` caches all downloaded packages, so switching between different versions of scikit-learn or TensorFlow is nearly instant.
+
+**Jupyter in VS Code:**
+Add pip to your project with `uv add pip` to ensure Jupyter notebooks work properly in VS Code.
 
 ---
