@@ -1,9 +1,11 @@
-site_name: "Shared Intelligence: Tips & Tricks in Machine Learning"
+site_name: "Edge of Context: Tips & Tricks in Machine Learning"
 site_url: https://slavadubrov.github.io/
 site_description: "ML & engineering notes"
 
 theme:
   name: material
+  logo: assets/logo-eoc.svg
+  favicon: assets/favicon-eoc.svg
   features:
     - navigation.instant # Enables instant loading of pages when clicking navigation links
     - navigation.instant.prefetch # Preloads pages linked from the current page for faster navigation
@@ -40,6 +42,9 @@ theme:
 
 extra_javascript:
   - javascripts/mermaid.js
+
+extra_css:
+  - assets/brand.css
 
 extra:
   social:
@@ -85,7 +90,8 @@ plugins: # Configures MkDocs plugins for extended functionality
       categories: # Configures RSS feed categories
         - categories # Uses 'categories' metadata field
         - tags # Uses 'tags' metadata field as categories
-      feed_title: "Shared Intelligence: Tips and Tricks in Machine Learning" # Override feed title to avoid XML escaping issues with &
+      feed_title: "Edge of Context: Tips and Tricks in Machine Learning" # Override feed title to avoid XML escaping issues with &
+      image: https://slavadubrov.github.io/assets/logo-eoc.svg # RSS feed image URL
 
 nav: # Defines the navigation structure of the site
   - Home: index.md # Links the Home navigation item to index.md

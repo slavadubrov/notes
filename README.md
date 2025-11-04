@@ -1,4 +1,4 @@
-# Shared Intelligence: ML Blog
+# Edge of Context: ML Blog
 
 A blog about Machine Learning tips, tricks, and experiences, built with MkDocs and hosted on GitHub Pages.
 

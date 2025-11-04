@@ -3,7 +3,7 @@ title: About Me
 date: 2025-01-15
 ---
 
-# Shared Intelligence
+# Edge of Context
 
 > Practical lessons from building ML systems that scale.
 
