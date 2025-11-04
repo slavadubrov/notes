@@ -1,8 +1,11 @@
 ---
-title: Choosing the Right Open-Source LLM Variant & File Format
-date: 2025-05-11
+title: "Choosing the Right Open-Source LLM Variant & File Format"
+date:
+  created: 2025-05-11
+  updated: 2025-05-11
 tags: [guide, llm]
-summary: A practical guide to navigating open-source LLM variants and file formats, covering model types (Base, Instruct, Distill, QAT, MoE), quantization formats (GGUF, GPTQ, AWQ), and hardware-specific recommendations for optimal performance.
+description: A practical guide to navigating open-source LLM variants and file formats, covering model types (Base, Instruct, Distill, QAT, MoE), quantization formats (GGUF, GPTQ, AWQ), and hardware-specific recommendations for optimal performance.
+author: Viacheslav Dubrov
 ---
 
 # Choosing the Right Open-Source LLM Variant & File Format

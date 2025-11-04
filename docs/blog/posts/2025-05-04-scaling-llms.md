@@ -1,8 +1,11 @@
 ---
-title: Scaling Large Language Models - Practical Multi-GPU and Multi-Node Strategies for 2025
-date: 2025-05-04
+title: "Scaling Large Language Models - Practical Multi-GPU and Multi-Node Strategies for 2025"
+date:
+  created: 2025-05-04
+  updated: 2025-05-04
 tags: [LLM, Distributed Training, Deep Learning, GPU, Parallelism]
-summary: A practical guide to scaling large language models across multiple GPUs and nodes, with real-world strategies from Hugging Face's Ultra-Scale Playbook.
+description: A practical guide to scaling large language models across multiple GPUs and nodes, with real-world strategies from Hugging Face's Ultra-Scale Playbook.
+author: Viacheslav Dubrov
 ---
 
 # Scaling Large Language Models - Practical Multi-GPU and Multi-Node Strategies for 2025

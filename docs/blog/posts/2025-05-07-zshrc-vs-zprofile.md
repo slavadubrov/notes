@@ -1,8 +1,11 @@
 ---
-title: Quick-Guide on ~/.zprofile vs ~/.zshrc 🚀
-date: 2025-05-07
+title: "Quick-Guide on ~/.zprofile vs ~/.zshrc 🚀"
+date:
+  created: 2025-05-07
+  updated: 2025-05-07
 tags: [tooling, macos, guide]
-summary: A clear guide explaining when zsh loads ~/.zprofile vs ~/.zshrc, what belongs in each file, and how to keep your shell configuration clean and maintainable.
+description: A clear guide explaining when zsh loads ~/.zprofile vs ~/.zshrc, what belongs in each file, and how to keep your shell configuration clean and maintainable.
+author: Viacheslav Dubrov
 ---
 
 # Quick-Guide on ~/.zprofile vs ~/.zshrc 🚀

@@ -1,12 +1,11 @@
 ---
-
-layout: post
 title: "Context Engineering in the Agentic‑AI Era — and How to Cook It"
-date: 2025-10-05
+date:
+  created: 2025-10-05
+  updated: 2025-10-05
 tags: [ai-engineering, agents, context-layer, rag, retrieval, memory, guardrails]
 description: A practical guide to designing, evaluating, and shipping the context layer (a.k.a. context engineering) for agentic AI systems — with diagrams, patterns, and a starter config.
 author: Viacheslav Dubrov
-series: AI Engineering Cookbook
 ---
 
 # Context Engineering in the Agentic‑AI Era — and How to Cook It
