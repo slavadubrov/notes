@@ -84,7 +84,7 @@ plugins: # Configures MkDocs plugins for extended functionality
   - macros # Allows using variables and macros in Markdown
   - kroki:
       ServerURL: https://kroki.io
-      HttpMethod: POST
+      HttpMethod: GET
       FileTypes:
         - svg
       TagFormat: img
