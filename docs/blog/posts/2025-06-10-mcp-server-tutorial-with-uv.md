@@ -319,15 +319,15 @@ Example queries to test:
 
 - "Show me the database schema for the feature store"
 
-![Question 1](../assets/2025-06-10-mcp-server-tutorial-with-uv/question-1.png){: style="width:600px;max-width:100%;height:auto;"}
+![Question 1](https://slavadubrov.github.io/blog/assets/2025-06-10-mcp-server-tutorial-with-uv/question-1.png){: style="width:600px;max-width:100%;height:auto;"}
 
 - "List all available features in the store"
 
-![Question 2](../assets/2025-06-10-mcp-server-tutorial-with-uv/question-2.png){: style="width:600px;max-width:100%;height:auto;"}
+![Question 2](https://slavadubrov.github.io/blog/assets/2025-06-10-mcp-server-tutorial-with-uv/question-2.png){: style="width:600px;max-width:100%;height:auto;"}
 
 - "Retrieve the feature vector for product_abc"
 
-![Question 3](../assets/2025-06-10-mcp-server-tutorial-with-uv/question-3.png){: style="width:600px;max-width:100%;height:auto;"}
+![Question 3](https://slavadubrov.github.io/blog/assets/2025-06-10-mcp-server-tutorial-with-uv/question-3.png){: style="width:600px;max-width:100%;height:auto;"}
 
 - Try your own queries!
 
@@ -399,15 +399,15 @@ The Inspector allows you to:
 - **Monitor Traffic**: See all MCP protocol messages in real-time
 - **Debug Issues**: Identify problems with tool calls or resource access
 
-![Inspector](../assets/2025-06-10-mcp-server-tutorial-with-uv/inspector.png){: style="width:600px;max-width:100%;height:auto;"}
+![Inspector](https://slavadubrov.github.io/blog/assets/2025-06-10-mcp-server-tutorial-with-uv/inspector.png){: style="width:600px;max-width:100%;height:auto;"}
 
 You can check manually the resources available in the server:
 
-![Resources](../assets/2025-06-10-mcp-server-tutorial-with-uv/inspector-resources.png){: style="width:600px;max-width:100%;height:auto;"}
+![Resources](https://slavadubrov.github.io/blog/assets/2025-06-10-mcp-server-tutorial-with-uv/inspector-resources.png){: style="width:600px;max-width:100%;height:auto;"}
 
 As well as the tools available:
 
-![Tools](../assets/2025-06-10-mcp-server-tutorial-with-uv/inspector-tools.png){: style="width:600px;max-width:100%;height:auto;"}
+![Tools](https://slavadubrov.github.io/blog/assets/2025-06-10-mcp-server-tutorial-with-uv/inspector-tools.png){: style="width:600px;max-width:100%;height:auto;"}
 
 ---
 
