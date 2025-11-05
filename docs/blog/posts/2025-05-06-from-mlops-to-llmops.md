@@ -22,7 +22,7 @@ A few years back, MLOps primarily meant applying DevOps principles to machine le
 
 Back then, ML systems were built around relatively smaller models, often trained from scratch on domain-specific data. Here's what the "classic" MLOps era looked like:
 
-```mermaid
+```kroki-mermaid
 graph LR
     A[Raw Data] --> B[Data Pipeline]
     B --> C[Feature Engineering]
@@ -78,7 +78,7 @@ As one practitioner noted in early 2024: "Foundational models are everywhere now
 
 This shift created a fundamentally different paradigm:
 
-```mermaid
+```kroki-mermaid
 graph TD
     subgraph "Classic MLOps"
         A1[Your Data] --> A2[Train from Scratch]
@@ -177,7 +177,7 @@ With foundation models at the center, today's ML infrastructure must support cap
 
 Training a model with billions of parameters is beyond the capacity of a single machine. Modern ML infrastructure orchestrates distributed training across multiple nodes:
 
-```mermaid
+```kroki-mermaid
 graph TD
     A[Large Model] --> B[Split Layers]
     B --> C[GPU 1: Layers 1-10]
@@ -248,7 +248,7 @@ Foundation models have a fixed knowledge cutoff and limited context windows. To 
 
 **How RAG works**:
 
-```mermaid
+```kroki-mermaid
 sequenceDiagram
     participant User
     participant App
@@ -408,7 +408,7 @@ Model management evolved with centralized hubs:
 
 The data layer has fundamentally changed:
 
-```mermaid
+```kroki-mermaid
 graph LR
     subgraph "Classic MLOps"
         A1[Feature Store] --> A2[Structured Features]
@@ -458,7 +458,7 @@ These platforms provide managed services like "fine-tune this 20B parameter mode
 
 The proliferation of model sizes led to **inference gateways**—routers that intelligently direct requests:
 
-```mermaid
+```kroki-mermaid
 graph TD
     Client[Client Request] --> Gateway[Inference Gateway]
     Gateway --> |Low latency needed| Small[Small Fast Model]

@@ -27,7 +27,7 @@ Before diving into tools, here's what you get:
 
 The catch? You need decent hardware (8GB+ RAM, ideally Apple Silicon) and models take 2-20GB of disk space depending on size.
 
-```mermaid
+```kroki-mermaid
 graph LR
     A[Your Prompt] --> B[Local LLM Tool]
     B --> C[Model on Disk]
@@ -231,7 +231,7 @@ Here's how these tools stack up at a glance:
 
 ## How to Choose in 60 Seconds
 
-```mermaid
+```kroki-mermaid
 graph TD
     A[What's your priority?] --> B{Just want to chat?}
     A --> C{Need to code against it?}

@@ -48,7 +48,7 @@ The solution? Split the workload across multiple GPUs. Let's explore how.
 
 **Limitation:** Memory inefficient - every GPU stores the full model, so you're not saving memory, just increasing throughput.
 
-```mermaid
+```kroki-mermaid
 flowchart LR
     subgraph DataLoader
         D[Global batch] --> |split| MB1[Micro-batch 1]
@@ -90,7 +90,7 @@ flowchart LR
 
 **Real-world impact:** FSDP lets you train models 4-8x larger than what fits on one GPU.
 
-```mermaid
+```kroki-mermaid
 flowchart TD
     %% GPU-local state
     subgraph "GPU 1"
@@ -147,7 +147,7 @@ flowchart TD
 
 **Sweet spot:** TP degree of 2-8 within a single machine with NVLink.
 
-```mermaid
+```kroki-mermaid
 flowchart LR
     A[X activations] --> |broadcast| X1[GPU1]
     A --> |broadcast| X2[GPU2]
@@ -184,7 +184,7 @@ flowchart LR
 
 **Challenge:** Pipeline "bubbles" (idle time) at the start and end of each batch. Use multiple micro-batches to minimize this.
 
-```mermaid
+```kroki-mermaid
 sequenceDiagram
     participant S0 as GPU-Stage 0 (Layers 1-4)
     participant S1 as GPU-Stage 1 (Layers 5-8)
@@ -219,7 +219,7 @@ sequenceDiagram
 
 **Real-world impact:** Context Parallelism enables 100K+ token processing on consumer hardware that would otherwise max out at 8K tokens.
 
-```mermaid
+```kroki-mermaid
 flowchart LR
     subgraph Input["Input Sequence"]
         S[Sequence 0-8191 tokens]
@@ -280,7 +280,7 @@ flowchart LR
 
 **Trade-off:** More parameters with less compute per token, but training can be trickier due to load balancing between experts.
 
-```mermaid
+```kroki-mermaid
 flowchart LR
     subgraph Input_Tokens["Input Tokens"]
         T1["T₁"]
@@ -429,7 +429,7 @@ Still not sure what to use? Follow this decision tree:
 
 **Visual decision tree:**
 
-```mermaid
+```kroki-mermaid
 flowchart TD
     start([Start: Need to scale LLM?]) --> fit{Model fits on<br/>single GPU?}
     

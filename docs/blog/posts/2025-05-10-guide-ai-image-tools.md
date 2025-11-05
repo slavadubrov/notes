@@ -20,7 +20,7 @@ Below is a practical guide to five of the most popular macOS-ready front-ends. E
 
 All five tools are essentially **user interfaces** that sit on top of Stable Diffusion model weights. They handle the PyTorch plumbing, model loading, and image generation pipeline so you can focus on prompting and tweaking parameters.
 
-```mermaid
+```kroki-mermaid
 graph LR
     A[Your Prompt] --> B[UI Tool]
     B --> C[Stable Diffusion Model]
@@ -121,7 +121,7 @@ Because they all consume the same `.safetensors` or `.ckpt` checkpoint files, yo
 
 ## Decision flowchart
 
-```mermaid
+```kroki-mermaid
 graph TD
     A[Choose your tool] --> B{First time with<br/>Stable Diffusion?}
     B -->|Yes| C[DiffusionBee<br/>Zero setup, friendly UI]

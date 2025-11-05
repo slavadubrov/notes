@@ -23,7 +23,7 @@ Open-source LLMs vary along **two independent dimensions**:
 
 Think of it like this: the model variant is the recipe, and the file format is the container. Same recipe, different containers for different kitchens.
 
-```mermaid
+```kroki-mermaid
 graph LR
     A[Model Release] --> B[Model Variant<br/>What it does]
     A --> C[File Format<br/>Where it runs]
@@ -102,7 +102,7 @@ Understanding both dimensions helps you avoid downloading 20 GB of the wrong mod
 
 **Trade-offs:** Takes more disk space (you're storing all the experts). Not every inference framework supports MoE routing yet - check compatibility first.
 
-```mermaid
+```kroki-mermaid
 graph TD
     A[Choose Your Model Variant] --> B{What's your goal?}
     B -->|Production app| C[Instruct/Chat]
@@ -203,7 +203,7 @@ Now that you know _what_ kind of model you want, you need to pick _how_ it's pac
 - Edge deployment with specialized chips
 - When you need maximum inference speed on specific hardware
 
-```mermaid
+```kroki-mermaid
 graph TD
     A[Choose File Format] --> B{What hardware?}
     B -->|CPU or mixed| C[GGUF Q4_K_M]
@@ -229,7 +229,7 @@ graph TD
 
 Here's a practical flowchart to help you choose. Start with your constraints (hardware and use case), then pick the appropriate combination.
 
-```mermaid
+```kroki-mermaid
 flowchart TD
     Start[I need an LLM] --> Hardware{What's my hardware?}
     

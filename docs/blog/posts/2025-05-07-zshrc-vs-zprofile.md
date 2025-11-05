@@ -44,7 +44,7 @@ Interactive shells only read `~/.zshrc`.
 
 > **Key insight:** On macOS, every new terminal tab/window is a login shell, so both files run. On Linux desktop terminals, you often get non-login shells, so only `~/.zshrc` runs.
 
-```mermaid
+```kroki-mermaid
 graph TD
     A[Open Terminal] --> B{Login Shell?}
     B -->|Yes macOS default| C[Load ~/.zprofile]
@@ -117,7 +117,7 @@ Configuration that affects your **interactive experience** and can be reloaded e
 
 - **Anything you want to tweak and reload** with `source ~/.zshrc`
 
-```mermaid
+```kroki-mermaid
 graph LR
     A[~/.zprofile] -->|Sets up| B[Environment<br/>PATH, tools]
     A -->|Runs once| C[Expensive operations<br/>SSH agent, etc]
