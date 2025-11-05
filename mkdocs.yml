@@ -83,7 +83,10 @@ plugins: # Configures MkDocs plugins for extended functionality
   - tags # Adds support for tagging content
   - macros # Allows using variables and macros in Markdown
   - rss: # Configures RSS feed generation
-      match_path: blog/posts/.* # Specifies which files to include in the RSS feed
+      use_material_blog: true # Ensure Material blog integration is enabled
+      abstract_chars_count: -1 # Serve the full HTML content in each RSS item
+      length: 100 # Increase the number of items exposed in the feed
+      match_path: blog/posts/.* # Restrict RSS feed items to actual blog posts
       date_from_meta: # Defines how to extract dates for RSS entries
         as_creation: date.created # Uses the 'date.created' metadata field as creation date
         as_update: date.updated # Uses the 'date.updated' metadata field as update date
