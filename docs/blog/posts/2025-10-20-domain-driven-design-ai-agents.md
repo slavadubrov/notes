@@ -97,7 +97,7 @@ Take "product" in e-commerce. In the **Inventory** context, a product is a catal
 
 Bounded contexts let each subdomain have its own definition without conflict. Translation layers or interfaces connect them when they need to talk.
 
-```kroki-mermaid
+```mermaid
 graph TD
     A[Order Management<br/>'Product' = order line item] --> D[Translation Layer]
     B[Billing<br/>'Product' = pricing entity] --> D
@@ -256,7 +256,7 @@ Each agent (or major capability) is a bounded context. A research orchestrator m
 
 Each has its own model, terminology, and invariants. They communicate through well-defined interfaces or events.
 
-```kroki-mermaid
+```mermaid
 flowchart LR
   Orchestrator["Research Orchestrator"] --> Trends["Trends Agent<br/>(Market data)"]
   Orchestrator --> Compliance["Compliance Agent<br/>(Policy checks)"]
@@ -309,7 +309,7 @@ Start by breaking the problem into subdomains:
 
 We'll focus on Task Management first. The others can evolve as separate bounded contexts or companion agents.
 
-```kroki-mermaid
+```mermaid
 graph LR
     A[User Request] --> B[Task Management]
     B --> C[Scheduling]

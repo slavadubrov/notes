@@ -48,7 +48,7 @@ The chart below demonstrates the cost advantage. While traditional dedicated dep
 
 ### Request flow diagram
 
-```kroki-mermaid
+```mermaid
 sequenceDiagram
     participant Client
     participant Scheduler
@@ -89,7 +89,7 @@ On-prem installations or edge devices often have limited GPU resources. A single
 
 The core of LoRAX is its three-tier memory hierarchy. Understanding this helps you predict performance and plan capacity.
 
-```kroki-mermaid
+```mermaid
 flowchart TB
     subgraph Requests["Incoming Requests"]
         R1[Client A: adapter-law]

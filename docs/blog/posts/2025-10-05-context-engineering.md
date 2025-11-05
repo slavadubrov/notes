@@ -123,7 +123,7 @@ The model receives all of this structured context, generates an answer, and the 
 
 Here's what happens when a user query arrives:
 
-```kroki-mermaid
+```mermaid
 flowchart TD
   Start((User Query)) --> Route{What kind<br/>of query?}
   Route -->|Simple| Load1[Load: Instructions + Examples]
@@ -155,7 +155,7 @@ This diagram shows the **decision flow**: what gets loaded, when safety checks r
 
 ### The six components
 
-```kroki-mermaid
+```mermaid
 flowchart LR
   subgraph CL[Context Layer]
     I["Instructions<br/>(role, policies, objectives)"]
@@ -213,7 +213,7 @@ SYSTEM RULES
 
 **Diagram: instruction contract**
 
-```kroki-mermaid
+```mermaid
 flowchart TD
   Sys[System/Org Policy] --> Dev[Developer Guidelines]
   Dev --> User[User Task]
@@ -323,7 +323,7 @@ Why examples help: they act like templates. The model learns the shape, wording,
 
 **Diagram: adaptive retrieval router**
 
-```kroki-mermaid
+```mermaid
 flowchart LR
   Q[User Query] --> D{Query Type?}
   D -->|Simple/known| NR["No Retrieval<br/>(parametric)"]
@@ -370,7 +370,7 @@ flowchart LR
 
 **Diagram: memory scoping**
 
-```kroki-mermaid
+```mermaid
 flowchart TD
   subgraph LT[Long-term Memory]
     P[Profile & Preferences]
@@ -449,7 +449,7 @@ flowchart TD
 
 **Diagram: tool loop with verification**
 
-```kroki-mermaid
+```mermaid
 sequenceDiagram
   participant A as Agent
   participant P as Planner
@@ -513,7 +513,7 @@ Your agent validates the postconditions. If they fail, it either retries (if tra
 
 **Diagram: guardrails in the loop**
 
-```kroki-mermaid
+```mermaid
 flowchart LR
   In[User Input] --> IG["Input Guards<br/>(PII, toxicity, injection)"]
   IG --> Y[(Model/Agent)]

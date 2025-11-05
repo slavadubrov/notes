@@ -27,7 +27,7 @@ The file evolved in two key stages:
 
 Today, most Python developer tools (Black, isort, pytest, Ruff, mypy) read their configuration from `[tool.*]` sections in this file, making it the central hub for your entire project setup.
 
-```kroki-mermaid
+```mermaid
 graph TD
     A[pyproject.toml] --> B[build-system]
     A --> C[project]
@@ -183,7 +183,7 @@ Everything stays in sync automatically—no manual venv management needed.
 
 If you have a legacy Python project, here's how to modernize it:
 
-```kroki-mermaid
+```mermaid
 graph LR
     A[Old setup.py] --> B[Add build-system]
     B --> C[Move to project]
