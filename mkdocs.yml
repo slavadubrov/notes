@@ -43,6 +43,10 @@ theme:
 extra_css:
   - assets/brand.css
 
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js
+  - javascripts/mermaid-init.js
+
 extra:
   social:
     - icon: material/rss
@@ -80,7 +84,9 @@ plugins: # Configures MkDocs plugins for extended functionality
   - tags # Adds support for tagging content
   - macros # Allows using variables and macros in Markdown
   - mermaid-to-svg:
-      mmdc_path: "npx --yes @mermaid-js/mermaid-cli@10.9.1 mmdc"
+      enabled_if_env: "MKDOCS_SSR_MERMAID"
+      mmdc_path: "node_modules/.bin/mmdc"
+      error_on_fail: false
       mermaid_config:
         startOnLoad: false
         theme: default
