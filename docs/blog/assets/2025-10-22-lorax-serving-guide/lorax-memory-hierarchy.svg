@@ -17,7 +17,7 @@
   </defs>
 
   <g font-family="sans-serif" text-anchor="middle">
-    
+
     <!-- Requests -->
     <g transform="translate(50, 200)">
       <rect x="0" y="0" width="140" height="100" rx="10" fill="#f3f4f6" stroke="#ccc" stroke-width="2"/>

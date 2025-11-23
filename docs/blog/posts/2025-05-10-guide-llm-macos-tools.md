@@ -33,7 +33,7 @@ graph LR
     B --> C[Model on Disk]
     C --> D[Apple Silicon GPU]
     D --> E[Response in Seconds]
-    
+
     style A fill:#e1f5ff
     style E fill:#d4edda
     style D fill:#fff3cd
@@ -221,13 +221,13 @@ chmod +x koboldcpp
 
 Here's how these tools stack up at a glance:
 
-| Tool | Interface | Setup | GPU Support | License | Best For |
-|------|-----------|-------|-------------|---------|----------|
-| **Ollama** | Menu bar + CLI | 1-click `.dmg` | Metal | Proprietary core | Easiest path from zero to running |
-| **LM Studio** | GUI + SDK | 1-click `.dmg` | Metal + MLX | MIT SDK, closed GUI | Developers who want GUI and API |
-| **llama.cpp** | CLI / C API | Homebrew or compile | Metal | MIT | Maximum control and customization |
-| **GPT4All** | Desktop app | 1-click `.pkg` | Metal | MIT | Privacy-focused ChatGPT alternative |
-| **KoboldCPP** | Web UI | Single binary | Metal | AGPL-3 | Creative writing and storytelling |
+| Tool          | Interface      | Setup               | GPU Support | License             | Best For                            |
+| ------------- | -------------- | ------------------- | ----------- | ------------------- | ----------------------------------- |
+| **Ollama**    | Menu bar + CLI | 1-click `.dmg`      | Metal       | Proprietary core    | Easiest path from zero to running   |
+| **LM Studio** | GUI + SDK      | 1-click `.dmg`      | Metal + MLX | MIT SDK, closed GUI | Developers who want GUI and API     |
+| **llama.cpp** | CLI / C API    | Homebrew or compile | Metal       | MIT                 | Maximum control and customization   |
+| **GPT4All**   | Desktop app    | 1-click `.pkg`      | Metal       | MIT                 | Privacy-focused ChatGPT alternative |
+| **KoboldCPP** | Web UI         | Single binary       | Metal       | AGPL-3              | Creative writing and storytelling   |
 
 ## How to Choose in 60 Seconds
 
@@ -237,17 +237,17 @@ graph TD
     A --> C{Need to code against it?}
     A --> D{Want maximum control?}
     A --> E{Writing stories?}
-    
+
     B -->|Privacy matters| F[GPT4All]
     B -->|Easy setup| G[Ollama]
-    
+
     C -->|Need GUI too| H[LM Studio]
     C -->|API only| G
-    
+
     D --> I[llama.cpp]
-    
+
     E --> J[KoboldCPP]
-    
+
     style F fill:#d4edda
     style G fill:#d4edda
     style H fill:#d4edda

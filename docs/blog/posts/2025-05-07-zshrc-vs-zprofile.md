@@ -51,7 +51,7 @@ graph TD
     B -->|No Linux default| D[Load ~/.zshrc]
     C --> D
     D --> E[Interactive Prompt Ready]
-    
+
     style C fill:#e1f5ff
     style D fill:#fff4e1
     style E fill:#e8f5e8
@@ -68,18 +68,21 @@ The rule of thumb: **initialization in `~/.zprofile`, interaction in `~/.zshrc`*
 Configuration that needs to happen **once per session** and must be available to all child processes:
 
 - **Environment variables** like `PATH`, `EDITOR`, `LANG`
+
   ```sh
   export PATH="$HOME/.local/bin:$PATH"
   export EDITOR="vim"
   ```
 
 - **Version managers** that modify your environment
+
   ```sh
   eval "$(pyenv init -)"
   eval "$(fnm env)"
   ```
 
 - **System-level setup**
+
   ```sh
   ulimit -n 4096
   eval "$(ssh-agent -s)"
@@ -92,24 +95,28 @@ Configuration that needs to happen **once per session** and must be available to
 Configuration that affects your **interactive experience** and can be reloaded easily:
 
 - **Aliases and functions**
+
   ```sh
   alias gs='git status'
   alias ll='ls -lah'
   ```
 
 - **Prompt customization**
+
   ```sh
   autoload -Uz promptinit
   promptinit
   ```
 
 - **Shell options and behaviors**
+
   ```sh
   setopt autocd
   setopt histignorealldups
   ```
 
 - **Key bindings and completions**
+
   ```sh
   bindkey -e
   autoload -Uz compinit && compinit
@@ -123,7 +130,7 @@ graph LR
     A -->|Runs once| C[Expensive operations<br/>SSH agent, etc]
     D[~/.zshrc] -->|Configures| E[Interactive features<br/>Aliases, prompt]
     D -->|Can reload| F[Easily tweakable<br/>No logout needed]
-    
+
     style A fill:#e1f5ff
     style D fill:#fff4e1
 ```
@@ -266,16 +273,16 @@ bindkey -e
 
 ## Quick Reference 🎯
 
-| Scenario | File | Why |
-|:---------|:-----|:----|
-| Set PATH for all programs | `~/.zprofile` | Needs to be available to child processes |
-| Define `alias ll='ls -lah'` | `~/.zshrc` | Interactive convenience, reload anytime |
-| Initialize pyenv/nvm | `~/.zprofile` | Expensive, needs to run once |
-| Customize prompt with colors | `~/.zshrc` | Visual/interactive feature |
-| Set `EDITOR=vim` | `~/.zprofile` | Environment variable for other programs |
-| Add shell completions | `~/.zshrc` | Interactive feature |
-| Start ssh-agent | `~/.zprofile` | Once per session is enough |
-| Create shell functions | `~/.zshrc` | Interactive convenience, iterate easily |
+| Scenario                     | File          | Why                                      |
+| :--------------------------- | :------------ | :--------------------------------------- |
+| Set PATH for all programs    | `~/.zprofile` | Needs to be available to child processes |
+| Define `alias ll='ls -lah'`  | `~/.zshrc`    | Interactive convenience, reload anytime  |
+| Initialize pyenv/nvm         | `~/.zprofile` | Expensive, needs to run once             |
+| Customize prompt with colors | `~/.zshrc`    | Visual/interactive feature               |
+| Set `EDITOR=vim`             | `~/.zprofile` | Environment variable for other programs  |
+| Add shell completions        | `~/.zshrc`    | Interactive feature                      |
+| Start ssh-agent              | `~/.zprofile` | Once per session is enough               |
+| Create shell functions       | `~/.zshrc`    | Interactive convenience, iterate easily  |
 
 ---
 

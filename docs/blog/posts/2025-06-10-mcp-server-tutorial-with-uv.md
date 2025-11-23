@@ -10,7 +10,7 @@ author: Viacheslav Dubrov
 
 # Building a Custom FeatureStoreLite MCP Server Using uv
 
-*A step-by-step guide that shows how to create your own lightweight feature store MCP server from scratch using FastMCP, run it through **uv**, and integrate it with Claude Desktop. This is a practical example of building a useful MCP server that ML engineers can actually use.*
+_A step-by-step guide that shows how to create your own lightweight feature store MCP server from scratch using FastMCP, run it through **uv**, and integrate it with Claude Desktop. This is a practical example of building a useful MCP server that ML engineers can actually use._
 
 <!-- more -->
 
@@ -18,7 +18,7 @@ author: Viacheslav Dubrov
 
 ## 1. Why build a custom "FeatureStoreLite" MCP server?
 
-Let's create a practical MCP server example that solves a real problem: **feature storage and retrieval for ML pipelines**. Our custom *FeatureStoreLite* server will be a microservice responsible for storing and retrieving precomputed feature vectors via keys, allowing ML pipelines to share features efficiently without recomputation.
+Let's create a practical MCP server example that solves a real problem: **feature storage and retrieval for ML pipelines**. Our custom _FeatureStoreLite_ server will be a microservice responsible for storing and retrieving precomputed feature vectors via keys, allowing ML pipelines to share features efficiently without recomputation.
 
 This tutorial demonstrates how to build an **MCP server** that could be useful in a real-world ML pipeline.
 
@@ -93,31 +93,31 @@ def init_db():
     # Add example features for experimentation
     example_features = [
         (
-            "user_123", 
+            "user_123",
             "[0.1, 0.2, -0.5, 0.8, 0.3, -0.1, 0.9, -0.4]",
             '{"type": "user_embedding", "user_id": 123, "age": 25, '
             '"category": "premium"}'
         ),
         (
-            "product_abc", 
+            "product_abc",
             "[0.7, -0.3, 0.4, 0.1, -0.8, 0.6, 0.2, -0.5]",
             '{"type": "product_embedding", "product_id": "abc", '
             '"price": 29.99, "category": "electronics"}'
         ),
         (
-            "doc_guide_001", 
+            "doc_guide_001",
             "[-0.2, 0.5, 0.9, -0.1, 0.4, 0.7, -0.6, 0.3]",
             '{"type": "document_embedding", "doc_id": "guide_001", '
             '"title": "Getting Started Guide", "section": "introduction"}'
         ),
         (
-            "recommendation_engine", 
+            "recommendation_engine",
             "[0.4, 0.8, -0.2, 0.6, -0.7, 0.1, 0.5, -0.9]",
             '{"type": "model_embedding", "model": "collaborative_filter", '
             '"version": "1.2", "accuracy": 0.85}'
         )
     ]
-    
+
     # Insert example features only if they don't exist
     for key, vector, metadata in example_features:
         existing = conn.execute(
@@ -129,7 +129,7 @@ def init_db():
                 "VALUES (?, ?, ?)",
                 (key, vector, metadata)
             )
-    
+
     conn.commit()
     conn.close()
 
@@ -300,14 +300,16 @@ Add the following configuration to your `claude_desktop_config.json`:
 ```
 
 > **💡 Important Tip:** If you are getting errors when connecting to the server, you can use the next command:
+>
 > ```bash
 > uv run mcp install featurestore_server.py
-> ``` 
+> ```
+>
 > This command will automatically install and configure the server for Claude Desktop. After running this command, check your Claude Desktop config file to see how the server has been configured.
-> 
+>
 > This is often the easiest way to get started, especially if you're having trouble with manual configuration!
 
-### 4.3  Testing the server
+### 4.3 Testing the server
 
 After updating the config:
 

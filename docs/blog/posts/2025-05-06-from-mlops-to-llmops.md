@@ -10,7 +10,7 @@ author: Viacheslav Dubrov
 
 # MLOps in the Age of Foundation Models. Evolving Infrastructure for LLMs and Beyond
 
-The field of machine learning has undergone a seismic shift with the rise of large-scale foundation models. From giant language models like GPT-4 to image diffusion models like Stable Diffusion, these powerful models have fundamentally changed how we build and operate ML systems. 
+The field of machine learning has undergone a seismic shift with the rise of large-scale foundation models. From giant language models like GPT-4 to image diffusion models like Stable Diffusion, these powerful models have fundamentally changed how we build and operate ML systems.
 
 In this post, I'll explore how ML infrastructure and MLOps practices have evolved to support foundation models. We'll contrast the "classic" era of MLOps with modern paradigms, examine what's changed, and look at the new patterns and workflows that have emerged.
 
@@ -18,7 +18,7 @@ In this post, I'll explore how ML infrastructure and MLOps practices have evolve
 
 ## 1. The MLOps Landscape a Few Years Ago (Pre-Foundation Model Era)
 
-A few years back, MLOps primarily meant applying DevOps principles to machine learning. The goal was simple: automate the model lifecycle from data preparation to deployment and monitoring. 
+A few years back, MLOps primarily meant applying DevOps principles to machine learning. The goal was simple: automate the model lifecycle from data preparation to deployment and monitoring.
 
 Back then, ML systems were built around relatively smaller models, often trained from scratch on domain-specific data. Here's what the "classic" MLOps era looked like:
 
@@ -31,7 +31,7 @@ graph LR
     E --> F[Deployment]
     F --> G[Monitoring]
     G --> B
-    
+
     style A fill:#e1f5ff
     style D fill:#ffe1e1
     style F fill:#e1ffe1
@@ -65,7 +65,7 @@ For many ML applications (especially in finance or e-commerce), engineered featu
 
 ## 2. The Paradigm Shift: Rise of Large-Scale Foundation Models
 
-Around 2018-2020, everything changed. Researchers began introducing foundation models—extremely large models pretrained on vast corpora, capable of being adapted to many tasks. 
+Around 2018-2020, everything changed. Researchers began introducing foundation models—extremely large models pretrained on vast corpora, capable of being adapted to many tasks.
 
 The progression was rapid:
 
@@ -85,7 +85,7 @@ graph TD
         A2 --> A3[Small Model]
         A3 --> A4[Deploy]
     end
-    
+
     subgraph "Modern LLMOps"
         B1[Pretrained Foundation Model] --> B2[Fine-tune/Adapt]
         B3[Your Data] --> B2
@@ -94,7 +94,7 @@ graph TD
         B6[Prompts] --> B5
         B7[Vector DB] --> B5
     end
-    
+
     style A2 fill:#ffe1e1
     style B1 fill:#e1ffe1
     style B2 fill:#fff4e1
@@ -184,12 +184,12 @@ graph TD
     B --> D[GPU 2: Layers 11-20]
     B --> E[GPU 3: Layers 21-30]
     B --> F[GPU 4: Layers 31-40]
-    
+
     C --> G[Synchronize Gradients]
     D --> G
     E --> G
     F --> G
-    
+
     style A fill:#ffe1e1
     style G fill:#e1ffe1
 ```
@@ -254,14 +254,14 @@ sequenceDiagram
     participant App
     participant VectorDB
     participant LLM
-    
+
     User->>App: Ask question
     App->>VectorDB: Search for relevant docs
     VectorDB->>App: Return top matches
     App->>LLM: Question + Retrieved context
     LLM->>App: Generate answer
     App->>User: Return response
-    
+
     Note over VectorDB: Pinecone, Weaviate,<br/>FAISS, Milvus
 ```
 
@@ -345,7 +345,7 @@ The basics still matter:
 
 **Output Quality and Safety**
 
-We now monitor the *content* of outputs:
+We now monitor the _content_ of outputs:
 
 - **Content filtering**: Detect hate speech, PII, harmful content
 - **Moderation APIs**: Use OpenAI's moderation API or custom filters
@@ -414,13 +414,13 @@ graph LR
         A1[Feature Store] --> A2[Structured Features]
         A2 --> A3[Model]
     end
-    
+
     subgraph "Modern LLMOps"
         B1[Vector Database] --> B2[Embeddings]
         B2 --> B3[LLM with RAG]
         B4[Traditional Warehouse] --> B5[Analytics]
     end
-    
+
     style A1 fill:#ffe1e1
     style B1 fill:#e1ffe1
 ```
@@ -464,11 +464,11 @@ graph TD
     Gateway --> |Low latency needed| Small[Small Fast Model]
     Gateway --> |High accuracy needed| Large[Large Accurate Model]
     Gateway --> |A/B testing| Experimental[Experimental Model]
-    
+
     Small --> Response[Response]
     Large --> Response
     Experimental --> Response
-    
+
     style Gateway fill:#fff4e1
 ```
 

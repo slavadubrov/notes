@@ -109,7 +109,7 @@ graph TD
     B -->|Research/Fine-tuning| D[Base]
     B -->|Resource constrained| E[Distilled or MoE]
     B -->|Quality + Efficiency| F[QAT]
-    
+
     style C fill:#90EE90
     style E fill:#FFD700
     style F fill:#87CEEB
@@ -211,11 +211,11 @@ graph TD
     B -->|GPU 24GB+| E[GPTQ 3-bit or FP16]
     B -->|Cloud A100/H100| F[FP16 Safetensors]
     B -->|Mobile/Edge| G[ONNX/TFLite]
-    
+
     C --> H[Most versatile]
     D --> I[Fast inference]
     E --> J[Best quality]
-    
+
     style C fill:#90EE90
     style D fill:#FFD700
     style F fill:#87CEEB
@@ -232,28 +232,28 @@ Here's a practical flowchart to help you choose. Start with your constraints (ha
 ```mermaid
 flowchart TD
     Start[I need an LLM] --> Hardware{What's my hardware?}
-    
+
     Hardware -->|Laptop/CPU only| CPU[< 8GB VRAM or CPU]
     Hardware -->|Gaming GPU| Mid[8-24 GB VRAM]
     Hardware -->|Workstation| High[24+ GB VRAM]
     Hardware -->|Cloud/Datacenter| Cloud[A100/H100 class]
-    
+
     CPU --> CPUTask{What's my task?}
     CPUTask -->|Chat/Agent| CPU1[Instruct Q4_K_M GGUF<br/>7B or 13B]
     CPUTask -->|Fast API| CPU2[Distilled Q4 GGUF<br/>3B or 7B]
-    
+
     Mid --> MidTask{What's my task?}
     MidTask -->|Production| Mid1[Instruct GPTQ 4-bit<br/>13B or A3B-30B]
     MidTask -->|Balanced| Mid2[Instruct AWQ 4-bit<br/>13B]
-    
+
     High --> HighTask{What's my task?}
     HighTask -->|Quality matters| High1[Instruct GPTQ 3-bit<br/>30B or 70B]
     HighTask -->|Fine-tuning| High2[Base FP16<br/>13B or 30B]
-    
+
     Cloud --> CloudTask{What's my task?}
     CloudTask -->|Inference| Cloud1[Instruct FP16<br/>70B+]
     CloudTask -->|Training| Cloud2[Base BF16<br/>Any size]
-    
+
     style CPU1 fill:#90EE90
     style Mid1 fill:#90EE90
     style High1 fill:#90EE90

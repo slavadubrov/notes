@@ -36,12 +36,12 @@ Because they all consume the same `.safetensors` or `.ckpt` checkpoint files, yo
 - **What it is:** A **node-based** visual programming interface. Think of it as a flowchart where each box is a step in your image generation pipeline - load a model here, apply a LoRA there, add ControlNet for pose guidance, chain samplers for refinement.
 - **Best for:** Power users who want full control over multi-stage workflows, video generation, or experimental techniques.
 - **Pros**
-    - Visual graph makes complex pipelines transparent and reusable.
-    - Native MPS support runs smoothly on M1/M2/M3 chips.
-    - Massive ecosystem of custom nodes for advanced features.
+  - Visual graph makes complex pipelines transparent and reusable.
+  - Native MPS support runs smoothly on M1/M2/M3 chips.
+  - Massive ecosystem of custom nodes for advanced features.
 - **Cons**
-    - Requires comfort with node-based interfaces (not beginner-friendly).
-    - Initial setup involves Python and Homebrew dependencies.
+  - Requires comfort with node-based interfaces (not beginner-friendly).
+  - Initial setup involves Python and Homebrew dependencies.
 
 ---
 
@@ -51,12 +51,12 @@ Because they all consume the same `.safetensors` or `.ckpt` checkpoint files, yo
 - **What it is:** The **community standard** web interface. Runs in your browser and exposes every parameter Stable Diffusion offers. If there's a new technique or model format, someone has probably built an extension for it.
 - **Best for:** Enthusiasts who want maximum flexibility and don't mind tinkering with extensions.
 - **Pros**
-    - Thousands of extensions - ControlNet, Regional Prompter, DreamBooth training, and more.
-    - Active community means rapid updates and support.
-    - Familiar tabbed interface once you get past setup.
+  - Thousands of extensions - ControlNet, Regional Prompter, DreamBooth training, and more.
+  - Active community means rapid updates and support.
+  - Familiar tabbed interface once you get past setup.
 - **Cons**
-    - Installation is manual and terminal-heavy (Git, Python, dependencies).
-    - The UI can feel overwhelming with dozens of sliders and checkboxes.
+  - Installation is manual and terminal-heavy (Git, Python, dependencies).
+  - The UI can feel overwhelming with dozens of sliders and checkboxes.
 
 ---
 
@@ -66,12 +66,12 @@ Because they all consume the same `.safetensors` or `.ckpt` checkpoint files, yo
 - **What it is:** A **native macOS app** with a friendly, no-code interface. Download, double-click, start generating. Models are pre-bundled and managed through the UI.
 - **Best for:** First-time users or anyone who wants to avoid terminal commands entirely.
 - **Pros**
-    - Zero setup - works out of the box like any Mac app.
-    - Includes bonus tools like upscaling and background removal.
-    - Clean, uncluttered interface with sensible defaults.
+  - Zero setup - works out of the box like any Mac app.
+  - Includes bonus tools like upscaling and background removal.
+  - Clean, uncluttered interface with sensible defaults.
 - **Cons**
-    - Limited control over advanced parameters and workflows.
-    - Closed-source binary means slower adoption of cutting-edge features.
+  - Limited control over advanced parameters and workflows.
+  - Closed-source binary means slower adoption of cutting-edge features.
 
 ---
 
@@ -81,12 +81,12 @@ Because they all consume the same `.safetensors` or `.ckpt` checkpoint files, yo
 - **What it is:** A professional-grade interface that balances ease of use with production features. Includes a "Unified Canvas" for iterative painting and masking workflows.
 - **Best for:** Designers and artists who need robust in-painting, out-painting, and batch generation.
 - **Pros**
-    - Unified Canvas makes iterative refinement intuitive.
-    - Built-in workflow and batch scripting for repeated tasks.
-    - Both web UI and CLI for automation.
+  - Unified Canvas makes iterative refinement intuitive.
+  - Built-in workflow and batch scripting for repeated tasks.
+  - Both web UI and CLI for automation.
 - **Cons**
-    - Installation uses Conda, which creates a large (~4 GB) environment.
-    - Benefits from 16 GB+ RAM for smooth performance.
+  - Installation uses Conda, which creates a large (~4 GB) environment.
+  - Benefits from 16 GB+ RAM for smooth performance.
 
 ---
 
@@ -96,24 +96,24 @@ Because they all consume the same `.safetensors` or `.ckpt` checkpoint files, yo
 - **What it is:** A **Midjourney-inspired** interface that hides complexity. Type your prompt, hit generate, and let the tool handle model selection, samplers, and quality settings automatically.
 - **Best for:** Quick ideation sessions when you just want results without tweaking parameters.
 - **Pros**
-    - Ultra-minimal UI - one prompt box, no distractions.
-    - Auto-downloads models, LoRAs, and VAE files as needed.
-    - Good default aesthetic without tuning.
+  - Ultra-minimal UI - one prompt box, no distractions.
+  - Auto-downloads models, LoRAs, and VAE files as needed.
+  - Good default aesthetic without tuning.
 - **Cons**
-    - Less granular control than other options.
-    - Slower generation on Apple Silicon (optimized more for CUDA GPUs).
+  - Less granular control than other options.
+  - Slower generation on Apple Silicon (optimized more for CUDA GPUs).
 
 ---
 
 ## Side-by-side comparison
 
-| Tool               | Install effort          | Interface style          | Apple Silicon speed* | Sweet spot                          |
-|--------------------|--------------------------|--------------------------|----------------------|-------------------------------------|
-| **ComfyUI**         | Medium (Python, Homebrew) | Visual node graph        | ★★★★☆                | Complex workflows, video, advanced control |
-| **A1111 WebUI**     | High (manual CLI)         | Web tabs + extensions    | ★★★☆☆                | Maximum features, extension ecosystem |
-| **DiffusionBee**    | **One-click DMG**         | Native Mac app           | ★★★☆☆                | Beginners, no-setup experience |
-| **InvokeAI**        | Medium-high (Conda)       | Web UI + Canvas          | ★★★☆☆                | Professional in-painting, batch work |
-| **Fooocus**         | Medium (Python zip)       | Minimal prompt interface | ★★☆☆☆                | Quick iterations, Midjourney-style ease |
+| Tool             | Install effort            | Interface style          | Apple Silicon speed\* | Sweet spot                                 |
+| ---------------- | ------------------------- | ------------------------ | --------------------- | ------------------------------------------ |
+| **ComfyUI**      | Medium (Python, Homebrew) | Visual node graph        | ★★★★☆                 | Complex workflows, video, advanced control |
+| **A1111 WebUI**  | High (manual CLI)         | Web tabs + extensions    | ★★★☆☆                 | Maximum features, extension ecosystem      |
+| **DiffusionBee** | **One-click DMG**         | Native Mac app           | ★★★☆☆                 | Beginners, no-setup experience             |
+| **InvokeAI**     | Medium-high (Conda)       | Web UI + Canvas          | ★★★☆☆                 | Professional in-painting, batch work       |
+| **Fooocus**      | Medium (Python zip)       | Minimal prompt interface | ★★☆☆☆                 | Quick iterations, Midjourney-style ease    |
 
 \*Speed ratings are relative to each other on Apple Silicon. All five use PyTorch MPS backend (no NVIDIA GPU required).
 

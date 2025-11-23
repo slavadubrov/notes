@@ -32,14 +32,14 @@ graph TD
     A[pyproject.toml] --> B[build-system]
     A --> C[project]
     A --> D[tool.*]
-    
+
     B --> B1[Build requirements]
     B --> B2[Build backend]
-    
+
     C --> C1[Metadata name, version]
     C --> C2[Dependencies]
     C --> C3[Optional dependencies]
-    
+
     D --> D1[Black formatter]
     D --> D2[pytest]
     D --> D3[mypy type checker]
@@ -48,13 +48,13 @@ graph TD
 
 ## Why should you care?
 
-**One file to rule them all**  
+**One file to rule them all**
 Before `pyproject.toml`, you'd juggle `setup.py`, `setup.cfg`, `requirements.txt`, `MANIFEST.in`, and various dotfiles. Now everything lives in one place.
 
-**Backend-agnostic builds**  
+**Backend-agnostic builds**
 When you run `pip install .`, pip reads `pyproject.toml` and automatically installs whatever build tools your project needs (setuptools, flit, hatchling, etc.).
 
-**Universal tool configuration**  
+**Universal tool configuration**
 Linters, formatters, test runners, and type checkers all know to look here for their settings. Your IDE, CI pipeline, and teammates all read from the same source of truth.
 
 ## Does it replace `requirements.txt`?
@@ -116,11 +116,11 @@ profile = "black"
 
 Important: `pyproject.toml` **declares what to install**, but it doesn't create virtual environments. You still need a separate tool for that.
 
-| Tool         | Create venv                   | Install from `pyproject.toml`        |
-| ------------ | ----------------------------- | ------------------------------------ |
-| Plain Python | `python -m venv .venv`        | `pip install -e .` (manual)          |
-| pyenv        | `pyenv virtualenv 3.12.2 env` | `pip install -e .` (after activating)|
-| uv           | `uv venv` or automatic        | `uv sync` (fast and automatic)       |
+| Tool         | Create venv                   | Install from `pyproject.toml`         |
+| ------------ | ----------------------------- | ------------------------------------- |
+| Plain Python | `python -m venv .venv`        | `pip install -e .` (manual)           |
+| pyenv        | `pyenv virtualenv 3.12.2 env` | `pip install -e .` (after activating) |
+| uv           | `uv venv` or automatic        | `uv sync` (fast and automatic)        |
 
 The modern approach with `uv` is seamless—it reads `pyproject.toml`, manages the venv, and keeps everything in sync with one command.
 
@@ -130,35 +130,35 @@ Here's how teams actually use `pyproject.toml` day-to-day:
 
 ### Packaging and distribution
 
-**Section:** `[project]` + `[build-system]`  
+**Section:** `[project]` + `[build-system]`
 **Tools:** `build`, `twine`, `uv`
 
 Build a wheel with `python -m build`, then publish with `twine upload dist/*` or `uv publish`. All metadata comes from your `[project]` section—no separate `setup.py` needed.
 
 ### Dependency management
 
-**Section:** `[project.dependencies]` + lockfile  
+**Section:** `[project.dependencies]` + lockfile
 **Tools:** Poetry, PDM, uv
 
 Modern tools read your dependencies from `[project]`, resolve them, and create a lockfile. Running `uv sync` gives you reproducible installs across machines in seconds.
 
 ### Code formatting
 
-**Section:** `[tool.black]`, `[tool.ruff]`  
+**Section:** `[tool.black]`, `[tool.ruff]`
 **Tools:** [Black](https://black.readthedocs.io/), [Ruff](https://docs.astral.sh/ruff/)
 
 Your formatter settings live in the repo. CI, pre-commit hooks, and IDE plugins all read the same config—no more "works on my machine" formatting issues.
 
 ### Testing
 
-**Section:** `[tool.pytest.ini_options]`  
+**Section:** `[tool.pytest.ini_options]`
 **Tool:** [pytest](https://docs.pytest.org/)
 
 Configure test discovery, markers, and coverage settings. Replaces the old `pytest.ini` or `setup.cfg` approach.
 
 ### Type checking
 
-**Section:** `[tool.mypy]`  
+**Section:** `[tool.mypy]`
 **Tool:** [mypy](https://mypy-lang.org/)
 
 Optional but handy if you want all config in one place instead of maintaining a separate `mypy.ini`.
@@ -190,7 +190,7 @@ graph LR
     C --> D[Convert dev deps]
     D --> E[Add tool config]
     E --> F[Modern pyproject.toml]
-    
+
     style A fill:#ffcccc
     style F fill:#ccffcc
 ```
@@ -212,6 +212,7 @@ Need to do something specific? Here are common patterns:
 ### Use a different build backend
 
 **Flit** (simpler than setuptools):
+
 ```toml
 [build-system]
 requires = ["flit_core>=3.2"]
@@ -219,6 +220,7 @@ build-backend = "flit_core.buildapi"
 ```
 
 **Hatchling** (modern and fast):
+
 ```toml
 [build-system]
 requires = ["hatchling"]

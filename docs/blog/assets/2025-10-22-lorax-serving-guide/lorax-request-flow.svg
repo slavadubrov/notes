@@ -48,7 +48,7 @@
     <!-- Alt Block -->
     <rect x="420" y="150" width="360" height="100" fill="#f3f4f6" stroke="#ccc" rx="5"/>
     <text x="430" y="170" font-weight="bold" fill="#666">Alt: Not in GPU</text>
-    
+
     <!-- 3. Load from Disk -->
     <path d="M 500 180 Q 530 180 530 195 Q 530 210 505 210" stroke="#333" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
     <text x="540" y="200">Load from CPU/Disk</text>

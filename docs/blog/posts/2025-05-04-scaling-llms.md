@@ -307,14 +307,14 @@ flowchart LR
 
 ### Quick Comparison: Which Parallelism Should You Use?
 
-| Technique | What It Splits | Best For | Memory Savings | Communication Cost |
-|-----------|---------------|----------|----------------|-------------------|
-| **Data Parallelism (DP)** | Data batches | Models that fit on 1 GPU | None (copies model) | Low (only gradients) |
-| **FSDP** | Model + optimizer + gradients | Models too big for 1 GPU | High (4-8x) | Medium |
-| **Tensor Parallelism (TP)** | Individual layers | Huge layers, fast GPUs | Medium | High (per layer) |
-| **Pipeline Parallelism (PP)** | Layer groups (stages) | Very deep models | Medium | Low (between stages) |
-| **Context Parallelism (CP)** | Sequence length | Long contexts (64K+ tokens) | High (for activations) | Medium |
-| **Expert Parallelism (MoE)** | Experts in MoE layers | Massive sparse models | None (more params, less FLOPs) | Medium |
+| Technique                     | What It Splits                | Best For                    | Memory Savings                 | Communication Cost   |
+| ----------------------------- | ----------------------------- | --------------------------- | ------------------------------ | -------------------- |
+| **Data Parallelism (DP)**     | Data batches                  | Models that fit on 1 GPU    | None (copies model)            | Low (only gradients) |
+| **FSDP**                      | Model + optimizer + gradients | Models too big for 1 GPU    | High (4-8x)                    | Medium               |
+| **Tensor Parallelism (TP)**   | Individual layers             | Huge layers, fast GPUs      | Medium                         | High (per layer)     |
+| **Pipeline Parallelism (PP)** | Layer groups (stages)         | Very deep models            | Medium                         | Low (between stages) |
+| **Context Parallelism (CP)**  | Sequence length               | Long contexts (64K+ tokens) | High (for activations)         | Medium               |
+| **Expert Parallelism (MoE)**  | Experts in MoE layers         | Massive sparse models       | None (more params, less FLOPs) | Medium               |
 
 **Rule of thumb:** Start with FSDP. Add TP if individual layers are too big. Add PP if you need multiple nodes. Add CP if context length is your bottleneck.
 
@@ -389,15 +389,15 @@ Now that you understand the techniques, here's what to actually do based on your
 
 Here's a quick guide to the most useful tools and when to reach for them:
 
-| Tool | When to Use It | Learning Curve | Best For |
-| ---- | -------------- | -------------- | -------- |
-| **Hugging Face Accelerate** | Any distributed training with minimal code changes | ★☆☆☆☆ | Beginners, quick prototypes |
-| **PyTorch FSDP** | Medium-large models (1-30B) on single node | ★★☆☆☆ | Most common use case |
-| **DeepSpeed ZeRO** | Multi-node training with good documentation | ★★★☆☆ | Production training |
-| **Megatron-LM** | Very large models (70B+), 3D/4D parallelism | ★★★★☆ | Advanced/production at scale |
-| **Nanotron** | Learning/research on modern parallelism strategies | ★★★☆☆ | Education, experimentation |
-| **vLLM** | Fast inference with PagedAttention and KV caching | ★★☆☆☆ | Serving models in production |
-| **TensorRT-LLM** | Maximum inference speed on NVIDIA GPUs | ★★★★☆ | Production inference optimization |
+| Tool                        | When to Use It                                     | Learning Curve | Best For                          |
+| --------------------------- | -------------------------------------------------- | -------------- | --------------------------------- |
+| **Hugging Face Accelerate** | Any distributed training with minimal code changes | ★☆☆☆☆          | Beginners, quick prototypes       |
+| **PyTorch FSDP**            | Medium-large models (1-30B) on single node         | ★★☆☆☆          | Most common use case              |
+| **DeepSpeed ZeRO**          | Multi-node training with good documentation        | ★★★☆☆          | Production training               |
+| **Megatron-LM**             | Very large models (70B+), 3D/4D parallelism        | ★★★★☆          | Advanced/production at scale      |
+| **Nanotron**                | Learning/research on modern parallelism strategies | ★★★☆☆          | Education, experimentation        |
+| **vLLM**                    | Fast inference with PagedAttention and KV caching  | ★★☆☆☆          | Serving models in production      |
+| **TensorRT-LLM**            | Maximum inference speed on NVIDIA GPUs             | ★★★★☆          | Production inference optimization |
 
 **My recommendation for getting started:** Start with Hugging Face Accelerate for learning, then graduate to PyTorch FSDP or DeepSpeed when you need more control.
 
@@ -432,32 +432,32 @@ Still not sure what to use? Follow this decision tree:
 ```mermaid
 flowchart TD
     start([Start: Need to scale LLM?]) --> fit{Model fits on<br/>single GPU?}
-    
+
     fit -->|Yes| done1[✅ Standard training<br/>No parallelism needed]
     fit -->|No| multi{Multiple GPUs<br/>in one machine?}
-    
+
     multi -->|No| cluster[Need cluster or<br/>smaller model]
     multi -->|Yes| fsdp[Start with FSDP]
-    
+
     fsdp --> enough{FSDP enough?}
     enough -->|Yes| done2[✅ Use pure FSDP]
     enough -->|Layers too big| tp[Add TP=2 or TP=4<br/>within node]
     enough -->|Context too long| cp[Add Context<br/>Parallelism]
-    
+
     tp --> done3[✅ Use FSDP + TP]
     cp --> done4[✅ Use FSDP + CP]
-    
+
     cluster --> multinode[Multi-node setup]
     multinode --> hybrid[TP inside nodes<br/>+ FSDP across nodes]
-    
+
     hybrid --> depth{Model very<br/>deep?}
     depth -->|No| done5[✅ Use 2D: TP + FSDP]
     depth -->|Yes| pp[Add Pipeline<br/>Parallelism]
-    
+
     pp --> scale{100+ GPUs +<br/>long context?}
     scale -->|No| done6[✅ Use 3D: TP + PP + FSDP]
     scale -->|Yes| done7[✅ Use 4D: TP + PP + DP + CP]
-    
+
     style done1 fill:#90EE90
     style done2 fill:#90EE90
     style done3 fill:#90EE90
