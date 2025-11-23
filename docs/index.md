@@ -29,14 +29,14 @@ Python (PyTorch, JAX) · Vertex AI · AWS · Spark · FastAPI · Airflow · DBT 
 
 In this blog, you'll find:
 
-* Technical tutorials and guides
-* Machine Learning insights
-* Best practices and tips
-* Personal experiences and learnings
+- Technical tutorials and guides
+- Machine Learning insights
+- Best practices and tips
+- Personal experiences and learnings
 
 My goal is to create a valuable resource for fellow practitioners and anyone interested in the real-world application of machine learning.
 
 ## Connect
 
-* [GitHub](https://github.com/slavadubrov)
-* [LinkedIn](https://www.linkedin.com/in/slavadubrov)
+- [GitHub](https://github.com/slavadubrov)
+- [LinkedIn](https://www.linkedin.com/in/slavadubrov)
