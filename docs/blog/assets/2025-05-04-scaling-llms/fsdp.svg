@@ -50,17 +50,17 @@
   <!-- Process Flow -->
   <rect x="100" y="300" width="600" height="120" class="step-box"/>
   <text x="400" y="325" class="text" font-weight="bold">Forward/Backward Pass Workflow</text>
-  
+
   <text x="150" y="360" class="text" font-size="12">1. All-Gather Params</text>
   <text x="150" y="380" class="text" font-size="10" fill="#666">(Reconstruct full layer)</text>
-  
+
   <line x1="220" y1="360" x2="260" y2="360" class="arrow"/>
-  
+
   <text x="310" y="360" class="text" font-size="12">2. Compute</text>
   <text x="310" y="380" class="text" font-size="10" fill="#666">(Fwd or Bwd)</text>
-  
+
   <line x1="360" y1="360" x2="400" y2="360" class="arrow"/>
-  
+
   <text x="460" y="360" class="text" font-size="12">3. Discard Params</text>
   <text x="460" y="380" class="text" font-size="10" fill="#666">(Free up memory)</text>
 

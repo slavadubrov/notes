@@ -68,7 +68,7 @@
   <!-- No -> Specific Issues -->
   <line x1="500" y1="320" x2="600" y2="320" class="arrow"/>
   <line x1="600" y1="320" x2="600" y2="360" class="arrow"/>
-  
+
   <!-- Branch for TP -->
   <line x1="600" y1="340" x2="500" y2="340" class="arrow"/>
   <line x1="500" y1="340" x2="500" y2="400" class="arrow"/>

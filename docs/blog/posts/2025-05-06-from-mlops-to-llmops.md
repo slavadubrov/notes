@@ -12,7 +12,7 @@ author: Viacheslav Dubrov
 
 The field of machine learning has undergone a seismic shift with the rise of large-scale foundation models. From giant language models like GPT-4 to image diffusion models like Stable Diffusion, these powerful models have fundamentally changed how we build and operate ML systems.
 
-In this post, I'll explore how ML infrastructure and MLOps practices have evolved to support foundation models. We'll contrast the "classic" era of MLOps with modern paradigms, examine what's changed, and look at the new patterns and workflows that have emerged.
+In this post, I'll explore how ML infrastructure and MLOps practices have evolved to support foundation models. We'll contrast the "classic" era of MLOps with modern paradigms, examine what's changed, and look at the new patterns and workflows that have emerged. Think of it as upgrading from a standard toolbox to a fully automated factory—the principles are similar, but the scale and complexity are on a different level.
 
 <!-- more -->
 
@@ -22,20 +22,7 @@ A few years back, MLOps primarily meant applying DevOps principles to machine le
 
 Back then, ML systems were built around relatively smaller models, often trained from scratch on domain-specific data. Here's what the "classic" MLOps era looked like:
 
-```mermaid
-graph LR
-    A[Raw Data] --> B[Data Pipeline]
-    B --> C[Feature Engineering]
-    C --> D[Model Training]
-    D --> E[Model Registry]
-    E --> F[Deployment]
-    F --> G[Monitoring]
-    G --> B
-
-    style A fill:#e1f5ff
-    style D fill:#ffe1e1
-    style F fill:#e1ffe1
-```
+![Classic MLOps Pipeline](../assets/2025-05-06-from-mlops-to-llmops/classic_mlops_pipeline.svg)
 
 ### 1.1. End-to-End Pipelines
 
@@ -76,29 +63,9 @@ The progression was rapid:
 
 As one practitioner noted in early 2024: "Foundational models are everywhere now—a stark change from just two years ago."
 
-This shift created a fundamentally different paradigm:
+This shift created a fundamentally different paradigm. If classic models were like specialized kitchen gadgets (a toaster, a blender), foundation models are like a professional chef who can learn to cook anything with a little instruction.
 
-```mermaid
-graph TD
-    subgraph "Classic MLOps"
-        A1[Your Data] --> A2[Train from Scratch]
-        A2 --> A3[Small Model]
-        A3 --> A4[Deploy]
-    end
-
-    subgraph "Modern LLMOps"
-        B1[Pretrained Foundation Model] --> B2[Fine-tune/Adapt]
-        B3[Your Data] --> B2
-        B2 --> B4[Adapted Model]
-        B4 --> B5[Deploy with Orchestration]
-        B6[Prompts] --> B5
-        B7[Vector DB] --> B5
-    end
-
-    style A2 fill:#ffe1e1
-    style B1 fill:#e1ffe1
-    style B2 fill:#fff4e1
-```
+![Classic MLOps vs LLMOps](../assets/2025-05-06-from-mlops-to-llmops/mlops_vs_llmops.svg)
 
 Here's how foundation models changed ML infrastructure:
 
@@ -177,22 +144,7 @@ With foundation models at the center, today's ML infrastructure must support cap
 
 Training a model with billions of parameters is beyond the capacity of a single machine. Modern ML infrastructure orchestrates distributed training across multiple nodes:
 
-```mermaid
-graph TD
-    A[Large Model] --> B[Split Layers]
-    B --> C[GPU 1: Layers 1-10]
-    B --> D[GPU 2: Layers 11-20]
-    B --> E[GPU 3: Layers 21-30]
-    B --> F[GPU 4: Layers 31-40]
-
-    C --> G[Synchronize Gradients]
-    D --> G
-    E --> G
-    F --> G
-
-    style A fill:#ffe1e1
-    style G fill:#e1ffe1
-```
+![Distributed Training](../assets/2025-05-06-from-mlops-to-llmops/distributed_training.svg)
 
 **Two main approaches**:
 
@@ -216,6 +168,26 @@ Training from scratch is impractical for huge models, but even fine-tuning a mul
 - **LoRA (Low-Rank Adaptation)**: Updates only a small subset of parameters (adapters) instead of the entire network, dramatically reducing computational cost
 - **Prompt Tuning**: Optimizes only the prompt embeddings, keeping the model frozen
 - **Adapter Modules**: Adds small trainable layers between frozen model layers
+
+Here is a simple example of how you might configure LoRA using the `peft` library:
+
+```python
+from peft import LoraConfig, get_peft_model
+
+# Configure LoRA
+peft_config = LoraConfig(
+    r=16,
+    lora_alpha=32,
+    target_modules=["q_proj", "v_proj"],
+    lora_dropout=0.05,
+    bias="none",
+    task_type="CAUSAL_LM"
+)
+
+# Apply to base model
+# model = get_peft_model(base_model, peft_config)
+# model.print_trainable_parameters()
+```
 
 ML infrastructure must now support complex workflows: load a base model from a hub, apply fine-tuned weight deltas, and deploy the combined model. Traditional training pipelines evolved significantly to accommodate this multi-step customization.
 
@@ -248,24 +220,33 @@ Foundation models have a fixed knowledge cutoff and limited context windows. To 
 
 **How RAG works**:
 
-```mermaid
-sequenceDiagram
-    participant User
-    participant App
-    participant VectorDB
-    participant LLM
-
-    User->>App: Ask question
-    App->>VectorDB: Search for relevant docs
-    VectorDB->>App: Return top matches
-    App->>LLM: Question + Retrieved context
-    LLM->>App: Generate answer
-    App->>User: Return response
-
-    Note over VectorDB: Pinecone, Weaviate,<br/>FAISS, Milvus
-```
+![RAG Workflow](../assets/2025-05-06-from-mlops-to-llmops/rag_workflow.svg)
 
 Instead of continuously retraining the model on new data (costly and slow), RAG fetches information at query time. The retrieved documents are appended to the prompt as additional context.
+
+Here's a simplified view of how this looks in code using LangChain:
+
+```python
+from langchain.vectorstores import Pinecone
+from langchain.llms import OpenAI
+from langchain.chains import RetrievalQA
+
+# 1. Load the vector database
+# vector_db = Pinecone.from_existing_index("my-index", embeddings)
+
+# 2. Initialize the LLM
+# llm = OpenAI(temperature=0)
+
+# 3. Create the RAG chain
+# qa_chain = RetrievalQA.from_chain_type(
+#     llm=llm,
+#     chain_type="stuff",
+#     retriever=vector_db.as_retriever()
+# )
+
+# 4. Ask a question
+# response = qa_chain.run("How does LLMOps differ from MLOps?")
+```
 
 **New infrastructure components**:
 
@@ -408,22 +389,7 @@ Model management evolved with centralized hubs:
 
 The data layer has fundamentally changed:
 
-```mermaid
-graph LR
-    subgraph "Classic MLOps"
-        A1[Feature Store] --> A2[Structured Features]
-        A2 --> A3[Model]
-    end
-
-    subgraph "Modern LLMOps"
-        B1[Vector Database] --> B2[Embeddings]
-        B2 --> B3[LLM with RAG]
-        B4[Traditional Warehouse] --> B5[Analytics]
-    end
-
-    style A1 fill:#ffe1e1
-    style B1 fill:#e1ffe1
-```
+![Feature Store vs Vector DB](../assets/2025-05-06-from-mlops-to-llmops/feature_store_vs_vector_db.svg)
 
 **Traditional feature stores** handled structured data with manual feature engineering.
 
@@ -458,19 +424,7 @@ These platforms provide managed services like "fine-tune this 20B parameter mode
 
 The proliferation of model sizes led to **inference gateways**—routers that intelligently direct requests:
 
-```mermaid
-graph TD
-    Client[Client Request] --> Gateway[Inference Gateway]
-    Gateway --> |Low latency needed| Small[Small Fast Model]
-    Gateway --> |High accuracy needed| Large[Large Accurate Model]
-    Gateway --> |A/B testing| Experimental[Experimental Model]
-
-    Small --> Response[Response]
-    Large --> Response
-    Experimental --> Response
-
-    style Gateway fill:#fff4e1
-```
+![Inference Gateway](../assets/2025-05-06-from-mlops-to-llmops/inference_gateway.svg)
 
 **Use cases**:
 
@@ -503,9 +457,20 @@ This emerging pattern requires new operational practices (sometimes called "Agen
 - Detailed logging to trace decision paths
 - Safety guardrails to limit agent capabilities
 
+![Agentic Workflow](../assets/2025-05-06-from-mlops-to-llmops/agentic_workflow.svg)
+
 While not yet widespread in production, agentic systems represent the frontier of LLMOps.
 
-## 5. Conclusion: From MLOps to LLMOps and Beyond
+## 5. Getting Started with LLMOps
+
+If you are new to this field, the ecosystem can feel overwhelming. Here is a recommended path to get your hands dirty:
+
+1. **Play with APIs**: Start by using OpenAI or Anthropic APIs to understand prompt engineering.
+2. **Build a RAG App**: Use **LangChain** or **LlamaIndex** to build a simple "Chat with your PDF" app. This introduces you to vector databases and retrieval.
+3. **Try Fine-Tuning**: Use **Hugging Face** to fine-tune a small model (like Llama-3-8B or Mistral-7B) on a custom dataset using Google Colab.
+4. **Deploy**: Try deploying your fine-tuned model using **vLLM** or **Ollama** locally, then move to a cloud provider.
+
+## 6. Conclusion: From MLOps to LLMOps and Beyond
 
 In just a few years, we've witnessed a transformation in how we approach machine learning in production.
 
