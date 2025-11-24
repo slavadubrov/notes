@@ -2,11 +2,11 @@
 <svg width="800" height="500" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
   <!-- Background -->
   <rect x="0" y="0" width="800" height="500" fill="#1e1e2e" rx="16" ry="16"/>
-  
+
   <!-- Main File Outline -->
   <rect x="50" y="50" width="700" height="400" fill="#2a2a3c" stroke="#44475a" stroke-width="2" rx="12" ry="12"/>
   <text x="400" y="90" fill="#f8f8f2" font-family="sans-serif" font-size="24" font-weight="bold" text-anchor="middle">pyproject.toml</text>
-  
+
   <!-- Section 1: Build System (Top Left) -->
   <g transform="translate(80, 120)">
     <rect x="0" y="0" width="300" height="140" fill="#282a36" stroke="#ff79c6" stroke-width="2" rx="8" ry="8"/>
@@ -29,14 +29,14 @@
   <g transform="translate(80, 290)">
     <rect x="0" y="0" width="640" height="130" fill="#282a36" stroke="#50fa7b" stroke-width="2" rx="8" ry="8"/>
     <text x="20" y="30" fill="#50fa7b" font-family="monospace" font-size="18" font-weight="bold">[tool.*]</text>
-    
+
     <!-- Tool Example 1 -->
     <g transform="translate(20, 50)">
       <rect x="0" y="0" width="280" height="60" fill="#44475a" rx="4" ry="4"/>
       <text x="10" y="25" fill="#50fa7b" font-family="monospace" font-size="16" font-weight="bold">[tool.ruff]</text>
       <text x="10" y="45" fill="#f8f8f2" font-family="monospace" font-size="14">line-length = 100</text>
     </g>
-    
+
     <!-- Tool Example 2 -->
     <g transform="translate(320, 50)">
       <rect x="0" y="0" width="280" height="60" fill="#44475a" rx="4" ry="4"/>

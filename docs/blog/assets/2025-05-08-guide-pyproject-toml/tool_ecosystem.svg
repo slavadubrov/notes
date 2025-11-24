@@ -26,7 +26,7 @@
   <line x1="350" y1="200" x2="420" y2="130" class="connector" /> <!-- Top Right -->
 
   <!-- Tools -->
-  
+
   <!-- Top: Build Tools -->
   <g transform="translate(240, 40)">
     <rect width="120" height="60" class="tool-node" stroke="#8be9fd" />
