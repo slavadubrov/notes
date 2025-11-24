@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <style>
+      .gpu { fill: #e3f2fd; stroke: #1565c0; stroke-width: 2; rx: 5; }
+      .shard-p { fill: #d1c4e9; stroke: #512da8; stroke-width: 1; rx: 3; }
+      .shard-g { fill: #ffccbc; stroke: #d84315; stroke-width: 1; rx: 3; }
+      .shard-o { fill: #b3e5fc; stroke: #0277bd; stroke-width: 1; rx: 3; }
+      .arrow { stroke: #333; stroke-width: 2; marker-end: url(#arrowhead); }
+      .text { font-family: Arial, sans-serif; font-size: 14px; text-anchor: middle; }
+      .title { font-family: Arial, sans-serif; font-size: 18px; font-weight: bold; text-anchor: middle; }
+      .step-box { fill: #fff3e0; stroke: #ef6c00; stroke-width: 1; rx: 5; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+    </marker>
+  </defs>
+
+  <text x="400" y="30" class="title">Fully Sharded Data Parallelism (FSDP)</text>
+
+  <!-- GPU 1 -->
+  <rect x="50" y="60" width="200" height="200" class="gpu"/>
+  <text x="150" y="85" class="text" font-weight="bold">GPU 1</text>
+  <rect x="70" y="100" width="160" height="30" class="shard-p"/>
+  <text x="150" y="120" class="text">Param Shard 1</text>
+  <rect x="70" y="140" width="160" height="30" class="shard-g"/>
+  <text x="150" y="160" class="text">Grad Shard 1</text>
+  <rect x="70" y="180" width="160" height="30" class="shard-o"/>
+  <text x="150" y="200" class="text">Optimizer Shard 1</text>
+
+  <!-- GPU 2 -->
+  <rect x="300" y="60" width="200" height="200" class="gpu"/>
+  <text x="400" y="85" class="text" font-weight="bold">GPU 2</text>
+  <rect x="320" y="100" width="160" height="30" class="shard-p"/>
+  <text x="400" y="120" class="text">Param Shard 2</text>
+  <rect x="320" y="140" width="160" height="30" class="shard-g"/>
+  <text x="400" y="160" class="text">Grad Shard 2</text>
+  <rect x="320" y="180" width="160" height="30" class="shard-o"/>
+  <text x="400" y="200" class="text">Optimizer Shard 2</text>
+
+  <!-- GPU 3 -->
+  <rect x="550" y="60" width="200" height="200" class="gpu"/>
+  <text x="650" y="85" class="text" font-weight="bold">GPU 3</text>
+  <rect x="570" y="100" width="160" height="30" class="shard-p"/>
+  <text x="650" y="120" class="text">Param Shard 3</text>
+  <rect x="570" y="140" width="160" height="30" class="shard-g"/>
+  <text x="650" y="160" class="text">Grad Shard 3</text>
+  <rect x="570" y="180" width="160" height="30" class="shard-o"/>
+  <text x="650" y="200" class="text">Optimizer Shard 3</text>
+
+  <!-- Process Flow -->
+  <rect x="100" y="300" width="600" height="120" class="step-box"/>
+  <text x="400" y="325" class="text" font-weight="bold">Forward/Backward Pass Workflow</text>
+  
+  <text x="150" y="360" class="text" font-size="12">1. All-Gather Params</text>
+  <text x="150" y="380" class="text" font-size="10" fill="#666">(Reconstruct full layer)</text>
+  
+  <line x1="220" y1="360" x2="260" y2="360" class="arrow"/>
+  
+  <text x="310" y="360" class="text" font-size="12">2. Compute</text>
+  <text x="310" y="380" class="text" font-size="10" fill="#666">(Fwd or Bwd)</text>
+  
+  <line x1="360" y1="360" x2="400" y2="360" class="arrow"/>
+  
+  <text x="460" y="360" class="text" font-size="12">3. Discard Params</text>
+  <text x="460" y="380" class="text" font-size="10" fill="#666">(Free up memory)</text>
+
+  <line x1="520" y1="360" x2="560" y2="360" class="arrow"/>
+
+  <text x="640" y="360" class="text" font-size="12">4. Reduce-Scatter</text>
+  <text x="640" y="380" class="text" font-size="10" fill="#666">(Sync gradients)</text>
+
+</svg>
