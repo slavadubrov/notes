@@ -22,7 +22,7 @@ Below is a practical guide to the best macOS-ready interfaces. Each tool wraps t
 
 At their core, all these applications do the same thing: they provide a user interface (UI) for the Stable Diffusion models. They handle the complex "plumbing"—loading heavy model weights, managing memory, and talking to your Mac's GPU.
 
-![AI Tools Workflow](../assets/ai_tools_workflow.svg)
+![AI Tools Workflow](../assets/2025-05-10-guide-ai-image-tools/ai_tools_workflow.svg)
 
 Because they all share the same underlying architecture, you can usually share **model files** (`.safetensors`) between them. Download a model once, and try it in different apps to see which workflow suits you.
 
@@ -30,7 +30,7 @@ Because they all share the same underlying architecture, you can usually share *
 
 Why is the Mac so good for this? It comes down to **Unified Memory**. Unlike a PC with a separate graphics card (where you might have only 8GB or 12GB of VRAM), your Mac's GPU has access to your _entire_ system RAM.
 
-![Apple Silicon Stack](../assets/apple_silicon_stack.svg)
+![Apple Silicon Stack](../assets/2025-05-10-guide-ai-image-tools/apple_silicon_stack.svg)
 
 This means a MacBook Pro with 32GB or 64GB of RAM can load massive models (like SDXL or Flux) that would bring a typical gaming PC to its knees.
 
@@ -38,8 +38,7 @@ This means a MacBook Pro with 32GB or 64GB of RAM can load massive models (like 
 
 ## 1. Draw Things: The Powerhouse App
 
-- **Download:** [App Store Link](https://apps.apple.com/de/app/draw-things-offline-ai-art/id6444050820?l=en-GB
-  Draw Things: Offline AI Art)
+- **Download:** [App Store Link](https://apps.apple.com/de/app/draw-things-offline-ai-art/id6444050820?l=en-GB)
 - **What it is:** A native iOS/macOS app that feels like a professional design tool. It's surprisingly powerful, supporting ControlNet, Inpainting, and LoRAs right out of the box.
 - **Best for:** Users who want a **native app experience** (no terminal!) but don't want to sacrifice advanced features.
 - **Pros:**
@@ -117,7 +116,7 @@ This means a MacBook Pro with 32GB or 64GB of RAM can load massive models (like 
 
 Not sure which one to pick? Follow this path:
 
-![Decision Tree](../assets/ai_tool_decision_tree.svg)
+![Decision Tree](../assets/2025-05-10-guide-ai-image-tools/ai_tool_decision_tree.svg)
 
 ---
 
