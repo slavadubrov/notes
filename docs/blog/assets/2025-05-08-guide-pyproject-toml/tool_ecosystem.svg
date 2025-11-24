@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 500">
+  <defs>
+    <style>
+      .bg { fill: #1e1e2e; }
+      .center-node { fill: #ff79c6; stroke: #bd93f9; stroke-width: 3; rx: 50; }
+      .tool-node { fill: #2a2a3c; stroke: #6272a4; stroke-width: 2; rx: 10; }
+      .text-center { fill: #282a36; font-family: -apple-system, sans-serif; font-size: 20px; font-weight: bold; text-anchor: middle; }
+      .text-tool { fill: #f8f8f2; font-family: -apple-system, sans-serif; font-size: 16px; font-weight: bold; text-anchor: middle; }
+      .text-desc { fill: #8990b3; font-family: -apple-system, sans-serif; font-size: 12px; text-anchor: middle; }
+      .connector { stroke: #44475a; stroke-width: 2; stroke-dasharray: 5,5; }
+    </style>
+  </defs>
+
+  <rect width="600" height="500" class="bg" rx="15" />
+
+  <!-- Center -->
+  <circle cx="300" cy="250" r="70" class="center-node" />
+  <text x="300" y="255" class="text-center">pyproject.toml</text>
+
+  <!-- Connectors -->
+  <line x1="300" y1="180" x2="300" y2="100" class="connector" /> <!-- Top -->
+  <line x1="300" y1="320" x2="300" y2="400" class="connector" /> <!-- Bottom -->
+  <line x1="230" y1="250" x2="150" y2="250" class="connector" /> <!-- Left -->
+  <line x1="370" y1="250" x2="450" y2="250" class="connector" /> <!-- Right -->
+  <line x1="250" y1="200" x2="180" y2="130" class="connector" /> <!-- Top Left -->
+  <line x1="350" y1="200" x2="420" y2="130" class="connector" /> <!-- Top Right -->
+
+  <!-- Tools -->
+  
+  <!-- Top: Build Tools -->
+  <g transform="translate(240, 40)">
+    <rect width="120" height="60" class="tool-node" stroke="#8be9fd" />
+    <text x="60" y="25" class="text-tool" fill="#8be9fd">Build Tools</text>
+    <text x="60" y="45" class="text-desc">Hatch, Setuptools</text>
+  </g>
+
+  <!-- Bottom: Package Managers -->
+  <g transform="translate(240, 400)">
+    <rect width="120" height="60" class="tool-node" stroke="#ffb86c" />
+    <text x="60" y="25" class="text-tool" fill="#ffb86c">Managers</text>
+    <text x="60" y="45" class="text-desc">uv, Poetry, PDM</text>
+  </g>
+
+  <!-- Left: Testing -->
+  <g transform="translate(30, 220)">
+    <rect width="120" height="60" class="tool-node" stroke="#50fa7b" />
+    <text x="60" y="25" class="text-tool" fill="#50fa7b">Testing</text>
+    <text x="60" y="45" class="text-desc">pytest, coverage</text>
+  </g>
+
+  <!-- Right: Formatting -->
+  <g transform="translate(450, 220)">
+    <rect width="120" height="60" class="tool-node" stroke="#ff5555" />
+    <text x="60" y="25" class="text-tool" fill="#ff5555">Formatting</text>
+    <text x="60" y="45" class="text-desc">Black, Ruff</text>
+  </g>
+
+  <!-- Top Left: Typing -->
+  <g transform="translate(60, 70)">
+    <rect width="120" height="60" class="tool-node" stroke="#f1fa8c" />
+    <text x="60" y="25" class="text-tool" fill="#f1fa8c">Typing</text>
+    <text x="60" y="45" class="text-desc">MyPy, Pyright</text>
+  </g>
+
+  <!-- Top Right: Linting -->
+  <g transform="translate(420, 70)">
+    <rect width="120" height="60" class="tool-node" stroke="#bd93f9" />
+    <text x="60" y="25" class="text-tool" fill="#bd93f9">Linting</text>
+    <text x="60" y="45" class="text-desc">Ruff, Flake8</text>
+  </g>
+
+</svg>
