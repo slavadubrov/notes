@@ -39,7 +39,7 @@ If you've been using Python for a while, you're likely familiar with the "tool f
 
 Written in Rust, it is designed to be a drop-in replacement that is **10-100x faster** than existing tools. It unifies your workflow into a single, cohesive experience.
 
-![The uv Ecosystem](../assets/uv-on-macos/uv-ecosystem.svg)
+![The uv Ecosystem](../assets/2025-04-17-uv-on-macos/uv-ecosystem.svg)
 
 It handles:
 
@@ -83,7 +83,7 @@ uv self update
 
 For new projects, `uv` uses the standard `pyproject.toml` for configuration and a cross-platform `uv.lock` for reproducible builds.
 
-![Modern uv Project Structure](../assets/uv-on-macos/uv-project-structure.svg)
+![Modern uv Project Structure](../assets/2025-04-17-uv-on-macos/uv-project-structure.svg)
 
 **Start a new project:**
 
