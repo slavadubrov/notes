@@ -6,9 +6,9 @@
       <feComponentTransfer>
         <feFuncA type="linear" slope="0.2"/>
       </feComponentTransfer>
-      <feMerge> 
+      <feMerge>
         <feMergeNode/>
-        <feMergeNode in="SourceGraphic"/> 
+        <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
     <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
@@ -60,7 +60,7 @@
   </g>
 
   <!-- Paths from Q2 (Bottom Tip is at 650, 350) -->
-  
+
   <!-- Path 1: Control (ComfyUI) - Target Center X: 370 -->
   <path d="M650 350 L650 380 L370 380 L370 418" fill="none" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
   <text x="450" y="375" font-family="sans-serif" font-size="12" fill="#64748b">Total Control</text>

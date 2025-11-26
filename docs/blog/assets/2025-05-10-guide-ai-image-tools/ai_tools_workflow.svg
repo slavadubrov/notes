@@ -10,9 +10,9 @@
       <feComponentTransfer>
         <feFuncA type="linear" slope="0.3"/>
       </feComponentTransfer>
-      <feMerge> 
+      <feMerge>
         <feMergeNode/>
-        <feMergeNode in="SourceGraphic"/> 
+        <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
     <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">

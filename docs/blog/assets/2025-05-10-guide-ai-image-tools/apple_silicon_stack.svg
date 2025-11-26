@@ -6,9 +6,9 @@
       <feComponentTransfer>
         <feFuncA type="linear" slope="0.2"/>
       </feComponentTransfer>
-      <feMerge> 
+      <feMerge>
         <feMergeNode/>
-        <feMergeNode in="SourceGraphic"/> 
+        <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
     <marker id="arrowUp" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
@@ -20,12 +20,12 @@
   </defs>
 
   <rect width="600" height="400" fill="#f8fafc" rx="10" ry="10"/>
-  
+
   <text x="300" y="40" font-family="sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#334155">Apple Silicon AI Stack</text>
 
   <!-- Stack Container -->
   <g transform="translate(100, 70)">
-    
+
     <!-- Layer 1: Application (Top) -->
     <g transform="translate(0, 0)">
       <rect x="0" y="0" width="400" height="60" rx="4" fill="#3b82f6" filter="url(#shadow)"/>
