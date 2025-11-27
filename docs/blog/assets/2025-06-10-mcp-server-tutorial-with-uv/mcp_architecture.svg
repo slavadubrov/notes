@@ -44,11 +44,11 @@
     <rect width="160" height="180" rx="10" ry="10" fill="url(#grad2)" stroke="#1565c0" stroke-width="2" filter="url(#dropShadow)"/>
     <text x="80" y="30" font-family="Arial, sans-serif" font-size="16" text-anchor="middle" font-weight="bold" fill="#0d47a1">Claude Desktop</text>
     <text x="80" y="50" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#0d47a1">(MCP Client)</text>
-    
+
     <!-- Internal Logic -->
     <rect x="20" y="70" width="120" height="40" rx="5" ry="5" fill="#fff" stroke="#1565c0" stroke-dasharray="4"/>
     <text x="80" y="95" font-family="Arial, sans-serif" font-size="12" text-anchor="middle">LLM Reasoning</text>
-    
+
     <rect x="20" y="120" width="120" height="40" rx="5" ry="5" fill="#fff" stroke="#1565c0" stroke-dasharray="4"/>
     <text x="80" y="145" font-family="Arial, sans-serif" font-size="12" text-anchor="middle">Tool Execution</text>
   </g>
@@ -63,14 +63,14 @@
     <rect width="160" height="180" rx="10" ry="10" fill="url(#grad1)" stroke="#455a64" stroke-width="2" filter="url(#dropShadow)"/>
     <text x="80" y="30" font-family="Arial, sans-serif" font-size="16" text-anchor="middle" font-weight="bold" fill="#263238">FeatureStoreLite</text>
     <text x="80" y="50" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#263238">(MCP Server)</text>
-    
+
     <!-- Tools -->
     <rect x="20" y="70" width="120" height="30" rx="5" ry="5" fill="#fff" stroke="#455a64"/>
     <text x="80" y="90" font-family="Arial, sans-serif" font-size="11" text-anchor="middle">store_feature</text>
-    
+
     <rect x="20" y="110" width="120" height="30" rx="5" ry="5" fill="#fff" stroke="#455a64"/>
     <text x="80" y="130" font-family="Arial, sans-serif" font-size="11" text-anchor="middle">get_feature</text>
-    
+
     <rect x="20" y="150" width="120" height="30" rx="5" ry="5" fill="#fff" stroke="#455a64"/>
     <text x="80" y="170" font-family="Arial, sans-serif" font-size="11" text-anchor="middle">list_features</text>
   </g>

@@ -33,7 +33,7 @@
   <!-- Sequence 1: List Tools -->
   <text x="275" y="110" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#555">1. Initialize / List Tools</text>
   <line x1="150" y1="120" x2="400" y2="120" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
-  
+
   <text x="275" y="150" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#555">2. Return Tool Definitions</text>
   <line x1="400" y1="160" x2="150" y2="160" stroke="#333" stroke-width="2" stroke-dasharray="4" marker-end="url(#arrowhead)"/>
 

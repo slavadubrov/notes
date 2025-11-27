@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+    <style>
+        .bg { fill: #1e1e1e; }
+        .container { fill: #0f172a; stroke: #475569; stroke-width: 2; rx: 8; ry: 8; }
+        .block { stroke-width: 2; rx: 6; ry: 6; }
+        .block-text { fill: #f8fafc; font-family: sans-serif; font-size: 16px; font-weight: bold; text-anchor: middle; }
+        .block-subtext { fill: #cbd5e1; font-family: sans-serif; font-size: 12px; text-anchor: middle; }
+        .label { fill: #94a3b8; font-family: sans-serif; font-size: 14px; text-anchor: start; }
+        .title { fill: #f8fafc; font-family: sans-serif; font-size: 24px; font-weight: bold; text-anchor: middle; }
+        .arrow { stroke: #64748b; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+        .limit-line { stroke: #ef4444; stroke-width: 2; stroke-dasharray: 5 5; }
+        .limit-text { fill: #ef4444; font-family: sans-serif; font-size: 12px; font-weight: bold; }
+    </style>
+    <defs>
+        <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#64748b" />
+        </marker>
+        <!-- Gradients -->
+        <linearGradient id="grad-system" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#451a1a;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#7f1d1d;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="grad-examples" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#422006;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#713f12;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="grad-rag" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#052e16;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#14532d;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="grad-history" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#2e1065;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#581c87;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="grad-query" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#172554;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#1e40af;stop-opacity:1" />
+        </linearGradient>
+    </defs>
+
+    <!-- Background -->
+    <rect width="100%" height="100%" class="bg"/>
+
+    <!-- Title -->
+    <text x="400" y="40" class="title">Context Window Composition</text>
+
+    <!-- Main Container representing the Context Window -->
+    <g transform="translate(200, 80)">
+        <!-- Window Frame -->
+        <rect x="0" y="0" width="400" height="480" class="container"/>
+
+        <!-- 1. System Prompt -->
+        <g transform="translate(20, 20)">
+            <rect x="0" y="0" width="360" height="70" class="block" style="fill: url(#grad-system); stroke: #ef4444;"/>
+            <text x="180" y="30" class="block-text">1. System Instructions</text>
+            <text x="180" y="50" class="block-subtext">Persona, Constraints, Output Format</text>
+        </g>
+
+        <!-- 2. Few-Shot Examples -->
+        <g transform="translate(20, 100)">
+            <rect x="0" y="0" width="360" height="70" class="block" style="fill: url(#grad-examples); stroke: #eab308;"/>
+            <text x="180" y="30" class="block-text">2. Few-Shot Examples</text>
+            <text x="180" y="50" class="block-subtext">Input -> Output Patterns (Static or Dynamic)</text>
+        </g>
+
+        <!-- 3. RAG Context -->
+        <g transform="translate(20, 180)">
+            <rect x="0" y="0" width="360" height="90" class="block" style="fill: url(#grad-rag); stroke: #22c55e;"/>
+            <text x="180" y="35" class="block-text">3. Retrieved Context (RAG)</text>
+            <text x="180" y="55" class="block-subtext">Relevant Documents, Database Results</text>
+            <text x="180" y="70" class="block-subtext" style="font-size: 10px; fill: #86efac;">(Injected dynamically based on query)</text>
+        </g>
+
+        <!-- 4. Conversation History -->
+        <g transform="translate(20, 280)">
+            <rect x="0" y="0" width="360" height="80" class="block" style="fill: url(#grad-history); stroke: #a855f7;"/>
+            <text x="180" y="35" class="block-text">4. Conversation History</text>
+            <text x="180" y="55" class="block-subtext">Previous User/Assistant Turns</text>
+        </g>
+
+        <!-- 5. User Query -->
+        <g transform="translate(20, 370)">
+            <rect x="0" y="0" width="360" height="90" class="block" style="fill: url(#grad-query); stroke: #3b82f6;"/>
+            <text x="180" y="35" class="block-text">5. Current User Query</text>
+            <text x="180" y="55" class="block-subtext">The actual prompt to answer</text>
+        </g>
+    </g>
+
+    <!-- Annotations -->
+    <g transform="translate(620, 100)">
+        <text x="0" y="0" class="label" style="font-weight: bold; fill: #e2e8f0;">Processing Flow</text>
+        <path d="M 20 20 L 20 400" class="arrow"/>
+        <text x="35" y="200" class="label" transform="rotate(90, 35, 200)">Model Reads Top-to-Bottom</text>
+    </g>
+
+    <!-- Context Limit Indicator -->
+    <g transform="translate(150, 50)">
+        <line x1="50" y1="0" x2="450" y2="0" class="limit-line"/>
+        <text x="460" y="5" class="limit-text">Context Window Start (0)</text>
+    </g>
+
+    <g transform="translate(150, 580)">
+        <line x1="50" y1="0" x2="450" y2="0" class="limit-line"/>
+        <text x="460" y="5" class="limit-text">Max Context Limit (N)</text>
+    </g>
+
+</svg>
