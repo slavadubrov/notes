@@ -20,7 +20,7 @@
   <!-- Layer 1: User Space -->
   <rect x="50" y="80" width="150" height="300" fill="#f0f0f0" rx="10" ry="10" stroke="none"/>
   <text x="125" y="70" class="text" font-weight="bold">User Space</text>
-  
+
   <rect x="75" y="120" width="100" height="60" class="box" />
   <text x="125" y="145" class="text">User Prompt</text>
   <text x="125" y="165" class="text label">"Why is sky blue?"</text>
@@ -50,20 +50,20 @@
   <!-- Unified Memory -->
   <rect x="510" y="200" width="210" height="150" class="hardware" />
   <text x="615" y="225" class="text" font-weight="bold">Apple Silicon</text>
-  
+
   <rect x="535" y="240" width="160" height="40" fill="#fff" stroke="#52c41a" rx="4" />
   <text x="615" y="265" class="text">Unified Memory (RAM)</text>
-  
+
   <rect x="535" y="295" width="70" height="40" fill="#fff" stroke="#52c41a" rx="4" />
   <text x="570" y="320" class="text">CPU</text>
-  
+
   <rect x="625" y="295" width="70" height="40" fill="#fff" stroke="#52c41a" rx="4" />
   <text x="660" y="320" class="text">GPU</text>
 
   <!-- Arrows -->
   <!-- Prompt to App -->
   <path d="M 175 150 L 250 180" class="arrow" />
-  
+
   <!-- App to Response -->
   <path d="M 250 280 L 175 310" class="arrow" />
 
