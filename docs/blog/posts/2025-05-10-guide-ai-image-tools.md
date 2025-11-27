@@ -141,5 +141,3 @@ The software is just the engine; you need fuel (models).
 ### 3. Start Simple
 
 Don't try to install ComfyUI on day one. Start with **DiffusionBee** or **Draw Things**. Get a feel for how prompting works. Once you hit a wall ("I wish I could control the pose of this character..."), _then_ look into ControlNet and more advanced tools.
-
-Happy generating!

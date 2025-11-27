@@ -234,5 +234,3 @@ You can't really go wrong with any of these. They all run locally, they all resp
 - **Start with Ollama** if you just want to see what the fuss is about.
 - **Try LM Studio** if you want to browse models visually.
 - **Dive into llama.cpp** if you want to understand how it all works under the hood.
-
-Happy experimenting!
