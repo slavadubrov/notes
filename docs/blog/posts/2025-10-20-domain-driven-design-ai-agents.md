@@ -14,7 +14,7 @@ author: Viacheslav Dubrov
 
 > Domain-driven design (DDD) gives AI agent teams a shared language, clear boundaries, and code that mirrors the real world. Use it to tame prompt spaghetti, enforce business rules, and evolve systems without breaking everything.
 
-![DDD Layered Architecture](../assets/ddd_layered_architecture.svg)
+![DDD Layered Architecture](../assets/2025-10-20-domain-driven-design-ai-agents/ddd_layered_architecture.svg)
 
 <!-- more -->
 
@@ -106,7 +106,7 @@ Bounded contexts let each subdomain have its own definition without conflict. Tr
 
 Bounded contexts let each subdomain have its own definition without conflict. Translation layers or interfaces connect them when they need to talk.
 
-![Bounded Contexts](../assets/ddd_bounded_contexts.svg)
+![Bounded Contexts](../assets/2025-10-20-domain-driven-design-ai-agents/ddd_bounded_contexts.svg)
 
 This keeps each model lean and prevents the "one size fits all" model that becomes unwieldy as complexity grows.
 
@@ -260,7 +260,7 @@ Each has its own model, terminology, and invariants. They communicate through we
 
 Each has its own model, terminology, and invariants. They communicate through well-defined interfaces or events.
 
-![Agent Orchestration](../assets/agent_orchestration.svg)
+![Agent Orchestration](../assets/2025-10-20-domain-driven-design-ai-agents/agent_orchestration.svg)
 
 Even in a single-agent system, you might define internal contexts—a Planning module and an Execution module, each with its own domain model.
 
@@ -296,7 +296,7 @@ When working with LLMs, you are dealing with a probabilistic, creative, and occa
 
 Enter the **Anti-Corruption Layer (ACL)**.
 
-![LLM Domain Interaction](../assets/llm_domain_interaction.svg)
+![LLM Domain Interaction](../assets/2025-10-20-domain-driven-design-ai-agents/llm_domain_interaction.svg)
 
 The ACL acts as a gatekeeper. It translates the "wild" output of the LLM into the "strict" language of your domain.
 
@@ -325,7 +325,7 @@ We'll focus on Task Management first. The others can evolve as separate bounded 
 
 We'll focus on Task Management first. The others can evolve as separate bounded contexts or companion agents.
 
-![Task Assistant Context Map](../assets/task_assistant_context_map.svg)
+![Task Assistant Context Map](../assets/2025-10-20-domain-driven-design-ai-agents/task_assistant_context_map.svg)
 
 ### 2. Speak the same language
 
