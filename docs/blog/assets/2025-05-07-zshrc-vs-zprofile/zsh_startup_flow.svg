@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;display=swap');
+      .bg { fill: #1e1e2e; }
+      .node-rect { fill: #2a2a3c; stroke: #45475a; stroke-width: 2; rx: 8; }
+      .node-text { font-family: 'Inter', sans-serif; fill: #cdd6f4; font-size: 14px; text-anchor: middle; }
+      .node-title { font-weight: 600; font-size: 16px; }
+      .arrow { stroke: #6c7086; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .label { font-family: 'Inter', sans-serif; fill: #9399b2; font-size: 12px; }
+      .highlight-rect { fill: #313244; stroke-width: 2; rx: 8; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6c7086" />
+    </marker>
+  </defs>
+
+  <rect width="100%" height="100%" class="bg" />
+
+  <text x="400" y="40" class="node-text node-title" style="font-size: 24px; fill: #cba6f7;">Zsh Startup Flow (macOS Default)</text>
+
+  <!-- 1. zshenv -->
+  <rect x="300" y="70" width="200" height="50" class="node-rect" />
+  <text x="400" y="100" class="node-text node-title" style="fill: #fab387;">1. ~/.zshenv</text>
+
+  <path d="M400 120 L400 150" class="arrow" />
+
+  <!-- 2. zprofile -->
+  <rect x="300" y="150" width="200" height="80" class="highlight-rect" style="stroke: #f5c2e7;" />
+  <text x="400" y="180" class="node-text node-title" style="fill: #f5c2e7;">2. ~/.zprofile</text>
+  <text x="400" y="205" class="node-text" style="font-size: 12px;">Environment Variables</text>
+  <text x="400" y="220" class="node-text" style="font-size: 12px;">PATH, EDITOR, etc.</text>
+
+  <path d="M400 230 L400 260" class="arrow" />
+
+  <!-- 3. zshrc -->
+  <rect x="300" y="260" width="200" height="80" class="highlight-rect" style="stroke: #a6e3a1;" />
+  <text x="400" y="290" class="node-text node-title" style="fill: #a6e3a1;">3. ~/.zshrc</text>
+  <text x="400" y="315" class="node-text" style="font-size: 12px;">Interactive Config</text>
+  <text x="400" y="330" class="node-text" style="font-size: 12px;">Aliases, Prompt, History</text>
+
+  <path d="M400 340 L400 370" class="arrow" />
+
+  <!-- 4. zlogin -->
+  <rect x="300" y="370" width="200" height="50" class="node-rect" />
+  <text x="400" y="400" class="node-text node-title" style="fill: #89b4fa;">4. ~/.zlogin</text>
+
+  <path d="M400 420 L400 450" class="arrow" />
+
+  <!-- Terminal Ready -->
+  <rect x="250" y="450" width="300" height="40" class="node-rect" style="fill: #181825; stroke: #cba6f7;" />
+  <text x="400" y="475" class="node-text node-title" style="fill: #cba6f7;">🚀 Terminal Ready</text>
+
+  <!-- Side notes -->
+  <text x="550" y="190" class="node-text" style="text-anchor: start; fill: #f5c2e7; font-size: 12px;">Runs once per login</text>
+  <text x="550" y="300" class="node-text" style="text-anchor: start; fill: #a6e3a1; font-size: 12px;">Runs for every new tab</text>
+
+</svg>

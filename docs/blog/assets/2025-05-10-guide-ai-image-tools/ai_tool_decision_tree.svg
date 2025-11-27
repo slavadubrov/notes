@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <defs>
+    <filter id="shadow" height="130%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="2" dy="2" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.2"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8" />
+    </marker>
+  </defs>
+
+  <rect width="800" height="600" fill="#f8fafc" rx="10" ry="10"/>
+
+  <!-- Start Node -->
+  <g transform="translate(300, 30)">
+    <rect x="0" y="0" width="200" height="60" rx="30" fill="#1e293b" filter="url(#shadow)"/>
+    <text x="100" y="35" font-family="sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="white">Start Here</text>
+  </g>
+
+  <!-- Question 1 -->
+  <g transform="translate(300, 130)">
+    <path d="M100 0 L200 50 L100 100 L0 50 Z" fill="#fff" stroke="#3b82f6" stroke-width="2" filter="url(#shadow)"/>
+    <text x="100" y="45" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#1e293b">Are you a</text>
+    <text x="100" y="65" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#1e293b">Beginner?</text>
+  </g>
+
+  <!-- Connector Start -> Q1 -->
+  <line x1="400" y1="90" x2="400" y2="128" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Yes Path (Left) -->
+  <line x1="300" y1="180" x2="150" y2="180" stroke="#94a3b8" stroke-width="2"/>
+  <line x1="150" y1="180" x2="150" y2="248" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="200" y="170" font-family="sans-serif" font-size="12" fill="#64748b">Yes</text>
+
+  <!-- No Path (Right) -->
+  <line x1="500" y1="180" x2="650" y2="180" stroke="#94a3b8" stroke-width="2"/>
+  <line x1="650" y1="180" x2="650" y2="248" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="550" y="170" font-family="sans-serif" font-size="12" fill="#64748b">No / Power User</text>
+
+  <!-- Result: Beginner -->
+  <g transform="translate(50, 250)">
+    <rect x="0" y="0" width="200" height="100" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2" filter="url(#shadow)"/>
+    <text x="100" y="30" font-family="sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#1e40af">DiffusionBee</text>
+    <text x="100" y="50" font-family="sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#1e40af">or Draw Things</text>
+    <text x="100" y="75" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#1e3a8a">One-click install, native app</text>
+  </g>
+
+  <!-- Question 2 -->
+  <g transform="translate(550, 250)">
+    <path d="M100 0 L200 50 L100 100 L0 50 Z" fill="#fff" stroke="#8b5cf6" stroke-width="2" filter="url(#shadow)"/>
+    <text x="100" y="45" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#1e293b">What is your</text>
+    <text x="100" y="65" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#1e293b">Priority?</text>
+  </g>
+
+  <!-- Paths from Q2 (Bottom Tip is at 650, 350) -->
+
+  <!-- Path 1: Control (ComfyUI) - Target Center X: 370 -->
+  <path d="M650 350 L650 380 L370 380 L370 418" fill="none" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="450" y="375" font-family="sans-serif" font-size="12" fill="#64748b">Total Control</text>
+
+  <!-- Path 2: Features (A1111) - Target Center X: 550 -->
+  <path d="M650 350 L650 380 L550 380 L550 418" fill="none" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="570" y="400" font-family="sans-serif" font-size="12" fill="#64748b">Features</text>
+
+  <!-- Path 3: Painting (InvokeAI) - Target Center X: 730 -->
+  <path d="M650 350 L650 380 L730 380 L730 418" fill="none" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="740" y="375" font-family="sans-serif" font-size="12" fill="#64748b">Painting</text>
+
+  <!-- Result: ComfyUI (Left) -->
+  <g transform="translate(300, 420)">
+    <rect x="0" y="0" width="140" height="80" rx="8" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2" filter="url(#shadow)"/>
+    <text x="70" y="30" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#5b21b6">ComfyUI</text>
+    <text x="70" y="50" font-family="sans-serif" font-size="10" text-anchor="middle" fill="#4c1d95">Node-based workflows</text>
+  </g>
+
+  <!-- Result: A1111 (Middle) -->
+  <g transform="translate(480, 420)">
+    <rect x="0" y="0" width="140" height="80" rx="8" fill="#ffedd5" stroke="#ea580c" stroke-width="2" filter="url(#shadow)"/>
+    <text x="70" y="30" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#9a3412">WebUI (A1111)</text>
+    <text x="70" y="50" font-family="sans-serif" font-size="10" text-anchor="middle" fill="#7c2d12">Extensible standard</text>
+  </g>
+
+  <!-- Result: InvokeAI (Right) -->
+  <g transform="translate(660, 420)">
+    <rect x="0" y="0" width="140" height="80" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2" filter="url(#shadow)"/>
+    <text x="70" y="30" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#14532d">InvokeAI</text>
+    <text x="70" y="50" font-family="sans-serif" font-size="10" text-anchor="middle" fill="#14532d">Unified Canvas</text>
+  </g>
+
+</svg>

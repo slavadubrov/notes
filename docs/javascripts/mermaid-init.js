@@ -2,24 +2,23 @@
 // Keeps security tight and avoids server-side Puppeteer in restricted envs
 (function () {
   function initMermaid() {
-    if (window.mermaid && typeof window.mermaid.initialize === 'function') {
+    if (window.mermaid && typeof window.mermaid.initialize === "function") {
       try {
         window.mermaid.initialize({
           startOnLoad: true,
-          securityLevel: 'strict',
-          theme: 'default'
+          securityLevel: "strict",
+          theme: "default",
         });
       } catch (e) {
         // Swallow errors to avoid breaking the page if Mermaid fails
-        console.warn('Mermaid initialization failed:', e);
+        console.warn("Mermaid initialization failed:", e);
       }
     }
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initMermaid);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initMermaid);
   } else {
     initMermaid();
   }
 })();
-

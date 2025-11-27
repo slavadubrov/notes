@@ -174,5 +174,3 @@ That's it! You now have a complete AI engineering setup that mirrors what I use 
 - Run local LLMs for development and testing
 - Manage your code with Git and GitHub
 - Work efficiently in a beautiful, customized terminal
-
-Happy coding! 🚀

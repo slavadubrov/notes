@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#555"/>
+    </marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="2" dy="2" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.2"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <g font-family="sans-serif" text-anchor="middle">
+
+    <!-- Requests -->
+    <g transform="translate(50, 200)">
+      <rect x="0" y="0" width="140" height="100" rx="10" fill="#f3f4f6" stroke="#ccc" stroke-width="2"/>
+      <text x="70" y="25" font-weight="bold" fill="#333">Incoming Requests</text>
+      <text x="70" y="50" font-size="12" fill="#555">Client A: Law</text>
+      <text x="70" y="70" font-size="12" fill="#555">Client B: Finance</text>
+      <text x="70" y="90" font-size="12" fill="#555">Client C: Medical</text>
+    </g>
+
+    <!-- Arrow to Scheduler -->
+    <line x1="190" y1="250" x2="240" y2="250" stroke="#555" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+    <!-- Scheduler -->
+    <g transform="translate(250, 200)">
+      <rect x="0" y="0" width="120" height="100" rx="10" fill="#e0e7ff" stroke="#4f46e5" stroke-width="2" filter="url(#shadow)"/>
+      <text x="60" y="45" font-weight="bold" fill="#333">LoRAX</text>
+      <text x="60" y="65" font-weight="bold" fill="#333">Scheduler</text>
+    </g>
+
+    <!-- Memory Hierarchy Container -->
+    <rect x="420" y="20" width="350" height="460" rx="15" fill="#fff" stroke="#eee" stroke-width="2"/>
+    <text x="595" y="45" font-weight="bold" font-size="16" fill="#333">Memory Hierarchy</text>
+
+    <!-- GPU Tier -->
+    <g transform="translate(440, 70)">
+      <rect x="0" y="0" width="310" height="100" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2" filter="url(#shadow)"/>
+      <text x="155" y="25" font-weight="bold" fill="#1e40af">GPU VRAM (Hot)</text>
+      <rect x="20" y="40" width="120" height="40" rx="4" fill="#fff" stroke="#93c5fd"/>
+      <text x="80" y="65" font-size="12" fill="#333">Base Model</text>
+      <rect x="150" y="40" width="60" height="40" rx="4" fill="#bfdbfe" stroke="#60a5fa"/>
+      <text x="180" y="65" font-size="10" fill="#333">Law</text>
+      <rect x="220" y="40" width="60" height="40" rx="4" fill="#bfdbfe" stroke="#60a5fa"/>
+      <text x="250" y="65" font-size="10" fill="#333">Finance</text>
+    </g>
+
+    <!-- RAM Tier -->
+    <g transform="translate(440, 200)">
+      <rect x="0" y="0" width="310" height="80" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2" filter="url(#shadow)"/>
+      <text x="155" y="25" font-weight="bold" fill="#92400e">CPU RAM (Warm)</text>
+      <rect x="80" y="35" width="70" height="30" rx="4" fill="#fff" stroke="#fcd34d"/>
+      <text x="115" y="54" font-size="10" fill="#333">Medical</text>
+      <rect x="160" y="35" width="70" height="30" rx="4" fill="#fff" stroke="#fcd34d"/>
+      <text x="195" y="54" font-size="10" fill="#333">Eng</text>
+    </g>
+
+    <!-- Disk Tier -->
+    <g transform="translate(440, 310)">
+      <rect x="0" y="0" width="310" height="80" rx="8" fill="#f3f4f6" stroke="#6b7280" stroke-width="2" filter="url(#shadow)"/>
+      <text x="155" y="25" font-weight="bold" fill="#374151">Disk / HF Hub (Cold)</text>
+      <rect x="50" y="35" width="210" height="30" rx="4" fill="#fff" stroke="#d1d5db"/>
+      <text x="155" y="54" font-size="10" fill="#333">100+ Cached Adapters</text>
+    </g>
+
+    <!-- Connections -->
+    <!-- Scheduler to GPU -->
+    <path d="M 370 220 L 440 120" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="380" y="160" font-size="11" fill="#2563eb" transform="rotate(-50 380 160)">Fast (~1ms)</text>
+
+    <!-- Scheduler to RAM -->
+    <line x1="370" y1="250" x2="440" y2="240" stroke="#d97706" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="405" y="235" font-size="11" fill="#d97706">Medium (~10ms)</text>
+
+    <!-- Scheduler to Disk -->
+    <path d="M 370 280 L 440 350" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="360" y="330" font-size="11" fill="#6b7280" transform="rotate(45 360 330)">Slow (Download)</text>
+
+  </g>
+</svg>

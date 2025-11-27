@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300">
+  <defs>
+    <style>
+      .bg { fill: #1e1e2e; }
+      .node { fill: #2a2a3c; stroke: #6272a4; stroke-width: 2; rx: 8; }
+      .node-highlight { fill: #2a2a3c; stroke: #50fa7b; stroke-width: 2; rx: 8; }
+      .text-main { fill: #ffffff; font-family: -apple-system, sans-serif; font-size: 16px; font-weight: bold; text-anchor: middle; }
+      .text-sub { fill: #8990b3; font-family: -apple-system, sans-serif; font-size: 12px; text-anchor: middle; }
+      .arrow { stroke: #6272a4; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .arrow-highlight { stroke: #50fa7b; stroke-width: 2; fill: none; marker-end: url(#arrowhead-h); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6272a4" />
+    </marker>
+    <marker id="arrowhead-h" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#50fa7b" />
+    </marker>
+  </defs>
+
+  <rect width="800" height="300" class="bg" rx="15" />
+
+  <!-- Step 1 -->
+  <g transform="translate(50, 100)">
+    <rect width="140" height="80" class="node" />
+    <text x="70" y="35" class="text-main">Legacy</text>
+    <text x="70" y="55" class="text-sub">setup.py</text>
+    <text x="70" y="70" class="text-sub">requirements.txt</text>
+  </g>
+
+  <!-- Arrow 1 -->
+  <path d="M 190 140 L 230 140" class="arrow" />
+
+  <!-- Step 2 -->
+  <g transform="translate(230, 100)">
+    <rect width="140" height="80" class="node" />
+    <text x="70" y="35" class="text-main">Init</text>
+    <text x="70" y="55" class="text-sub">Create pyproject.toml</text>
+    <text x="70" y="70" class="text-sub">Add [build-system]</text>
+  </g>
+
+  <!-- Arrow 2 -->
+  <path d="M 370 140 L 410 140" class="arrow" />
+
+  <!-- Step 3 -->
+  <g transform="translate(410, 100)">
+    <rect width="140" height="80" class="node" />
+    <text x="70" y="35" class="text-main">Migrate</text>
+    <text x="70" y="55" class="text-sub">Move metadata</text>
+    <text x="70" y="70" class="text-sub">Move dependencies</text>
+  </g>
+
+  <!-- Arrow 3 -->
+  <path d="M 550 140 L 590 140" class="arrow" />
+
+  <!-- Step 4 -->
+  <g transform="translate(590, 100)">
+    <rect width="140" height="80" class="node-highlight" />
+    <text x="70" y="35" class="text-main">Modernize</text>
+    <text x="70" y="55" class="text-sub">Add [tool.*] configs</text>
+    <text x="70" y="70" class="text-sub">Delete old files</text>
+  </g>
+
+</svg>

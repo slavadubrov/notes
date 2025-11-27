@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <defs>
+    <style>
+      .bg { fill: #1e1e2e; }
+      .node { fill: #313244; stroke: #45475a; stroke-width: 2; rx: 10; ry: 10; }
+      .node-highlight { fill: #89b4fa; stroke: #89b4fa; stroke-width: 2; rx: 10; ry: 10; }
+      .node-accent { fill: #f38ba8; stroke: #f38ba8; stroke-width: 2; rx: 10; ry: 10; }
+      .text { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; fill: #cdd6f4; font-size: 14px; text-anchor: middle; }
+      .text-title { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; fill: #1e1e2e; font-size: 16px; font-weight: bold; text-anchor: middle; }
+      .text-label { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; fill: #a6adc8; font-size: 12px; text-anchor: middle; }
+      .arrow { stroke: #a6adc8; stroke-width: 2; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#a6adc8" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="400" class="bg" />
+
+  <!-- Title -->
+  <text x="400" y="40" class="text" style="font-size: 24px; fill: #cdd6f4; font-weight: bold;">LLM Anatomy: Variant vs. Format</text>
+
+  <!-- Central Node: Model Release -->
+  <rect x="300" y="80" width="200" height="60" class="node-highlight" />
+  <text x="400" y="115" class="text-title">Model Release</text>
+  <text x="400" y="130" class="text" style="fill: #1e1e2e; font-size: 12px;">(e.g., Llama-3-8B)</text>
+
+  <!-- Left Branch: Variant -->
+  <path d="M 300 110 L 200 110 L 200 180" class="arrow" fill="none" />
+  <rect x="100" y="180" width="200" height="100" class="node" />
+  <text x="200" y="210" class="text" style="font-weight: bold; fill: #89b4fa;">Model Variant</text>
+  <text x="200" y="230" class="text-label">"The Recipe"</text>
+  <text x="200" y="250" class="text">Base, Instruct, Distill,</text>
+  <text x="200" y="270" class="text">MoE, QAT</text>
+
+  <!-- Right Branch: Format -->
+  <path d="M 500 110 L 600 110 L 600 180" class="arrow" fill="none" />
+  <rect x="500" y="180" width="200" height="100" class="node" />
+  <text x="600" y="210" class="text" style="font-weight: bold; fill: #f38ba8;">File Format</text>
+  <text x="600" y="230" class="text-label">"The Container"</text>
+  <text x="600" y="250" class="text">GGUF, GPTQ, AWQ,</text>
+  <text x="600" y="270" class="text">EXL2, Safetensors</text>
+
+  <!-- Bottom Connectors -->
+  <path d="M 200 280 L 200 330" class="arrow" fill="none" />
+  <rect x="100" y="330" width="200" height="50" class="node" style="stroke-dasharray: 4;" />
+  <text x="200" y="360" class="text">Determines Capability</text>
+
+  <path d="M 600 280 L 600 330" class="arrow" fill="none" />
+  <rect x="500" y="330" width="200" height="50" class="node" style="stroke-dasharray: 4;" />
+  <text x="600" y="360" class="text">Determines Hardware</text>
+
+</svg>

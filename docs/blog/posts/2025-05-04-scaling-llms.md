@@ -2,7 +2,7 @@
 title: "Scaling Large Language Models - Practical Multi-GPU and Multi-Node Strategies for 2025"
 date:
   created: 2025-05-04
-  updated: 2025-05-04
+  updated: 2025-11-24
 tags: [LLM, Distributed Training, Deep Learning, GPU, Parallelism]
 description: A practical guide to scaling large language models across multiple GPUs and nodes, with real-world strategies from Hugging Face's Ultra-Scale Playbook.
 author: Viacheslav Dubrov
@@ -15,6 +15,14 @@ The race to build bigger, better language models continues at breakneck speed. T
 This guide walks through practical strategies for scaling LLMs across multiple GPUs and nodes, incorporating insights from Hugging Face's [Ultra-Scale Playbook](https://huggingface.co/spaces/nanotron/ultrascale-playbook).
 
 <!-- more -->
+
+## Prerequisites
+
+Before diving in, you should be familiar with:
+
+- **Basic Deep Learning**: Backpropagation, gradients, and optimizers (AdamW).
+- **Transformer Architecture**: Attention mechanisms, Feed-Forward Networks (FFN).
+- **PyTorch Basics**: `nn.Module`, `DataLoader`, and the training loop.
 
 ## Why Scaling Matters
 
@@ -48,25 +56,7 @@ The solution? Split the workload across multiple GPUs. Let's explore how.
 
 **Limitation:** Memory inefficient - every GPU stores the full model, so you're not saving memory, just increasing throughput.
 
-```mermaid
-flowchart LR
-    subgraph DataLoader
-        D[Global batch] --> |split| MB1[Micro-batch 1]
-        D[Global batch] --> |split| MB2[Micro-batch 2]
-        D[Global batch] --> |split| MBN[Micro-batch N]
-    end
-    subgraph GPU1
-        MB1[Micro-batch 1] --> M1[Model copy]
-    end
-    subgraph GPU2
-        MB2[Micro-batch 2] --> M2[Model copy]
-    end
-    subgraph GPUN
-        MBN[Micro-batch N] --> MN[Model copy]
-    end
-    M1[Model copy] & M2[Model copy] & MN[Model copy] --> G[All-reduce -> average gradients]
-    G[All-reduce -> average gradients] --> U[Synchronised weight update]
-```
+![Data Parallelism](../assets/2025-05-04-scaling-llms/data_parallelism.svg)
 
 **Tools**: [PyTorch DDP](https://pytorch.org/docs/stable/notes/ddp.html), [Horovod](https://horovod.ai/).
 
@@ -90,40 +80,31 @@ flowchart LR
 
 **Real-world impact:** FSDP lets you train models 4-8x larger than what fits on one GPU.
 
-```mermaid
-flowchart TD
-    %% GPU-local state
-    subgraph "GPU 1"
-        direction TB
-        P1[Param shard P₁]
-        G1[Grad shard G₁]
-        O1[Opt shard O₁]
-    end
-    subgraph "GPU 2"
-        direction TB
-        P2[Param shard P₂]
-        G2[Grad shard G₂]
-        O2[Opt shard O₂]
-    end
-    subgraph "GPU N"
-        direction TB
-        PN[Param shard Pₙ]
-        GN[Grad shard Gₙ]
-        ON[Opt shard Oₙ]
-    end
+![FSDP](../assets/2025-05-04-scaling-llms/fsdp.svg)
 
-    %% Mini-batch pipeline
-    start([Start micro-batch]) --> gather[Step 1: All-Gather]
-    gather --> fwd[Step 2: Forward compute]
-    fwd --> reshard[Step 3: Re-shard P]
-    reshard --> bwd[Step 4: Backward compute]
-    bwd --> reduce[Step 5: Reduce-Scatter]
-    reduce --> update[Step 6: Optimizer update]
+> [!NOTE] > **Understanding ZeRO Stages**
+> FSDP is often described in terms of "ZeRO stages" (Zero Redundancy Optimizer):
+>
+> - **Stage 1**: Shard optimizer states only (4x memory savings).
+> - **Stage 2**: Shard gradients + optimizer states (8x memory savings).
+> - **Stage 3**: Shard parameters + gradients + optimizer states (Linear memory savings with N GPUs).
+>
+> PyTorch FSDP defaults to Stage 3 behavior.
 
-    %% Collective edges (dotted to indicate broadcast)
-    P1 -.-> gather
-    P2 -.-> gather
-    PN -.-> gather
+#### Example: Enabling FSDP in PyTorch
+
+```python
+from torch.distributed.fsdp import FullyShardedDataParallel as FSDP
+
+# 1. Wrap your model
+model = MyLLM()
+model = FSDP(model)
+
+# 2. Train as usual
+output = model(input)
+loss = output.sum()
+loss.backward()
+optimizer.step()
 ```
 
 **Tools**: [PyTorch FSDP](https://pytorch.org/docs/stable/fsdp.html), [DeepSpeed ZeRO-3](https://www.deepspeed.ai/tutorials/zero/).
@@ -147,21 +128,7 @@ flowchart TD
 
 **Sweet spot:** TP degree of 2-8 within a single machine with NVLink.
 
-```mermaid
-flowchart LR
-    A[X activations] --> |broadcast| X1[GPU1]
-    A --> |broadcast| X2[GPU2]
-    A --> |broadcast| XN[GPUN]
-    subgraph ShardedWeights
-        W1[W shard₁] --- X1
-        W2[W shard₂] --- X2
-        WN[W shardₙ] --- XN
-    end
-    X1 --> P1[Partial Y₁]
-    X2 --> P2[Partial Y₂]
-    XN --> PN[Partial Yₙ]
-    P1 & P2 & PN --> C[Concat / reduce -> Y]
-```
+![Tensor Parallelism](../assets/2025-05-04-scaling-llms/tensor_parallelism.svg)
 
 **Tools**: [Megatron-LM](https://github.com/NVIDIA/Megatron-LM), [TensorRT-LLM](https://github.com/NVIDIA/TensorRT-LLM), [ColossalAI](https://github.com/hpcaitech/ColossalAI).
 
@@ -184,19 +151,7 @@ flowchart LR
 
 **Challenge:** Pipeline "bubbles" (idle time) at the start and end of each batch. Use multiple micro-batches to minimize this.
 
-```mermaid
-sequenceDiagram
-    participant S0 as GPU-Stage 0 (Layers 1-4)
-    participant S1 as GPU-Stage 1 (Layers 5-8)
-    participant S2 as GPU-Stage 2 (Layers 9-12)
-    Note over S0,S2: ← time ->
-    S0->>S0: Fwd/Bwd µ-batch 0
-    S0->>S1: send activations
-    S1->>S1: Fwd/Bwd µ-batch 0
-    S1->>S2: send activations
-    S0->>S0: Fwd/Bwd µ-batch 1
-    S2->>S2: Fwd/Bwd µ-batch 0
-```
+![Pipeline Parallelism](../assets/2025-05-04-scaling-llms/pipeline_parallelism.svg)
 
 **Tools**: [DeepSpeed PP](https://www.deepspeed.ai/tutorials/pipeline/), [Megatron-LM](https://github.com/NVIDIA/Megatron-LM), [GPipe](https://arxiv.org/abs/1811.06965).
 
@@ -219,43 +174,7 @@ sequenceDiagram
 
 **Real-world impact:** Context Parallelism enables 100K+ token processing on consumer hardware that would otherwise max out at 8K tokens.
 
-```mermaid
-flowchart LR
-    subgraph Input["Input Sequence"]
-        S[Sequence 0-8191 tokens]
-    end
-
-    subgraph CrossGPU["Cross-GPU Processing"]
-        direction LR
-        subgraph GPU1["GPU 1"]
-            direction TB
-            T0[Tokens 0-4095]
-            A0[Self-Attention Block]
-            T0 --> A0
-        end
-
-        subgraph GPU2["GPU 2"]
-            direction TB
-            T1[Tokens 4096-8191]
-            A1[Self-Attention Block]
-            T1 --> A1
-        end
-
-        GPU1 <-->|Exchange Keys/Values| GPU2
-    end
-
-    subgraph Output["Output Processing"]
-        M[Merge Logits]
-        O[Output Sequence]
-        M --> O
-    end
-
-    S --> |Split| T0
-    S --> |Split| T1
-
-    A0 --> M
-    A1 --> M
-```
+![Context Parallelism](../assets/2025-05-04-scaling-llms/context_parallelism.svg)
 
 **Tools**: [Picotron](https://github.com/huggingface/picotron), [Nanotron](https://github.com/huggingface/nanotron).
 
@@ -280,41 +199,20 @@ flowchart LR
 
 **Trade-off:** More parameters with less compute per token, but training can be trickier due to load balancing between experts.
 
-```mermaid
-flowchart LR
-    subgraph Input_Tokens["Input Tokens"]
-        T1["T₁"]
-        T2["T₂"]
-        T3["T₃"]
-    end
-    G["Gating Network"]
-    subgraph Experts["Experts"]
-        E1["Expert 1"]
-        E2["Expert 2"]
-        E3["Expert 3"]
-        E4["⋯"]
-    end
-    T1 --> G
-    T2 --> G
-    T3 --> G
-    G -->|top-k routes| E1
-    G -->|top-k routes| E2
-    G -->|top-k routes| E3
-    E1 & E2 & E3 --> O["Concatenate + Mix"]
-```
+![Mixture of Experts](../assets/2025-05-04-scaling-llms/moe.svg)
 
 **Tools**: [Picotron](https://github.com/huggingface/picotron), [Nanotron](https://github.com/huggingface/nanotron).
 
 ### Quick Comparison: Which Parallelism Should You Use?
 
-| Technique | What It Splits | Best For | Memory Savings | Communication Cost |
-|-----------|---------------|----------|----------------|-------------------|
-| **Data Parallelism (DP)** | Data batches | Models that fit on 1 GPU | None (copies model) | Low (only gradients) |
-| **FSDP** | Model + optimizer + gradients | Models too big for 1 GPU | High (4-8x) | Medium |
-| **Tensor Parallelism (TP)** | Individual layers | Huge layers, fast GPUs | Medium | High (per layer) |
-| **Pipeline Parallelism (PP)** | Layer groups (stages) | Very deep models | Medium | Low (between stages) |
-| **Context Parallelism (CP)** | Sequence length | Long contexts (64K+ tokens) | High (for activations) | Medium |
-| **Expert Parallelism (MoE)** | Experts in MoE layers | Massive sparse models | None (more params, less FLOPs) | Medium |
+| Technique                     | What It Splits                | Best For                    | Memory Savings                 | Communication Cost   |
+| ----------------------------- | ----------------------------- | --------------------------- | ------------------------------ | -------------------- |
+| **Data Parallelism (DP)**     | Data batches                  | Models that fit on 1 GPU    | None (copies model)            | Low (only gradients) |
+| **FSDP**                      | Model + optimizer + gradients | Models too big for 1 GPU    | High (4-8x)                    | Medium               |
+| **Tensor Parallelism (TP)**   | Individual layers             | Huge layers, fast GPUs      | Medium                         | High (per layer)     |
+| **Pipeline Parallelism (PP)** | Layer groups (stages)         | Very deep models            | Medium                         | Low (between stages) |
+| **Context Parallelism (CP)**  | Sequence length               | Long contexts (64K+ tokens) | High (for activations)         | Medium               |
+| **Expert Parallelism (MoE)**  | Experts in MoE layers         | Massive sparse models       | None (more params, less FLOPs) | Medium               |
 
 **Rule of thumb:** Start with FSDP. Add TP if individual layers are too big. Add PP if you need multiple nodes. Add CP if context length is your bottleneck.
 
@@ -389,15 +287,36 @@ Now that you understand the techniques, here's what to actually do based on your
 
 Here's a quick guide to the most useful tools and when to reach for them:
 
-| Tool | When to Use It | Learning Curve | Best For |
-| ---- | -------------- | -------------- | -------- |
-| **Hugging Face Accelerate** | Any distributed training with minimal code changes | ★☆☆☆☆ | Beginners, quick prototypes |
-| **PyTorch FSDP** | Medium-large models (1-30B) on single node | ★★☆☆☆ | Most common use case |
-| **DeepSpeed ZeRO** | Multi-node training with good documentation | ★★★☆☆ | Production training |
-| **Megatron-LM** | Very large models (70B+), 3D/4D parallelism | ★★★★☆ | Advanced/production at scale |
-| **Nanotron** | Learning/research on modern parallelism strategies | ★★★☆☆ | Education, experimentation |
-| **vLLM** | Fast inference with PagedAttention and KV caching | ★★☆☆☆ | Serving models in production |
-| **TensorRT-LLM** | Maximum inference speed on NVIDIA GPUs | ★★★★☆ | Production inference optimization |
+| Tool                        | When to Use It                                     | Learning Curve | Best For                          |
+| --------------------------- | -------------------------------------------------- | -------------- | --------------------------------- |
+| **Hugging Face Accelerate** | Any distributed training with minimal code changes | ★☆☆☆☆          | Beginners, quick prototypes       |
+| **PyTorch FSDP**            | Medium-large models (1-30B) on single node         | ★★☆☆☆          | Most common use case              |
+| **DeepSpeed ZeRO**          | Multi-node training with good documentation        | ★★★☆☆          | Production training               |
+| **Megatron-LM**             | Very large models (70B+), 3D/4D parallelism        | ★★★★☆          | Advanced/production at scale      |
+| **Nanotron**                | Learning/research on modern parallelism strategies | ★★★☆☆          | Education, experimentation        |
+| **vLLM**                    | Fast inference with PagedAttention and KV caching  | ★★☆☆☆          | Serving models in production      |
+| **TensorRT-LLM**            | Maximum inference speed on NVIDIA GPUs             | ★★★★☆          | Production inference optimization |
+
+#### Example: Accelerate Config for FSDP
+
+To get started with FSDP using Hugging Face Accelerate, you can run `accelerate config` or create a `config.yaml` like this:
+
+```yaml
+compute_environment: LOCAL_MACHINE
+distributed_type: FSDP
+fsdp_config:
+  fsdp_auto_wrap_policy: TRANSFORMER_BASED_WRAP
+  fsdp_backward_prefetch: BACKWARD_PRE
+  fsdp_state_dict_type: SHARDED_STATE_DICT
+machine_rank: 0
+main_process_ip: null
+main_process_port: null
+main_training_function: main
+mixed_precision: bf16
+num_machines: 1
+num_processes: 8
+use_cpu: false
+```
 
 **My recommendation for getting started:** Start with Hugging Face Accelerate for learning, then graduate to PyTorch FSDP or DeepSpeed when you need more control.
 
@@ -429,49 +348,13 @@ Still not sure what to use? Follow this decision tree:
 
 **Visual decision tree:**
 
-```mermaid
-flowchart TD
-    start([Start: Need to scale LLM?]) --> fit{Model fits on<br/>single GPU?}
-    
-    fit -->|Yes| done1[✅ Standard training<br/>No parallelism needed]
-    fit -->|No| multi{Multiple GPUs<br/>in one machine?}
-    
-    multi -->|No| cluster[Need cluster or<br/>smaller model]
-    multi -->|Yes| fsdp[Start with FSDP]
-    
-    fsdp --> enough{FSDP enough?}
-    enough -->|Yes| done2[✅ Use pure FSDP]
-    enough -->|Layers too big| tp[Add TP=2 or TP=4<br/>within node]
-    enough -->|Context too long| cp[Add Context<br/>Parallelism]
-    
-    tp --> done3[✅ Use FSDP + TP]
-    cp --> done4[✅ Use FSDP + CP]
-    
-    cluster --> multinode[Multi-node setup]
-    multinode --> hybrid[TP inside nodes<br/>+ FSDP across nodes]
-    
-    hybrid --> depth{Model very<br/>deep?}
-    depth -->|No| done5[✅ Use 2D: TP + FSDP]
-    depth -->|Yes| pp[Add Pipeline<br/>Parallelism]
-    
-    pp --> scale{100+ GPUs +<br/>long context?}
-    scale -->|No| done6[✅ Use 3D: TP + PP + FSDP]
-    scale -->|Yes| done7[✅ Use 4D: TP + PP + DP + CP]
-    
-    style done1 fill:#90EE90
-    style done2 fill:#90EE90
-    style done3 fill:#90EE90
-    style done4 fill:#90EE90
-    style done5 fill:#90EE90
-    style done6 fill:#90EE90
-    style done7 fill:#90EE90
-```
+![Scaling Decision Tree](../assets/2025-05-04-scaling-llms/scaling_decision_tree.svg)
 
 ## 5. The Ultra-Scale Cheatsheet
 
 For a comprehensive visual summary, check out this guide from Hugging Face's team:
 
-![Ultra-Scale LLM Cheatsheet](https://nanotron-ultrascale-playbook.static.hf.space/dist/assets/images/ultra-cheatsheet.svg)
+![Ultra-Scale LLM Cheatsheet](https://nanotron-ultrascale-playbook.static.hf.space/assets/images/ultra-cheatsheet.svg)
 
 ## Conclusion
 

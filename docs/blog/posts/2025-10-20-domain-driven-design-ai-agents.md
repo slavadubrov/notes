@@ -14,6 +14,8 @@ author: Viacheslav Dubrov
 
 > Domain-driven design (DDD) gives AI agent teams a shared language, clear boundaries, and code that mirrors the real world. Use it to tame prompt spaghetti, enforce business rules, and evolve systems without breaking everything.
 
+![DDD Layered Architecture](../assets/2025-10-20-domain-driven-design-ai-agents/ddd_layered_architecture.svg)
+
 <!-- more -->
 
 ---
@@ -72,7 +74,12 @@ This matters most in complex domains where rules evolve constantly—think finan
 
 ## Strategic building blocks
 
-DDD isn't one big idea—it's a toolkit of patterns that work together. Here are the core concepts you'll use every day.
+DDD isn't one big idea—it's a toolkit of patterns that work together. It's often split into two parts:
+
+1.  **Strategic Design**: The "big picture" stuff. Defining boundaries, teams, and how systems talk. This is crucial for multi-agent systems.
+2.  **Tactical Design**: The code-level patterns (Entities, Aggregates). This keeps your agent's internal logic clean.
+
+Here are the core concepts you'll use every day.
 
 ### Ubiquitous language
 
@@ -97,14 +104,9 @@ Take "product" in e-commerce. In the **Inventory** context, a product is a catal
 
 Bounded contexts let each subdomain have its own definition without conflict. Translation layers or interfaces connect them when they need to talk.
 
-```mermaid
-graph TD
-    A[Order Management<br/>'Product' = order line item] --> D[Translation Layer]
-    B[Billing<br/>'Product' = pricing entity] --> D
-    C[Inventory<br/>'Product' = stock item] --> D
-    classDef ctx fill:#e0f2fe,stroke:#38bdf8,color:#0c4a6e;
-    class A,B,C ctx;
-```
+Bounded contexts let each subdomain have its own definition without conflict. Translation layers or interfaces connect them when they need to talk.
+
+![Bounded Contexts](../assets/2025-10-20-domain-driven-design-ai-agents/ddd_bounded_contexts.svg)
 
 This keeps each model lean and prevents the "one size fits all" model that becomes unwieldy as complexity grows.
 
@@ -256,14 +258,9 @@ Each agent (or major capability) is a bounded context. A research orchestrator m
 
 Each has its own model, terminology, and invariants. They communicate through well-defined interfaces or events.
 
-```mermaid
-flowchart LR
-  Orchestrator["Research Orchestrator"] --> Trends["Trends Agent<br/>(Market data)"]
-  Orchestrator --> Compliance["Compliance Agent<br/>(Policy checks)"]
-  Orchestrator --> Cost["Cost Agent<br/>(Estimation)"]
-  classDef ctx fill:#e0f2fe,stroke:#38bdf8,color:#0c4a6e;
-  class Trends,Compliance,Cost ctx;
-```
+Each has its own model, terminology, and invariants. They communicate through well-defined interfaces or events.
+
+![Agent Orchestration](../assets/2025-10-20-domain-driven-design-ai-agents/agent_orchestration.svg)
 
 Even in a single-agent system, you might define internal contexts—a Planning module and an Execution module, each with its own domain model.
 
@@ -293,6 +290,23 @@ Agents raise events—`ResearchCompleted`, `ThresholdExceeded`, `PolicyViolation
 
 LLM outputs flow through domain services or entity methods. If an LLM suggests a refund amount beyond policy limits, your `RefundRequest` value object validates and rejects it. The AI can improvise, but business rules have the final say. This keeps agents safe and aligned with policy.
 
+### The Anti-Corruption Layer (ACL)
+
+When working with LLMs, you are dealing with a probabilistic, creative, and occasionally chaotic entity. Your domain model, however, must be deterministic and safe. You cannot let the raw output of an LLM leak directly into your domain logic.
+
+Enter the **Anti-Corruption Layer (ACL)**.
+
+![LLM Domain Interaction](../assets/2025-10-20-domain-driven-design-ai-agents/llm_domain_interaction.svg)
+
+The ACL acts as a gatekeeper. It translates the "wild" output of the LLM into the "strict" language of your domain.
+
+1.  **Ingest**: Receive raw text or JSON from the LLM.
+2.  **Validate**: Use Pydantic models to check structure and types.
+3.  **Sanitize**: Ensure values fall within acceptable ranges (e.g., no negative prices).
+4.  **Translate**: Convert DTOs (Data Transfer Objects) into Domain Entities.
+
+If validation fails, the ACL rejects the data—often sending an error message back to the LLM so it can correct itself. This loop ensures that **only valid data ever touches your core business logic**.
+
 ---
 
 ## Example: a task assistant modeled with DDD
@@ -309,16 +323,9 @@ Start by breaking the problem into subdomains:
 
 We'll focus on Task Management first. The others can evolve as separate bounded contexts or companion agents.
 
-```mermaid
-graph LR
-    A[User Request] --> B[Task Management]
-    B --> C[Scheduling]
-    B --> D[Notifications]
-    classDef core fill:#fef3c7,stroke:#f59e0b,color:#78350f;
-    classDef supporting fill:#e0f2fe,stroke:#38bdf8,color:#0c4a6e;
-    class B core;
-    class C,D supporting;
-```
+We'll focus on Task Management first. The others can evolve as separate bounded contexts or companion agents.
+
+![Task Assistant Context Map](../assets/2025-10-20-domain-driven-design-ai-agents/task_assistant_context_map.svg)
 
 ### 2. Speak the same language
 
@@ -333,7 +340,7 @@ Now model the core concepts:
 - **Domain event:** `TaskCompletedEvent` to signal when work finishes
 
 ```python
-from datetime import datetime, date
+from datetime import datetime, date, timezone
 from enum import Enum
 from pydantic import BaseModel, Field
 
@@ -352,7 +359,7 @@ class Task(BaseModel):
     """Entity: identity persists even as attributes change."""
     id: str
     description: str
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     due_date: date | None = None
     priority: Priority = Priority.NORMAL
     completed: bool = False
@@ -362,7 +369,7 @@ class Task(BaseModel):
         if self.completed:
             raise ValueError("Task is already completed.")
         self.completed = True
-        return TaskCompletedEvent(task_id=self.id, time=datetime.utcnow())
+        return TaskCompletedEvent(task_id=self.id, time=datetime.now(timezone.utc))
 ```
 
 Notice how business rules live in the entity methods, not scattered across prompt templates.
@@ -553,6 +560,8 @@ This layering (sometimes called "onion architecture") keeps changes from ripplin
 [Pydantic](https://docs.pydantic.dev/latest/) enforces invariants and validates data at runtime. Use it for entities, value objects, and especially for validating LLM outputs.
 
 [Pydantic AI](https://ai.pydantic.dev/) takes this further: it ensures LLM responses conform to your domain schemas. Define an `AddTaskCommand` with required fields, and Pydantic AI validates that the LLM's JSON output matches before you act on it. This brings structure to the chaotic world of AI outputs.
+
+Another excellent tool is **[Instructor](https://github.com/jxnl/instructor)**, which patches OpenAI (and other) clients to return Pydantic models directly. It's a lightweight way to implement your Anti-Corruption Layer.
 
 ### DDD helper libraries
 
