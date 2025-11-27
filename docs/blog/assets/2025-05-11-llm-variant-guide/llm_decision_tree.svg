@@ -18,7 +18,7 @@
   </defs>
 
   <rect width="900" height="600" class="bg" />
-  
+
   <text x="450" y="30" class="text" style="font-size: 20px; font-weight: bold;">LLM Decision Framework</text>
 
   <!-- Level 1: Start -->
@@ -74,7 +74,7 @@
 
 
   <!-- Level 4: Recommendations -->
-  
+
   <!-- CPU Results -->
   <path d="M 150 250 L 100 300" class="arrow" />
   <rect x="20" y="300" width="160" height="60" class="node-end" />

@@ -17,7 +17,7 @@
   </defs>
 
   <rect width="800" height="500" class="bg" />
-  
+
   <text x="400" y="40" class="text" style="font-size: 22px; font-weight: bold;">Choosing File Format</text>
 
   <!-- Start -->
@@ -48,7 +48,7 @@
   <!-- Level 2 Nodes -->
   <rect x="75" y="160" width="150" height="60" class="node-result" />
   <text x="150" y="195" class="text-dark">GGUF</text>
-  
+
   <rect x="225" y="160" width="150" height="60" class="node" />
   <text x="300" y="195" class="text">GPTQ / AWQ</text>
 
