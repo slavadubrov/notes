@@ -19,6 +19,8 @@ The distinction between `~/.zprofile` and `~/.zshrc` is one of the most common s
 - **`~/.zprofile`** is for **Environment Setup**. It runs _once_ when you log in (or open a terminal tab on macOS). Put your `PATH`, `EDITOR`, and language version managers (like `fnm`, `pyenv`) here.
 - **`~/.zshrc`** is for **Interactive Configuration**. It runs _every time_ you start a new shell instance. Put your aliases, prompt themes, and key bindings here.
 
+<!-- more -->
+
 ![Zsh Config Structure](../assets/2025-05-07-zshrc-vs-zprofile/zsh_config_structure.svg)
 
 ---
