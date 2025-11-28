@@ -1,4 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
   <defs>
     <style>
       .bg { fill: #1e1e2e; }
@@ -20,32 +21,32 @@
 
   <text x="400" y="40" class="text" style="font-size: 22px; font-weight: bold;">Choosing Your Model Variant</text>
 
-  <!-- Start -->
+
   <rect x="300" y="70" width="200" height="50" class="node-start" />
   <text x="400" y="100" class="text-dark">What is your goal?</text>
 
-  <!-- Branches -->
-  <!-- Left: Production -->
-  <path d="M 300 95 L 150 95 L 150 160" class="arrow" />
+
+
+  <path d="M 300 95 L 150 95 L 150 160" class="arrow" marker-end="url(#arrowhead)" />
   <rect x="130" y="120" width="40" height="20" class="label-bg" />
   <text x="150" y="135" class="label-text">Production</text>
 
-  <!-- Center-Left: Research -->
-  <path d="M 350 120 L 300 160" class="arrow" />
+
+  <path d="M 350 120 L 300 160" class="arrow" marker-end="url(#arrowhead)" />
   <rect x="300" y="130" width="40" height="20" class="label-bg" />
   <text x="310" y="145" class="label-text">Research</text>
 
-  <!-- Center-Right: Speed -->
-  <path d="M 450 120 L 500 160" class="arrow" />
+
+  <path d="M 450 120 L 500 160" class="arrow" marker-end="url(#arrowhead)" />
   <rect x="470" y="130" width="40" height="20" class="label-bg" />
   <text x="490" y="145" class="label-text">Speed</text>
 
-  <!-- Right: Memory -->
-  <path d="M 500 95 L 650 95 L 650 160" class="arrow" />
+
+  <path d="M 500 95 L 650 95 L 650 160" class="arrow" marker-end="url(#arrowhead)" />
   <rect x="630" y="120" width="40" height="20" class="label-bg" />
   <text x="650" y="135" class="label-text">Memory</text>
 
-  <!-- Level 2 Nodes -->
+
   <rect x="75" y="160" width="150" height="60" class="node-result" />
   <text x="150" y="195" class="text-dark">Instruct / Chat</text>
 
@@ -58,7 +59,7 @@
   <rect x="575" y="160" width="150" height="60" class="node" />
   <text x="650" y="195" class="text">MoE / QAT</text>
 
-  <!-- Descriptions -->
+
   <text x="150" y="240" class="text" style="font-size: 12px; fill: #a6adc8;">Follows instructions,</text>
   <text x="150" y="255" class="text" style="font-size: 12px; fill: #a6adc8;">safe, ready to use.</text>
 
@@ -71,7 +72,7 @@
   <text x="650" y="240" class="text" style="font-size: 12px; fill: #a6adc8;">High performance,</text>
   <text x="650" y="255" class="text" style="font-size: 12px; fill: #a6adc8;">low resource usage.</text>
 
-  <!-- Recommendation Box -->
+
   <rect x="200" y="300" width="400" height="80" class="node" style="stroke-dasharray: 4; fill: #1e1e2e;" />
   <text x="400" y="330" class="text" style="font-weight: bold; fill: #f9e2af;">Recommendation</text>
   <text x="400" y="355" class="text">Start with Instruct/Chat models for 95% of use cases.</text>

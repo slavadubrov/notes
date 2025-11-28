@@ -1,7 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
   <defs>
     <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.15"/>
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.15" />
     </filter>
     <linearGradient id="grad-core" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#fffbeb;stop-opacity:1" />
@@ -16,7 +17,8 @@
     </marker>
   </defs>
 
-  <!-- Core Domain: Task Management -->
+  <rect width="100%" height="100%" fill="white" />
+
   <g transform="translate(280, 100)" filter="url(#shadow)">
     <rect width="240" height="180" rx="16" fill="url(#grad-core)" stroke="#d97706" stroke-width="3" />
     <text x="120" y="50" font-family="sans-serif" font-size="20" font-weight="bold" fill="#78350f" text-anchor="middle">Task Management</text>
@@ -26,7 +28,7 @@
     <text x="120" y="140" font-family="sans-serif" font-size="13" fill="#78350f" text-anchor="middle">Priorities, Deadlines</text>
   </g>
 
-  <!-- Scheduling -->
+
   <g transform="translate(30, 120)" filter="url(#shadow)">
     <rect width="180" height="140" rx="12" fill="url(#grad-support)" stroke="#0284c7" stroke-width="2" />
     <text x="90" y="40" font-family="sans-serif" font-size="16" font-weight="bold" fill="#075985" text-anchor="middle">Scheduling</text>
@@ -35,7 +37,7 @@
     <text x="90" y="100" font-family="sans-serif" font-size="12" fill="#0369a1" text-anchor="middle">Calendar, Slots</text>
   </g>
 
-  <!-- Notifications -->
+
   <g transform="translate(590, 120)" filter="url(#shadow)">
     <rect width="180" height="140" rx="12" fill="url(#grad-support)" stroke="#0284c7" stroke-width="2" />
     <text x="90" y="40" font-family="sans-serif" font-size="16" font-weight="bold" fill="#075985" text-anchor="middle">Notifications</text>
@@ -44,15 +46,13 @@
     <text x="90" y="100" font-family="sans-serif" font-size="12" fill="#0369a1" text-anchor="middle">Email, Push</text>
   </g>
 
-  <!-- Connections -->
-  <!-- Task -> Scheduling -->
-  <path d="M 280 190 L 220 190" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)" />
-  <rect x="225" y="175" width="50" height="20" fill="#ffffff" rx="4" />
-  <text x="250" y="189" font-family="sans-serif" font-size="10" fill="#64748b" text-anchor="middle">uses</text>
 
-  <!-- Task -> Notifications -->
+  <!-- Arrow: Task Management -> Scheduling -->
+  <path d="M 280 190 L 220 190" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)" />
+  <text x="250" y="185" font-family="sans-serif" font-size="10" fill="#64748b" text-anchor="middle">uses</text>
+
+  <!-- Arrow: Task Management -> Notifications -->
   <path d="M 520 190 L 580 190" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)" />
-  <rect x="525" y="175" width="50" height="20" fill="#ffffff" rx="4" />
-  <text x="550" y="189" font-family="sans-serif" font-size="10" fill="#64748b" text-anchor="middle">triggers</text>
+  <text x="550" y="185" font-family="sans-serif" font-size="10" fill="#64748b" text-anchor="middle">triggers</text>
 
 </svg>

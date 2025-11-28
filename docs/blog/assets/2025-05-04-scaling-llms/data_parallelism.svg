@@ -1,3 +1,4 @@
+<?xml version='1.0' encoding='utf-8'?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
   <defs>
     <style>
@@ -11,47 +12,47 @@
       .label { font-size: 12px; fill: #555; }
     </style>
     <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
     </marker>
   </defs>
 
-  <!-- Title -->
-  <text x="400" y="30" class="title">Data Parallelism (DP)</text>
 
-  <!-- Global Batch -->
-  <rect x="300" y="60" width="200" height="40" class="data"/>
+  <rect width="100%" height="100%" fill="white" /><text x="400" y="30" class="title">Data Parallelism (DP)</text>
+
+
+  <rect x="300" y="60" width="200" height="40" class="data" />
   <text x="400" y="85" class="text">Global Batch of Data</text>
 
-  <!-- Arrows to GPUs -->
-  <line x1="350" y1="100" x2="200" y2="150" class="arrow"/>
-  <line x1="400" y1="100" x2="400" y2="150" class="arrow"/>
-  <line x1="450" y1="100" x2="600" y2="150" class="arrow"/>
 
-  <!-- GPU 1 -->
-  <rect x="100" y="150" width="200" height="180" class="gpu"/>
+  <line x1="350" y1="100" x2="200" y2="150" class="arrow" marker-end="url(#arrowhead)" />
+  <line x1="400" y1="100" x2="400" y2="150" class="arrow" marker-end="url(#arrowhead)" />
+  <line x1="450" y1="100" x2="600" y2="150" class="arrow" marker-end="url(#arrowhead)" />
+
+
+  <rect x="100" y="150" width="200" height="180" class="gpu" />
   <text x="200" y="175" class="text" font-weight="bold">GPU 1</text>
-  <rect x="120" y="190" width="160" height="30" class="data"/>
+  <rect x="120" y="190" width="160" height="30" class="data" />
   <text x="200" y="210" class="text">Micro-batch 1</text>
-  <rect x="120" y="240" width="160" height="60" class="model"/>
+  <rect x="120" y="240" width="160" height="60" class="model" />
   <text x="200" y="275" class="text">Full Model Copy</text>
 
-  <!-- GPU 2 -->
-  <rect x="300" y="150" width="200" height="180" class="gpu"/>
+
+  <rect x="300" y="150" width="200" height="180" class="gpu" />
   <text x="400" y="175" class="text" font-weight="bold">GPU 2</text>
-  <rect x="320" y="190" width="160" height="30" class="data"/>
+  <rect x="320" y="190" width="160" height="30" class="data" />
   <text x="400" y="210" class="text">Micro-batch 2</text>
-  <rect x="320" y="240" width="160" height="60" class="model"/>
+  <rect x="320" y="240" width="160" height="60" class="model" />
   <text x="400" y="275" class="text">Full Model Copy</text>
 
-  <!-- GPU 3 -->
-  <rect x="500" y="150" width="200" height="180" class="gpu"/>
+
+  <rect x="500" y="150" width="200" height="180" class="gpu" />
   <text x="600" y="175" class="text" font-weight="bold">GPU 3</text>
-  <rect x="520" y="190" width="160" height="30" class="data"/>
+  <rect x="520" y="190" width="160" height="30" class="data" />
   <text x="600" y="210" class="text">Micro-batch 3</text>
-  <rect x="520" y="240" width="160" height="60" class="model"/>
+  <rect x="520" y="240" width="160" height="60" class="model" />
   <text x="600" y="275" class="text">Full Model Copy</text>
 
-  <!-- Gradient Sync -->
-  <path d="M 200 330 Q 400 380 600 330" fill="none" stroke="#e65100" stroke-width="2" stroke-dasharray="5,5"/>
+
+  <path d="M 200 330 Q 400 380 600 330" fill="none" stroke="#e65100" stroke-width="2" stroke-dasharray="5,5" />
   <text x="400" y="370" class="text" fill="#e65100">Gradients Averaged (All-Reduce)</text>
 </svg>

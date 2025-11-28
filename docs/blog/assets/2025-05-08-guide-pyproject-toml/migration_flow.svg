@@ -1,3 +1,4 @@
+<?xml version='1.0' encoding='utf-8'?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300">
   <defs>
     <style>
@@ -19,7 +20,7 @@
 
   <rect width="800" height="300" class="bg" rx="15" />
 
-  <!-- Step 1 -->
+
   <g transform="translate(50, 100)">
     <rect width="140" height="80" class="node" />
     <text x="70" y="35" class="text-main">Legacy</text>
@@ -27,10 +28,10 @@
     <text x="70" y="70" class="text-sub">requirements.txt</text>
   </g>
 
-  <!-- Arrow 1 -->
-  <path d="M 190 140 L 230 140" class="arrow" />
 
-  <!-- Step 2 -->
+  <path d="M 190 140 L 230 140" class="arrow" marker-end="url(#arrowhead)" />
+
+
   <g transform="translate(230, 100)">
     <rect width="140" height="80" class="node" />
     <text x="70" y="35" class="text-main">Init</text>
@@ -38,10 +39,10 @@
     <text x="70" y="70" class="text-sub">Add [build-system]</text>
   </g>
 
-  <!-- Arrow 2 -->
-  <path d="M 370 140 L 410 140" class="arrow" />
 
-  <!-- Step 3 -->
+  <path d="M 370 140 L 410 140" class="arrow" marker-end="url(#arrowhead)" />
+
+
   <g transform="translate(410, 100)">
     <rect width="140" height="80" class="node" />
     <text x="70" y="35" class="text-main">Migrate</text>
@@ -49,10 +50,10 @@
     <text x="70" y="70" class="text-sub">Move dependencies</text>
   </g>
 
-  <!-- Arrow 3 -->
-  <path d="M 550 140 L 590 140" class="arrow" />
 
-  <!-- Step 4 -->
+  <path d="M 550 140 L 590 140" class="arrow" marker-end="url(#arrowhead)" />
+
+
   <g transform="translate(590, 100)">
     <rect width="140" height="80" class="node-highlight" />
     <text x="70" y="35" class="text-main">Modernize</text>

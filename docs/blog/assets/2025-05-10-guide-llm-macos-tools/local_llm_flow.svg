@@ -1,3 +1,4 @@
+<?xml version='1.0' encoding='utf-8'?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
   <defs>
     <style>
@@ -14,11 +15,11 @@
     </marker>
   </defs>
 
-  <rect width="800" height="450" fill="#fcfcfc" rx="10" ry="10" />
+  <rect width="100%" height="100%" fill="white" /><rect width="800" height="450" fill="#fcfcfc" rx="10" ry="10" />
   <text x="400" y="30" class="text" font-size="18" font-weight="bold">Local LLM Architecture on macOS</text>
 
-  <!-- Layer 1: User Space -->
-  <rect x="50" y="80" width="150" height="300" fill="#f0f0f0" rx="10" ry="10" stroke="none"/>
+
+  <rect x="50" y="80" width="150" height="300" fill="#f0f0f0" rx="10" ry="10" stroke="none" />
   <text x="125" y="70" class="text" font-weight="bold">User Space</text>
 
   <rect x="75" y="120" width="100" height="60" class="box" />
@@ -29,7 +30,7 @@
   <text x="125" y="305" class="text">Response</text>
   <text x="125" y="325" class="text label">"Rayleigh scattering..."</text>
 
-  <!-- Layer 2: Application Layer -->
+
   <rect x="250" y="150" width="160" height="160" class="highlight" />
   <text x="330" y="140" class="text" font-weight="bold">Application</text>
   <text x="330" y="180" class="text">Ollama / LM Studio</text>
@@ -38,16 +39,16 @@
   <text x="330" y="235" class="text">Inference Engine</text>
   <text x="330" y="255" class="text label">(llama.cpp / MLX)</text>
 
-  <!-- Layer 3: System Resources -->
-  <rect x="480" y="80" width="270" height="300" fill="#f9f9f9" rx="10" ry="10" stroke="#ddd" stroke-dasharray="4"/>
+
+  <rect x="480" y="80" width="270" height="300" fill="#f9f9f9" rx="10" ry="10" stroke="#ddd" stroke-dasharray="4" />
   <text x="615" y="70" class="text" font-weight="bold">System Resources</text>
 
-  <!-- Model Weights -->
+
   <rect x="535" y="100" width="160" height="60" class="box" />
   <text x="615" y="125" class="text">Model Weights</text>
   <text x="615" y="145" class="text label">.gguf file (Disk)</text>
 
-  <!-- Unified Memory -->
+
   <rect x="510" y="200" width="210" height="150" class="hardware" />
   <text x="615" y="225" class="text" font-weight="bold">Apple Silicon</text>
 
@@ -60,23 +61,23 @@
   <rect x="625" y="295" width="70" height="40" fill="#fff" stroke="#52c41a" rx="4" />
   <text x="660" y="320" class="text">GPU</text>
 
-  <!-- Arrows -->
-  <!-- Prompt to App -->
-  <path d="M 175 150 L 250 180" class="arrow" />
 
-  <!-- App to Response -->
-  <path d="M 250 280 L 175 310" class="arrow" />
 
-  <!-- App to Memory (Loading) -->
-  <path d="M 410 230 L 510 260" class="arrow" />
+  <path d="M 175 150 L 250 180" class="arrow" marker-end="url(#arrowhead)" />
+
+
+  <path d="M 250 280 L 175 310" class="arrow" marker-end="url(#arrowhead)" />
+
+
+  <path d="M 410 230 L 510 260" class="arrow" marker-end="url(#arrowhead)" />
   <text x="460" y="240" class="label">Load Model</text>
 
-  <!-- Weights to Memory -->
-  <path d="M 615 160 L 615 200" class="arrow" />
+
+  <path d="M 615 160 L 615 200" class="arrow" marker-end="url(#arrowhead)" />
   <text x="620" y="185" class="label" text-anchor="start">Load</text>
 
-  <!-- Compute Loop -->
-  <path d="M 535 315 Q 500 315 500 280 Q 500 245 535 245" class="arrow" fill="none" stroke="#52c41a" />
+
+  <path d="M 535 315 Q 500 315 500 280 Q 500 245 535 245" class="arrow" fill="none" stroke="#52c41a" marker-end="url(#arrowhead)" />
   <text x="495" y="285" class="label" transform="rotate(-90, 495, 285)">Compute</text>
 
 </svg>

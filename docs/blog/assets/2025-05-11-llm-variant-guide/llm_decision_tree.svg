@@ -1,3 +1,4 @@
+<?xml version='1.0' encoding='utf-8'?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
   <defs>
     <style>
@@ -21,95 +22,95 @@
 
   <text x="450" y="30" class="text" style="font-size: 20px; font-weight: bold;">LLM Decision Framework</text>
 
-  <!-- Level 1: Start -->
+
   <rect x="350" y="50" width="200" height="40" class="node-start" />
   <text x="450" y="75" class="text-dark">What is your Hardware?</text>
 
-  <!-- Level 2: Hardware Categories -->
-  <!-- CPU/Laptop -->
-  <path d="M 400 90 L 150 130" class="arrow" />
+
+
+  <path d="M 400 90 L 150 130" class="arrow" marker-end="url(#arrowhead)" />
   <rect x="50" y="130" width="200" height="40" class="node" />
   <text x="150" y="155" class="text">Laptop / CPU Only</text>
   <text x="150" y="185" class="label-text">(&lt; 8GB VRAM)</text>
 
-  <!-- Mid GPU -->
-  <path d="M 430 90 L 350 130" class="arrow" />
+
+  <path d="M 430 90 L 350 130" class="arrow" marker-end="url(#arrowhead)" />
   <rect x="270" y="130" width="160" height="40" class="node" />
   <text x="350" y="155" class="text">Gaming GPU</text>
   <text x="350" y="185" class="label-text">(8-24 GB VRAM)</text>
 
-  <!-- High GPU -->
-  <path d="M 470 90 L 550 130" class="arrow" />
+
+  <path d="M 470 90 L 550 130" class="arrow" marker-end="url(#arrowhead)" />
   <rect x="470" y="130" width="160" height="40" class="node" />
   <text x="550" y="155" class="text">Workstation</text>
   <text x="550" y="185" class="label-text">(24GB+ VRAM)</text>
 
-  <!-- Cloud -->
-  <path d="M 500 90 L 750 130" class="arrow" />
+
+  <path d="M 500 90 L 750 130" class="arrow" marker-end="url(#arrowhead)" />
   <rect x="670" y="130" width="160" height="40" class="node" />
   <text x="750" y="155" class="text">Cloud / Datacenter</text>
   <text x="750" y="185" class="label-text">(A100 / H100)</text>
 
 
-  <!-- Level 3: Tasks (Decision Points) -->
-  <!-- CPU Tasks -->
-  <path d="M 150 170 L 150 220" class="arrow" />
+
+
+  <path d="M 150 170 L 150 220" class="arrow" marker-end="url(#arrowhead)" />
   <rect x="100" y="220" width="100" height="30" class="node-mid" />
   <text x="150" y="240" class="text-dark">Task?</text>
 
-  <!-- Mid Tasks -->
-  <path d="M 350 170 L 350 220" class="arrow" />
+
+  <path d="M 350 170 L 350 220" class="arrow" marker-end="url(#arrowhead)" />
   <rect x="300" y="220" width="100" height="30" class="node-mid" />
   <text x="350" y="240" class="text-dark">Task?</text>
 
-  <!-- High Tasks -->
-  <path d="M 550 170 L 550 220" class="arrow" />
+
+  <path d="M 550 170 L 550 220" class="arrow" marker-end="url(#arrowhead)" />
   <rect x="500" y="220" width="100" height="30" class="node-mid" />
   <text x="550" y="240" class="text-dark">Task?</text>
 
-  <!-- Cloud Tasks -->
-  <path d="M 750 170 L 750 220" class="arrow" />
+
+  <path d="M 750 170 L 750 220" class="arrow" marker-end="url(#arrowhead)" />
   <rect x="700" y="220" width="100" height="30" class="node-mid" />
   <text x="750" y="240" class="text-dark">Task?</text>
 
 
-  <!-- Level 4: Recommendations -->
 
-  <!-- CPU Results -->
-  <path d="M 150 250 L 100 300" class="arrow" />
+
+
+  <path d="M 150 250 L 100 300" class="arrow" marker-end="url(#arrowhead)" />
   <rect x="20" y="300" width="160" height="60" class="node-end" />
   <text x="100" y="325" class="text-dark">Instruct Q4 GGUF</text>
   <text x="100" y="345" class="text" style="fill:#1e1e2e; font-size: 10px;">7B or 8B Model</text>
   <text x="80" y="280" class="label-text">Chat/Agent</text>
 
-  <path d="M 150 250 L 200 300" class="arrow" />
+  <path d="M 150 250 L 200 300" class="arrow" marker-end="url(#arrowhead)" />
   <rect x="190" y="300" width="160" height="60" class="node-end" />
   <text x="270" y="325" class="text-dark">Distilled Q4 GGUF</text>
   <text x="270" y="345" class="text" style="fill:#1e1e2e; font-size: 10px;">1B - 3B Model</text>
   <text x="220" y="280" class="label-text">Fast API</text>
 
-  <!-- Mid Results -->
-  <path d="M 350 250 L 350 380" class="arrow" />
+
+  <path d="M 350 250 L 350 380" class="arrow" marker-end="url(#arrowhead)" />
   <rect x="270" y="380" width="160" height="60" class="node-end" />
   <text x="350" y="405" class="text-dark">Instruct GPTQ 4-bit</text>
   <text x="350" y="425" class="text" style="fill:#1e1e2e; font-size: 10px;">8B - 14B or MoE</text>
   <text x="380" y="370" class="label-text">Production</text>
 
-  <!-- High Results -->
-  <path d="M 550 250 L 550 380" class="arrow" />
+
+  <path d="M 550 250 L 550 380" class="arrow" marker-end="url(#arrowhead)" />
   <rect x="470" y="380" width="160" height="60" class="node-end" />
   <text x="550" y="405" class="text-dark">Instruct GPTQ 3-bit</text>
   <text x="550" y="425" class="text" style="fill:#1e1e2e; font-size: 10px;">30B - 70B Model</text>
   <text x="580" y="370" class="label-text">Quality</text>
 
-  <!-- Cloud Results -->
-  <path d="M 750 250 L 700 300" class="arrow" />
+
+  <path d="M 750 250 L 700 300" class="arrow" marker-end="url(#arrowhead)" />
   <rect x="620" y="300" width="160" height="60" class="node-end" />
   <text x="700" y="325" class="text-dark">Instruct FP16</text>
   <text x="700" y="345" class="text" style="fill:#1e1e2e; font-size: 10px;">70B+ Model</text>
   <text x="680" y="280" class="label-text">Inference</text>
 
-  <path d="M 750 250 L 800 300" class="arrow" />
+  <path d="M 750 250 L 800 300" class="arrow" marker-end="url(#arrowhead)" />
   <rect x="790" y="300" width="100" height="60" class="node-end" />
   <text x="840" y="325" class="text-dark">Base BF16</text>
   <text x="840" y="345" class="text" style="fill:#1e1e2e; font-size: 10px;">Training</text>

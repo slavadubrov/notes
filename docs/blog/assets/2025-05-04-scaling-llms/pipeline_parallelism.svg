@@ -1,3 +1,4 @@
+<?xml version='1.0' encoding='utf-8'?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300">
   <defs>
     <style>
@@ -8,46 +9,46 @@
       .title { font-family: Arial, sans-serif; font-size: 18px; font-weight: bold; text-anchor: middle; }
     </style>
     <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
     </marker>
   </defs>
 
-  <text x="400" y="30" class="title">Pipeline Parallelism (PP)</text>
+  <rect width="100%" height="100%" fill="white" /><text x="400" y="30" class="title">Pipeline Parallelism (PP)</text>
 
-  <!-- GPU 1 -->
-  <rect x="50" y="80" width="150" height="150" class="gpu"/>
+
+  <rect x="50" y="80" width="150" height="150" class="gpu" />
   <text x="125" y="105" class="text" font-weight="bold">GPU 1</text>
-  <rect x="70" y="120" width="110" height="80" class="layers"/>
+  <rect x="70" y="120" width="110" height="80" class="layers" />
   <text x="125" y="165" class="text">Layers 1-8</text>
 
-  <!-- Arrow 1-2 -->
-  <line x1="200" y1="155" x2="250" y2="155" class="arrow"/>
+
+  <line x1="200" y1="155" x2="250" y2="155" class="arrow" marker-end="url(#arrowhead)" />
   <text x="225" y="145" class="text" font-size="10">Activations</text>
 
-  <!-- GPU 2 -->
-  <rect x="250" y="80" width="150" height="150" class="gpu"/>
+
+  <rect x="250" y="80" width="150" height="150" class="gpu" />
   <text x="325" y="105" class="text" font-weight="bold">GPU 2</text>
-  <rect x="270" y="120" width="110" height="80" class="layers"/>
+  <rect x="270" y="120" width="110" height="80" class="layers" />
   <text x="325" y="165" class="text">Layers 9-16</text>
 
-  <!-- Arrow 2-3 -->
-  <line x1="400" y1="155" x2="450" y2="155" class="arrow"/>
+
+  <line x1="400" y1="155" x2="450" y2="155" class="arrow" marker-end="url(#arrowhead)" />
   <text x="425" y="145" class="text" font-size="10">Activations</text>
 
-  <!-- GPU 3 -->
-  <rect x="450" y="80" width="150" height="150" class="gpu"/>
+
+  <rect x="450" y="80" width="150" height="150" class="gpu" />
   <text x="525" y="105" class="text" font-weight="bold">GPU 3</text>
-  <rect x="470" y="120" width="110" height="80" class="layers"/>
+  <rect x="470" y="120" width="110" height="80" class="layers" />
   <text x="525" y="165" class="text">Layers 17-24</text>
 
-  <!-- Arrow 3-4 -->
-  <line x1="600" y1="155" x2="650" y2="155" class="arrow"/>
+
+  <line x1="600" y1="155" x2="650" y2="155" class="arrow" marker-end="url(#arrowhead)" />
   <text x="625" y="145" class="text" font-size="10">Activations</text>
 
-  <!-- GPU 4 -->
-  <rect x="650" y="80" width="150" height="150" class="gpu"/>
+
+  <rect x="650" y="80" width="150" height="150" class="gpu" />
   <text x="725" y="105" class="text" font-weight="bold">GPU 4</text>
-  <rect x="670" y="120" width="110" height="80" class="layers"/>
+  <rect x="670" y="120" width="110" height="80" class="layers" />
   <text x="725" y="165" class="text">Layers 25-32</text>
 
   <text x="400" y="260" class="text" fill="#666">Data flows sequentially through stages (GPUs)</text>
