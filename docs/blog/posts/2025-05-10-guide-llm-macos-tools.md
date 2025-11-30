@@ -1,8 +1,8 @@
 ---
 title: "Quick-guide on Running LLMs Locally on macOS"
 date:
-  created: 2025-05-10
-  updated: 2025-11-26
+    created: 2025-05-10
+    updated: 2025-11-26
 tags: [macos, guide, llm, tools]
 description: A comprehensive guide to the top local LLM tools for macOS. Compare Ollama, LM Studio, llama.cpp, and more to find your perfect match.
 author: Viacheslav Dubrov
@@ -37,8 +37,8 @@ If you're new to local LLMs, here are three terms you'll see often:
 
 - **Hardware**: A Mac with Apple Silicon (M1, M2, M3, or M4) is highly recommended. Intel Macs work but will be significantly slower.
 - **RAM**:
-  - **8GB**: Can run small models (Mistral 7B, Llama 3 8B) comfortably.
-  - **16GB+**: Recommended for larger models and multitasking.
+    - **8GB**: Can run small models (Mistral 7B, Llama 3 8B) comfortably.
+    - **16GB+**: Recommended for larger models and multitasking.
 - **Disk Space**: Models take up space! Plan for ~10-20GB for a good starter library.
 
 ![Local LLM Architecture](../assets/2025-05-10-guide-llm-macos-tools/local_llm_flow.svg)

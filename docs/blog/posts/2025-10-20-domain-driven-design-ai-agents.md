@@ -1,8 +1,8 @@
 ---
 title: "Domain-driven design for AI agents: a beginner-friendly guide"
 date:
-  created: 2025-10-20
-  updated: 2025-10-20
+    created: 2025-10-20
+    updated: 2025-10-20
 tags: [ai-engineering, agents, architecture, domain-driven-design]
 description: Learn how domain-driven design (DDD) keeps AI agents aligned with the business domain, with practical patterns, code snippets, and tooling tips.
 author: Viacheslav Dubrov
@@ -23,38 +23,38 @@ author: Viacheslav Dubrov
 ## Table of contents
 
 - [Domain-driven design for AI agents: a beginner-friendly guide](#domain-driven-design-for-ai-agents-a-beginner-friendly-guide)
-  - [TL;DR](#tldr)
-  - [Table of contents](#table-of-contents)
-  - [Why domain-driven design matters for AI agents](#why-domain-driven-design-matters-for-ai-agents)
-  - [Strategic building blocks](#strategic-building-blocks)
-    - [Ubiquitous language](#ubiquitous-language)
-    - [Bounded contexts](#bounded-contexts)
-    - [Entities and value objects](#entities-and-value-objects)
-    - [Aggregates](#aggregates)
-    - [Repositories](#repositories)
-    - [Domain events](#domain-events)
-  - [Translating DDD to agent architectures](#translating-ddd-to-agent-architectures)
-    - [Bounded contexts become agents or skills](#bounded-contexts-become-agents-or-skills)
-    - [Prompts honor the ubiquitous language](#prompts-honor-the-ubiquitous-language)
-    - [State becomes explicit entities](#state-becomes-explicit-entities)
-    - [Aggregates express agent plans](#aggregates-express-agent-plans)
-    - [Domain events drive orchestration](#domain-events-drive-orchestration)
-    - [Business rules wrap AI actions](#business-rules-wrap-ai-actions)
-  - [Example: a task assistant modeled with DDD](#example-a-task-assistant-modeled-with-ddd)
-    - [1. Map the contexts](#1-map-the-contexts)
-    - [2. Speak the same language](#2-speak-the-same-language)
-    - [3. Capture entities, value objects, and events](#3-capture-entities-value-objects-and-events)
-    - [4. Shape the aggregate](#4-shape-the-aggregate)
-    - [5. Wrap persistence in a repository](#5-wrap-persistence-in-a-repository)
-    - [6. Run the flow](#6-run-the-flow)
-  - [Tooling to bring the model to life](#tooling-to-bring-the-model-to-life)
-    - [FastAPI](#fastapi)
-    - [Pydantic and Pydantic AI](#pydantic-and-pydantic-ai)
-    - [DDD helper libraries](#ddd-helper-libraries)
-    - [Event-driven tooling](#event-driven-tooling)
-    - [Agent frameworks](#agent-frameworks)
-    - [Testing](#testing)
-  - [Getting started checklist](#getting-started-checklist)
+    - [TL;DR](#tldr)
+    - [Table of contents](#table-of-contents)
+    - [Why domain-driven design matters for AI agents](#why-domain-driven-design-matters-for-ai-agents)
+    - [Strategic building blocks](#strategic-building-blocks)
+        - [Ubiquitous language](#ubiquitous-language)
+        - [Bounded contexts](#bounded-contexts)
+        - [Entities and value objects](#entities-and-value-objects)
+        - [Aggregates](#aggregates)
+        - [Repositories](#repositories)
+        - [Domain events](#domain-events)
+    - [Translating DDD to agent architectures](#translating-ddd-to-agent-architectures)
+        - [Bounded contexts become agents or skills](#bounded-contexts-become-agents-or-skills)
+        - [Prompts honor the ubiquitous language](#prompts-honor-the-ubiquitous-language)
+        - [State becomes explicit entities](#state-becomes-explicit-entities)
+        - [Aggregates express agent plans](#aggregates-express-agent-plans)
+        - [Domain events drive orchestration](#domain-events-drive-orchestration)
+        - [Business rules wrap AI actions](#business-rules-wrap-ai-actions)
+    - [Example: a task assistant modeled with DDD](#example-a-task-assistant-modeled-with-ddd)
+        - [1. Map the contexts](#1-map-the-contexts)
+        - [2. Speak the same language](#2-speak-the-same-language)
+        - [3. Capture entities, value objects, and events](#3-capture-entities-value-objects-and-events)
+        - [4. Shape the aggregate](#4-shape-the-aggregate)
+        - [5. Wrap persistence in a repository](#5-wrap-persistence-in-a-repository)
+        - [6. Run the flow](#6-run-the-flow)
+    - [Tooling to bring the model to life](#tooling-to-bring-the-model-to-life)
+        - [FastAPI](#fastapi)
+        - [Pydantic and Pydantic AI](#pydantic-and-pydantic-ai)
+        - [DDD helper libraries](#ddd-helper-libraries)
+        - [Event-driven tooling](#event-driven-tooling)
+        - [Agent frameworks](#agent-frameworks)
+        - [Testing](#testing)
+    - [Getting started checklist](#getting-started-checklist)
 
 ---
 
@@ -76,8 +76,8 @@ This matters most in complex domains where rules evolve constantly—think finan
 
 DDD isn't one big idea—it's a toolkit of patterns that work together. It's often split into two parts:
 
-1.  **Strategic Design**: The "big picture" stuff. Defining boundaries, teams, and how systems talk. This is crucial for multi-agent systems.
-2.  **Tactical Design**: The code-level patterns (Entities, Aggregates). This keeps your agent's internal logic clean.
+1. **Strategic Design**: The "big picture" stuff. Defining boundaries, teams, and how systems talk. This is crucial for multi-agent systems.
+2. **Tactical Design**: The code-level patterns (Entities, Aggregates). This keeps your agent's internal logic clean.
 
 Here are the core concepts you'll use every day.
 
@@ -300,10 +300,10 @@ Enter the **Anti-Corruption Layer (ACL)**.
 
 The ACL acts as a gatekeeper. It translates the "wild" output of the LLM into the "strict" language of your domain.
 
-1.  **Ingest**: Receive raw text or JSON from the LLM.
-2.  **Validate**: Use Pydantic models to check structure and types.
-3.  **Sanitize**: Ensure values fall within acceptable ranges (e.g., no negative prices).
-4.  **Translate**: Convert DTOs (Data Transfer Objects) into Domain Entities.
+1. **Ingest**: Receive raw text or JSON from the LLM.
+2. **Validate**: Use Pydantic models to check structure and types.
+3. **Sanitize**: Ensure values fall within acceptable ranges (e.g., no negative prices).
+4. **Translate**: Convert DTOs (Data Transfer Objects) into Domain Entities.
 
 If validation fails, the ACL rejects the data—often sending an error message back to the LLM so it can correct itself. This loop ensures that **only valid data ever touches your core business logic**.
 

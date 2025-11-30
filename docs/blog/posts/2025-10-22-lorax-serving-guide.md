@@ -1,8 +1,8 @@
 ---
 title: "LoRAX Playbook - Orchestrating Thousands of LoRA Adapters on Kubernetes"
 date:
-  created: 2025-10-22
-  updated: 2025-10-22
+    created: 2025-10-22
+    updated: 2025-10-22
 tags: [LLM, Deployment, LoRA, Kubernetes, Inference]
 description: A hands-on guide for serving many fine-tuned adapters on one GPU with LoRAX, from architecture insights to Kubernetes deployments and API usage.
 author: Viacheslav Dubrov
@@ -43,15 +43,19 @@ Here's the key insight: LoRA fine-tuning produces small delta weights (adapters)
 ## How it works: four core innovations
 
 **1. Dynamic adapter loading**
+
 Adapter weights are injected just-in-time for each request. The base model stays resident in GPU memory while adapters load on the fly without blocking other requests. This means you can catalog thousands of adapters but only pay memory costs for the ones actively serving traffic.
 
 **2. Tiered weight caching**
+
 LoRAX stages adapters across three layers: GPU VRAM for hot adapters, CPU RAM for warm ones, and disk for cold storage. This hierarchy prevents out-of-memory crashes while keeping swap times fast enough that users don't notice the difference.
 
 **3. Continuous multi-adapter batching**
+
 Here's where the magic happens. LoRAX extends continuous batching strategies to work across different adapters in parallel. Requests targeting different fine-tunes can share the same forward pass, keeping the GPU fully utilized. Benchmarks from Predibase show that processing 1M tokens spread across 32 different adapters takes about the same time as 1M tokens on a single model.
 
 **4. Battle-tested foundation**
+
 LoRAX builds on Hugging Face's Text Generation Inference (TGI) server, inheriting production-grade optimizations: FlashAttention 2, paged attention, SGMV kernels for multi-adapter inference, and streaming responses. You get the stability of TGI plus the flexibility of dynamic adapter switching.
 
 ### The economics: near-constant cost scaling
@@ -71,15 +75,19 @@ _Cost per million tokens as the number of fine-tuned models increases. LoRAX mai
 LoRAX makes economic and operational sense in specific scenarios. Here's when it shines:
 
 **Multi-tenant SaaS applications**
+
 You're building a platform where each of your 500 customers gets a customized chatbot fine-tuned on their data. Traditional serving would require 500 model deployments. LoRAX serves all 500 from a single GPU by loading the relevant adapter when a customer request arrives.
 
 **Domain-specific expert routers**
+
 Your company maintains specialized LLMs for law, medicine, finance, and engineering. Instead of four separate 13B model deployments, LoRAX runs one base LLaMA 2 13B instance and routes to the appropriate adapter based on the incoming request domain.
 
 **Rapid experimentation and A/B testing**
+
 Testing 10 different fine-tuning approaches in production? With LoRAX you deploy once and switch between variants by changing the `adapter_id` parameter. No infrastructure changes, no service restarts.
 
 **Resource-constrained or edge deployments**
+
 On-prem installations or edge devices often have limited GPU resources. A single NVIDIA A10G can host a quantized 7B base model plus dozens of task-specific adapters, eliminating the need for one GPU per model.
 
 ## Architecture: memory hierarchy and request scheduling
@@ -148,15 +156,15 @@ modelId: meta-llama/Llama-2-7b-chat-hf
 
 # Enable 4-bit quantization to save VRAM
 modelArgs:
-  quantization: "bitsandbytes"
+    quantization: "bitsandbytes"
 
 # Scale to 2 replicas for high availability
 replicaCount: 2
 
 # Request exactly 1 GPU per pod
 resources:
-  limits:
-    nvidia.com/gpu: 1
+    limits:
+        nvidia.com/gpu: 1
 ```
 
 Deploy with your custom configuration:
@@ -170,6 +178,7 @@ Run those commands from the cloned `lorax/` repository so Helm can locate the ch
 LoRAX supports popular open-source models out of the box: LLaMA 2, CodeLlama, Mistral, Mixtral, Qwen, and others. Check the [model compatibility list](https://github.com/predibase/lorax) for the latest additions.
 
 **Exposing the service**
+
 The default Service type is ClusterIP, which only allows access within the cluster. For external traffic, either:
 
 - Create a LoadBalancer Service (on cloud providers)
@@ -177,6 +186,7 @@ The default Service type is ClusterIP, which only allows access within the clust
 - Place an API gateway in front for authentication and rate limiting
 
 **Cleanup**
+
 When you're done testing, free up the GPU resources:
 
 ```bash
@@ -299,35 +309,45 @@ Note that the first request to a new adapter may have higher latency while LoRAX
 ### What LoRAX does well
 
 **Dramatic cost reduction for multi-model scenarios**
+
 Serve hundreds or thousands of fine-tuned models on a single GPU. Traditional approaches would require separate deployments for each model, multiplying infrastructure costs linearly. LoRAX keeps costs nearly constant as you add adapters.
 
 **Zero memory waste**
+
 Adapters are loaded just-in-time when requests arrive. Unused models consume no VRAM. This means you can maintain a catalog of 1,000+ specialized models but only pay for the handful actively serving traffic at any moment.
 
 **Production-grade performance**
+
 Continuous multi-adapter batching keeps latency and throughput comparable to single-model serving. Predibase benchmarks show that serving 32 different adapters simultaneously adds minimal overhead compared to serving one model.
 
 **Proven foundation**
+
 Built on Hugging Face TGI, LoRAX inherits battle-tested optimizations: FlashAttention 2, paged attention, streaming token generation, and SGMV kernels for efficient multi-adapter inference.
 
 **Deployment maturity**
+
 Ships with Docker images, Helm charts, Prometheus metrics, and OpenTelemetry tracing. The Apache 2.0 license means you can use it commercially without restrictions.
 
 **Broad model support**
+
 Works with popular open-source architectures: LLaMA 2, CodeLlama, Mistral, Mixtral, Qwen, and more. Supports quantization (4-bit via bitsandbytes, GPTQ, AWQ) to reduce memory footprint.
 
 ### Limitations and constraints
 
 **Tied to LoRA-based fine-tuning**
+
 All your adapters must come from LoRA-style fine-tuning of the same base model. Full fine-tunes that produce standalone models won't work without conversion. If you have completely different model architectures, you'll need separate LoRAX deployments for each base.
 
 **Cold start latency**
+
 The first request after startup loads the base model into GPU memory (can take 30-90 seconds for larger models). First-time adapter requests also incur a download delay if pulling from Hugging Face. Plan for this with health checks and preloading strategies.
 
 **Cache thrashing under bursty load**
+
 If traffic suddenly hits dozens of different adapters, LoRAX may shuffle weights between GPU, CPU RAM, and disk. While adapter swaps are fast (~10ms from RAM), a very large working set can cause temporary slowdowns. Monitor GPU memory and adapter cache hit rates.
 
 **Fast-moving project**
+
 LoRAX forked from TGI in late 2023 and evolves rapidly. Expect frequent updates and occasional breaking changes as the maintainers track upstream TGI improvements and add new features. Pin versions carefully in production.
 
 ## Alternatives: LoRAX vs. vLLM

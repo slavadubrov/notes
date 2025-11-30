@@ -34,9 +34,9 @@ Example: `make setup && make serve` to get started.
 
 - Commits: short imperative subject (e.g., "add uv article", "fix toc"). Group related edits.
 - PRs to `main` only. Include:
-  - Summary of changes and rationale
-  - Screenshots/GIFs for UI or rendering changes
-  - Links to related issues (if any)
+    - Summary of changes and rationale
+    - Screenshots/GIFs for UI or rendering changes
+    - Links to related issues (if any)
 - Do not commit `site/`. CI builds and deploys on `main` via GitHub Actions.
 
 ## Security & Configuration Tips
