@@ -1,8 +1,8 @@
 ---
 title: "Scaling Large Language Models - Practical Multi-GPU and Multi-Node Strategies for 2025"
 date:
-  created: 2025-05-04
-  updated: 2025-11-24
+    created: 2025-05-04
+    updated: 2025-11-24
 tags: [LLM, Distributed Training, Deep Learning, GPU, Parallelism]
 description: A practical guide to scaling large language models across multiple GPUs and nodes, with real-world strategies from Hugging Face's Ultra-Scale Playbook.
 author: Viacheslav Dubrov
@@ -305,9 +305,9 @@ To get started with FSDP using Hugging Face Accelerate, you can run `accelerate 
 compute_environment: LOCAL_MACHINE
 distributed_type: FSDP
 fsdp_config:
-  fsdp_auto_wrap_policy: TRANSFORMER_BASED_WRAP
-  fsdp_backward_prefetch: BACKWARD_PRE
-  fsdp_state_dict_type: SHARDED_STATE_DICT
+    fsdp_auto_wrap_policy: TRANSFORMER_BASED_WRAP
+    fsdp_backward_prefetch: BACKWARD_PRE
+    fsdp_state_dict_type: SHARDED_STATE_DICT
 machine_rank: 0
 main_process_ip: null
 main_process_port: null

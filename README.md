@@ -13,25 +13,25 @@ A blog about Machine Learning tips, tricks, and experiences, built with MkDocs a
 
 1. Clone the repository:
 
-   ```bash
-   git clone <your-repo-url>
-   cd <repo-name>
-   ```
+    ```bash
+    git clone <your-repo-url>
+    cd <repo-name>
+    ```
 
 2. Ensure you have [uv](https://github.com/astral-sh/uv) installed (see install instructions in the uv docs).
 
 3. Install dependencies and launch a preview:
 
-   ```bash
-   uv sync                  # Installs runtime + dev dependencies into .venv
-   uv run mkdocs serve      # open http://127.0.0.1:8000
-   ```
+    ```bash
+    uv sync                  # Installs runtime + dev dependencies into .venv
+    uv run mkdocs serve      # open http://127.0.0.1:8000
+    ```
 
 4. Alternatively, start the development server via Make:
 
-   ```bash
-   make serve
-   ```
+    ```bash
+    make serve
+    ```
 
 ## 📝 Creating Content
 

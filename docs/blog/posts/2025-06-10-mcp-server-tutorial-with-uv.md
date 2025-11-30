@@ -1,8 +1,8 @@
 ---
 title: "Building a Custom FeatureStoreLite MCP Server Using uv"
 date:
-  created: 2025-06-10
-  updated: 2025-06-10
+    created: 2025-06-10
+    updated: 2025-06-10
 tags: [guide, mcp, python, uv]
 description: A comprehensive guide to building a custom Model Context Protocol (MCP) server for ML feature storage. Learn how to use FastMCP and uv to create, test, and integrate your server with Claude Desktop.
 author: Viacheslav Dubrov
@@ -36,10 +36,10 @@ Here is how the components interact:
 
 ![MCP Architecture](../assets/2025-06-10-mcp-server-tutorial-with-uv/mcp_architecture.svg)
 
-1.  **User**: Asks a question in natural language.
-2.  **Claude Desktop**: The MCP Client that interprets the question and decides which tool to call.
-3.  **MCP Server**: Our Python application running `FastMCP` that exposes tools (`get_feature`, `store_feature`).
-4.  **SQLite**: The backing storage for our feature vectors.
+1. **User**: Asks a question in natural language.
+2. **Claude Desktop**: The MCP Client that interprets the question and decides which tool to call.
+3. **MCP Server**: Our Python application running `FastMCP` that exposes tools (`get_feature`, `store_feature`).
+4. **SQLite**: The backing storage for our feature vectors.
 
 ---
 
@@ -79,8 +79,8 @@ uv add "mcp[cli]"
 
 We will split our application into two files:
 
-1.  `database.py`: Handles SQLite operations.
-2.  `featurestore_server.py`: The MCP server definition.
+1. `database.py`: Handles SQLite operations.
+2. `featurestore_server.py`: The MCP server definition.
 
 ### 3.1. The Database Layer (`database.py`)
 
@@ -294,19 +294,19 @@ Add your server to the `mcpServers` object:
 
 ```json
 {
-  "mcpServers": {
-    "featurestore": {
-      "command": "uv",
-      "args": [
-        "run",
-        "--with",
-        "mcp[cli]",
-        "mcp",
-        "run",
-        "/ABSOLUTE/PATH/TO/mcp-featurestore/featurestore_server.py"
-      ]
+    "mcpServers": {
+        "featurestore": {
+            "command": "uv",
+            "args": [
+                "run",
+                "--with",
+                "mcp[cli]",
+                "mcp",
+                "run",
+                "/ABSOLUTE/PATH/TO/mcp-featurestore/featurestore_server.py"
+            ]
+        }
     }
-  }
 }
 ```
 
@@ -318,23 +318,23 @@ When you ask Claude a question, the following workflow occurs:
 
 ![MCP Workflow](../assets/2025-06-10-mcp-server-tutorial-with-uv/mcp_workflow.svg)
 
-1.  Claude sees the available tools (`get_feature`, `list_features`, etc.).
-2.  It determines that your question requires data from the feature store.
-3.  It constructs a tool call and sends it to your server.
-4.  Your server executes the Python function and returns the result.
-5.  Claude uses that result to answer your question.
+1. Claude sees the available tools (`get_feature`, `list_features`, etc.).
+2. It determines that your question requires data from the feature store.
+3. It constructs a tool call and sends it to your server.
+4. Your server executes the Python function and returns the result.
+5. Claude uses that result to answer your question.
 
 ### 5.3. Example Queries
 
 Restart Claude Desktop and try these prompts:
 
-1.  **"List all available features."**
-    ![Question 2](../assets/2025-06-10-mcp-server-tutorial-with-uv/question-2.png){: style="width:600px;max-width:100%;height:auto;"}
+1. "List all available features."
+   ![Question 2](../assets/2025-06-10-mcp-server-tutorial-with-uv/question-2.png){: style="width:600px;max-width:100%;height:auto;"}
 
-2.  **"Get the feature vector for user_123."**
-    ![Question 3](../assets/2025-06-10-mcp-server-tutorial-with-uv/question-3.png){: style="width:600px;max-width:100%;height:auto;"}
+2. "Get the feature vector for user_123."
+   ![Question 3](../assets/2025-06-10-mcp-server-tutorial-with-uv/question-3.png){: style="width:600px;max-width:100%;height:auto;"}
 
-3.  **"Store a new feature for 'new_item' with vector [0.5, 0.5] and metadata {'type': 'test'}."**
+3. "Store a new feature for 'new_item' with vector [0.5, 0.5] and metadata {'type': 'test'}."
 
 ---
 
@@ -344,13 +344,13 @@ If things aren't working, check these common issues:
 
 - **"Server connection failed"**:
 
-  - Check the logs: `tail -f ~/Library/Logs/Claude/mcp.log` (macOS).
-  - Ensure you used the **absolute path** in the config file.
-  - Verify `uv` is in your system PATH or use the full path to the `uv` binary.
+    - Check the logs: `tail -f ~/Library/Logs/Claude/mcp.log` (macOS).
+    - Ensure you used the **absolute path** in the config file.
+    - Verify `uv` is in your system PATH or use the full path to the `uv` binary.
 
 - **"Tool execution error"**:
-  - Use the **Inspector** (`uv run mcp dev ...`) to debug the specific tool.
-  - Check if your `database.py` is creating the `features.db` file in the correct location.
+    - Use the **Inspector** (`uv run mcp dev ...`) to debug the specific tool.
+    - Check if your `database.py` is creating the `features.db` file in the correct location.
 
 ---
 

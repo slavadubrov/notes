@@ -1,8 +1,8 @@
 ---
 title: "Quick-guide on Local Stable-Diffusion Toolkits for macOS"
 date:
-  created: 2025-05-10
-  updated: 2025-05-10
+    created: 2025-05-10
+    updated: 2025-05-10
 tags: [macos, guide, tools, genai]
 description: Compare the best Stable Diffusion interfaces for macOS - from one-click DiffusionBee and Draw Things to node-based ComfyUI. Find your perfect match based on ease of use, features, and Apple Silicon performance.
 author: Viacheslav Dubrov
@@ -42,11 +42,11 @@ This means a MacBook Pro with 32GB or 64GB of RAM can load massive models (like 
 - **What it is:** A native iOS/macOS app that feels like a professional design tool. It's surprisingly powerful, supporting ControlNet, Inpainting, and LoRAs right out of the box.
 - **Best for:** Users who want a **native app experience** (no terminal!) but don't want to sacrifice advanced features.
 - **Pros:**
-  - **Native Performance:** Highly optimized for Apple Silicon.
-  - **Feature Rich:** Supports Inpainting, Outpainting, ControlNet, and scriptable workflows.
-  - **Offline First:** Runs completely offline after downloading models.
+    - **Native Performance:** Highly optimized for Apple Silicon.
+    - **Feature Rich:** Supports Inpainting, Outpainting, ControlNet, and scriptable workflows.
+    - **Offline First:** Runs completely offline after downloading models.
 - **Cons:**
-  - UI can be a bit dense on smaller screens (it's designed to scale from iPhone to Mac).
+    - UI can be a bit dense on smaller screens (it's designed to scale from iPhone to Mac).
 
 ## 2. DiffusionBee: The "One-Click" Wonder
 
@@ -54,12 +54,12 @@ This means a MacBook Pro with 32GB or 64GB of RAM can load massive models (like 
 - **What it is:** The simplest way to run Stable Diffusion on a Mac. It strips away all the jargon. You don't "load a checkpoint"; you just select a style.
 - **Best for:** Absolute beginners who just want to make cool images _now_.
 - **Pros:**
-  - **Zero Setup:** Download the DMG, drag to Applications, run.
-  - **Clean UI:** Very "Apple-like" design.
-  - **Built-in Tools:** Includes simple upscaling and background removal.
+    - **Zero Setup:** Download the DMG, drag to Applications, run.
+    - **Clean UI:** Very "Apple-like" design.
+    - **Built-in Tools:** Includes simple upscaling and background removal.
 - **Cons:**
-  - **Limited Control:** You can't easily tweak advanced sampler settings or complex node pipelines.
-  - **Slower Updates:** New features (like the latest ControlNet models) take longer to arrive.
+    - **Limited Control:** You can't easily tweak advanced sampler settings or complex node pipelines.
+    - **Slower Updates:** New features (like the latest ControlNet models) take longer to arrive.
 
 ## 3. ComfyUI: The Node-Based Lab
 
@@ -67,12 +67,12 @@ This means a MacBook Pro with 32GB or 64GB of RAM can load massive models (like 
 - **What it is:** A visual programming environment. Instead of sliders, you connect "nodes" with wires to build your image generation pipeline.
 - **Best for:** Power users, technical artists, and anyone who wants to understand _exactly_ how the image is being made.
 - **Pros:**
-  - **Ultimate Control:** Build custom workflows for specific tasks (e.g., "Generate image -> Upscale -> Face Restore").
-  - **Speed:** Often faster than other UIs because it executes only what's needed.
-  - **Ecosystem:** Thousands of custom nodes created by the community.
+    - **Ultimate Control:** Build custom workflows for specific tasks (e.g., "Generate image -> Upscale -> Face Restore").
+    - **Speed:** Often faster than other UIs because it executes only what's needed.
+    - **Ecosystem:** Thousands of custom nodes created by the community.
 - **Cons:**
-  - **Steep Learning Curve:** It looks like a bowl of spaghetti until you learn to read it.
-  - **Setup:** Requires some comfort with Python/Terminal (though installers exist).
+    - **Steep Learning Curve:** It looks like a bowl of spaghetti until you learn to read it.
+    - **Setup:** Requires some comfort with Python/Terminal (though installers exist).
 
 ## 4. Stable Diffusion WebUI (AUTOMATIC1111)
 
@@ -80,11 +80,11 @@ This means a MacBook Pro with 32GB or 64GB of RAM can load massive models (like 
 - **What it is:** The "Swiss Army Knife" of Stable Diffusion. It runs in your browser and has a tab for everything.
 - **Best for:** Enthusiasts who want to use the latest community extensions immediately.
 - **Pros:**
-  - **Extensions:** If a new AI technique is released today, A1111 will have an extension for it tomorrow.
-  - **Tutorials:** The vast majority of YouTube tutorials use this interface.
+    - **Extensions:** If a new AI technique is released today, A1111 will have an extension for it tomorrow.
+    - **Tutorials:** The vast majority of YouTube tutorials use this interface.
 - **Cons:**
-  - **Clunky UI:** It's functional but chaotic.
-  - **Heavy:** Can be slower and more memory-hungry than ComfyUI or Draw Things.
+    - **Clunky UI:** It's functional but chaotic.
+    - **Heavy:** Can be slower and more memory-hungry than ComfyUI or Draw Things.
 
 ## 5. Fooocus: Midjourney on Your Mac
 
@@ -92,11 +92,11 @@ This means a MacBook Pro with 32GB or 64GB of RAM can load massive models (like 
 - **What it is:** An interface designed to mimic the ease of Midjourney. It automates all the technical choices (samplers, steps, refiners) so you can focus on the prompt.
 - **Best for:** High-quality results with minimal tweaking.
 - **Pros:**
-  - **Smart Defaults:** It "just works" and produces beautiful images.
-  - **Minimalist:** No overwhelming sliders.
+    - **Smart Defaults:** It "just works" and produces beautiful images.
+    - **Minimalist:** No overwhelming sliders.
 - **Cons:**
-  - **Less Customization:** Harder to force it to do something specific if it fights you.
-  - **Performance:** Often optimized for NVIDIA GPUs first, so Mac performance can vary.
+    - **Less Customization:** Harder to force it to do something specific if it fights you.
+    - **Performance:** Often optimized for NVIDIA GPUs first, so Mac performance can vary.
 
 ---
 
@@ -125,9 +125,9 @@ Not sure which one to pick? Follow this path:
 ### 1. System Requirements
 
 - **RAM is King:**
-  - **8GB:** Doable for basic 512x512 images, but expect slowness and crashes with newer models (SDXL).
-  - **16GB:** The comfortable minimum. You can run most things, including SDXL.
-  - **32GB+:** The dream. You can keep multiple models loaded and multitask while generating.
+    - **8GB:** Doable for basic 512x512 images, but expect slowness and crashes with newer models (SDXL).
+    - **16GB:** The comfortable minimum. You can run most things, including SDXL.
+    - **32GB+:** The dream. You can keep multiple models loaded and multitask while generating.
 - **Storage:** AI models are huge (2GB - 6GB each). Get an external SSD if your Mac is low on space.
 
 ### 2. Where to get Models
