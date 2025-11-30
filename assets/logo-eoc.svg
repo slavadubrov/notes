@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 64" role="img" aria-label="Edge of Context">
+  <style>
+    :root { color-scheme: light dark; color: #111; }
+    @media (prefers-color-scheme: dark){ :root { color: #fff; } }
+    .fg { fill: none; stroke: currentColor; }
+    .dot { fill: currentColor; }
+    .txt-primary { fill: currentColor; font-weight: 600; }
+    .txt-secondary { fill: currentColor; opacity: 0.7; }
+  </style>
+
+  <!-- Icon: Refined Context Window -->
+  <g transform="translate(8,6)">
+    <!-- Main Frame -->
+    <rect x="0" y="0" width="52" height="52" rx="8" class="fg" stroke-width="2"/>
+
+    <!-- The Edge (Sharper, more defined) -->
+    <line x1="40" y1="0" x2="40" y2="52" class="fg" stroke-width="2"/>
+
+    <!-- Structured Data (Matrix style) -->
+    <g transform="translate(10, 14)">
+      <circle cx="0" cy="0" r="2.5" class="dot"/>
+      <circle cx="10" cy="0" r="2.5" class="dot"/>
+      <circle cx="20" cy="0" r="2.5" class="dot"/>
+
+      <circle cx="0" cy="12" r="2.5" class="dot"/>
+      <circle cx="10" cy="12" r="2.5" class="dot"/>
+      <circle cx="20" cy="12" r="2.5" class="dot"/>
+
+      <circle cx="0" cy="24" r="2.5" class="dot"/>
+      <circle cx="10" cy="24" r="2.5" class="dot"/>
+      <circle cx="20" cy="24" r="2.5" class="dot"/>
+    </g>
+
+    <!-- Faded tokens outside context -->
+    <circle cx="46" cy="14" r="2" class="dot" opacity="0.3"/>
+    <circle cx="46" cy="26" r="2" class="dot" opacity="0.3"/>
+    <circle cx="46" cy="38" r="2" class="dot" opacity="0.3"/>
+  </g>
+
+  <!-- Wordmark -->
+  <g transform="translate(76, 40)">
+    <text font-family="'JetBrains Mono', 'Fira Code', monospace" font-size="24">
+      <tspan class="txt-primary">Edge</tspan>
+      <tspan class="txt-secondary" font-weight="400">_of_Context</tspan>
+    </text>
+  </g>
+</svg>

@@ -1,0 +1,816 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A 10-step guide to configuring a new MacBook for AI development, covering essential tools and terminal setup.">
+      
+      
+        <meta name="author" content="Viacheslav Dubrov">
+      
+      
+        <link rel="canonical" href="https://slavadubrov.github.io/blog/2025/04/19/quick-guide-on-setting-up-a-macbook-for-ai-engineering/">
+      
+      
+        <link rel="prev" href="../../17/quick-guide-managing-python-on-macos-with-uv/">
+      
+      
+        <link rel="next" href="../../../05/04/scaling-large-language-models---practical-multi-gpu-and-multi-node-strategies-for-2025/">
+      
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS feed" href="../../../../../feed_rss_created.xml">
+        <link rel="alternate" type="application/rss+xml" title="RSS feed of updated content" href="../../../../../feed_rss_updated.xml">
+      
+      <link rel="icon" href="../../../../../assets/favicon-eoc.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
+    
+    
+      
+        <title>Quick-Guide on setting up a MacBook for AI Engineering - Edge of Context: Tips & Tricks in Machine Learning</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.84d31ad4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/brand.css">
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#quick-guide-on-setting-up-a-macbook-for-ai-engineering" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="Edge of Context: Tips &amp; Tricks in Machine Learning" class="md-header__button md-logo" aria-label="Edge of Context: Tips & Tricks in Machine Learning" data-md-component="logo">
+      
+  <img src="../../../../../assets/logo-eoc.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Edge of Context: Tips & Tricks in Machine Learning
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Quick-Guide on setting up a MacBook for AI Engineering
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../../topics/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Topics
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="../../../../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Blog
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="Edge of Context: Tips &amp; Tricks in Machine Learning" class="md-nav__button md-logo" aria-label="Edge of Context: Tips & Tricks in Machine Learning" data-md-component="logo">
+      
+  <img src="../../../../../assets/logo-eoc.svg" alt="logo">
+
+    </a>
+    Edge of Context: Tips & Tricks in Machine Learning
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../topics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Topics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../../../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Blog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-install-xcode-command-line-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Install Xcode Command Line Tools
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-install-homebrew" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Install Homebrew
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-install-essential-development-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Install essential development tools
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-choose-your-terminal" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Choose your terminal
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Choose your terminal">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optional-iterm2-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optional: iTerm2 configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-set-up-zsh-with-oh-my-zsh" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Set up Zsh with Oh My Zsh
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-add-zsh-plugins-for-superpowers" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Add Zsh plugins for superpowers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-make-your-terminal-beautiful-with-powerlevel10k" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Make your terminal beautiful with Powerlevel10k
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Make your terminal beautiful with Powerlevel10k">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#font-setup-for-other-editors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Font setup for other editors
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-pick-your-code-editor-and-ai-assistant" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Pick your code editor and AI assistant
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-additional-developer-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Additional developer tools
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-youre-ready-to-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. You're ready to build
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2025-04-19 00:00:00+00:00" class="md-ellipsis">April 19, 2025</time>
+                      </div>
+                    </li>
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15 13h1.5v2.82l2.44 1.41-.75 1.3L15 16.69zm4-5H5v11h4.67c-.43-.91-.67-1.93-.67-3a7 7 0 0 1 7-7c1.07 0 2.09.24 3 .67zM5 21a2 2 0 0 1-2-2V5c0-1.11.89-2 2-2h1V1h2v2h8V1h2v2h1a2 2 0 0 1 2 2v6.1c1.24 1.26 2 2.99 2 4.9a7 7 0 0 1-7 7c-1.91 0-3.64-.76-4.9-2zm11-9.85A4.85 4.85 0 0 0 11.15 16c0 2.68 2.17 4.85 4.85 4.85A4.85 4.85 0 0 0 20.85 16c0-2.68-2.17-4.85-4.85-4.85"/></svg>
+                          <time datetime="2025-11-04 00:00:00+00:00" class="md-ellipsis">November 4, 2025</time>
+                        </div>
+                      </li>
+                    
+                    
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+  <nav class="md-tags" >
+    
+      
+      
+      
+        <a href="../../../../../topics/#tag:guide" class="md-tag">guide</a>
+      
+    
+      
+      
+      
+        <a href="../../../../../topics/#tag:macos" class="md-tag">macos</a>
+      
+    
+      
+      
+      
+        <a href="../../../../../topics/#tag:tooling" class="md-tag">tooling</a>
+      
+    
+  </nav>
+
+
+
+<h1 id="quick-guide-on-setting-up-a-macbook-for-ai-engineering">Quick-Guide on setting up a MacBook for AI Engineering</h1>
+<p>Setting up a new MacBook for AI development doesn't have to be overwhelming. Here's my streamlined 10-step process to transform a fresh macOS installation into a fully functional AI engineering workstation.</p>
+<!-- more -->
+
+<h2 id="1-install-xcode-command-line-tools">1. Install Xcode Command Line Tools</h2>
+<p>Start by installing the Xcode Command Line Tools. These are essential building blocks for any software development on macOS, including AI and data science work.</p>
+<div class="highlight"><pre><span></span><code>xcode-select<span class="w"> </span>--install
+</code></pre></div>
+<p>This command opens a dialog that walks you through the installation process.</p>
+<h2 id="2-install-homebrew">2. Install Homebrew</h2>
+<p>Next, install <a href="https://brew.sh">Homebrew</a>, the go-to package manager for macOS. It makes installing and managing software incredibly simple. Run this command:</p>
+<div class="highlight"><pre><span></span><code>/bin/bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="k">)</span><span class="s2">&quot;</span>
+</code></pre></div>
+<p>The installer will guide you through the process and may ask for your password.</p>
+<h2 id="3-install-essential-development-tools">3. Install essential development tools</h2>
+<p>Now let's install the core tools you'll need for AI engineering:</p>
+<div class="highlight"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>openssl<span class="w"> </span>readline<span class="w"> </span>sqlite3<span class="w"> </span>xz<span class="w"> </span>zlib<span class="w"> </span>pyenv<span class="w"> </span>uv<span class="w"> </span>htop<span class="w"> </span>gitmoji<span class="w"> </span>pandoc<span class="w"> </span>ncdu<span class="w"> </span>tmux
+</code></pre></div>
+<p>Here's what each tool does:</p>
+<p><strong>Python environment:</strong></p>
+<ul>
+<li><a href="https://github.com/pyenv/pyenv">pyenv</a> — manage multiple Python versions seamlessly</li>
+<li><a href="https://github.com/astral-sh/uv">uv</a> — fast Python package manager and environment handler</li>
+</ul>
+<p><strong>System libraries:</strong></p>
+<ul>
+<li><a href="https://www.openssl.org">openssl</a> — SSL/TLS cryptography support</li>
+<li><a href="https://tiswww.case.edu/php/chet/readline/rltop.html">readline</a> — command-line text editing</li>
+<li><a href="https://sqlite.org">sqlite3</a> — lightweight embedded database</li>
+<li><a href="https://tukaani.org/xz">xz</a> — advanced data compression</li>
+<li><a href="https://zlib.net">zlib</a> — compression library</li>
+</ul>
+<p><strong>Productivity tools:</strong></p>
+<ul>
+<li><a href="https://htop.dev">htop</a> — visual system monitor and process viewer</li>
+<li><a href="https://github.com/tmux/tmux">tmux</a> — manage multiple terminal sessions</li>
+<li><a href="https://dev.yorhel.nl/ncdu">ncdu</a> — analyze disk usage interactively</li>
+<li><a href="https://gitmoji.dev">gitmoji</a> — add emojis to commit messages</li>
+<li><a href="https://pandoc.org">pandoc</a> — convert documents between formats</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> For more detailed information about using <code>uv</code> for Python development, check out my <a href="../../17/quick-guide-managing-python-on-macos-with-uv/">Quick-Guide on managing Python on macOS with uv</a>.</p>
+</blockquote>
+<h2 id="4-choose-your-terminal">4. Choose your terminal</h2>
+<p>The default macOS Terminal works fine, but I've found better alternatives. I recently switched from <a href="https://www.iterm2.com">iTerm2</a> to <a href="https://www.warp.dev/">Warp</a>. Warp is a modern, Rust-based terminal with built-in AI features that make your workflow smoother.</p>
+<p>You can download Warp from their <a href="https://www.warp.dev/">website</a>.</p>
+<h3 id="optional-iterm2-configuration">Optional: iTerm2 configuration</h3>
+<p>If you prefer the battle-tested iTerm2, here's my recommended setup:</p>
+<p><strong>Enable natural text editing:</strong></p>
+<ol>
+<li>Open Preferences → Profiles → Keys → Key Mappings</li>
+<li>Click the Presets… dropdown</li>
+<li>Select "Natural Text Editing"</li>
+</ol>
+<p><strong>Choose a color theme:</strong></p>
+<ol>
+<li>Browse themes at <a href="https://github.com/mbadolato/iTerm2-Color-Schemes">iTerm2-Color-Schemes</a></li>
+<li>Open Preferences → Profiles → Colors → Color Presets…</li>
+<li>Click Import and select your downloaded theme</li>
+</ol>
+<h2 id="5-set-up-zsh-with-oh-my-zsh">5. Set up Zsh with Oh My Zsh</h2>
+<p>Modern macOS comes with Zsh as the default shell, but we'll enhance it with <a href="https://github.com/robbyrussell/oh-my-zsh">Oh My Zsh</a>, a framework that makes Zsh more powerful and easier to customize:</p>
+<div class="highlight"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>zsh
+sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh<span class="k">)</span><span class="s2">&quot;</span>
+</code></pre></div>
+<p>The Oh My Zsh installer will back up your existing Zsh configuration and set up the new one.</p>
+<h2 id="6-add-zsh-plugins-for-superpowers">6. Add Zsh plugins for superpowers</h2>
+<p>Plugins make your terminal smarter and more productive. Edit your <code>~/.zshrc</code> file to add these plugins:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">plugins</span><span class="o">=(</span>
+<span class="w">    </span>aws<span class="w"> </span>bgnotify<span class="w"> </span>brew<span class="w"> </span>docker<span class="w"> </span>docker-compose
+<span class="w">    </span>emoji<span class="w"> </span>forklift<span class="w"> </span>gcloud<span class="w"> </span>git<span class="w"> </span><span class="nb">history</span><span class="w"> </span>iterm2
+<span class="w">    </span>keychain<span class="w"> </span>kubectl<span class="w"> </span>macos<span class="w"> </span>pre-commit
+<span class="w">    </span>pyenv<span class="w"> </span>pylint<span class="w"> </span>python<span class="w"> </span>screen<span class="w"> </span>themes
+<span class="w">    </span>tmux<span class="w"> </span>virtualenv<span class="w"> </span>vscode
+<span class="w">    </span>zsh-autosuggestions<span class="w"> </span>zsh-syntax-highlighting
+<span class="o">)</span>
+</code></pre></div>
+<p>You can find detailed descriptions of all plugins in the <a href="https://github.com/ohmyzsh/ohmyzsh/wiki/Plugins">Oh My Zsh plugins wiki</a>.</p>
+<p><strong>Extra installation required:</strong></p>
+<p>The last two plugins need separate installation (but it's quick!):</p>
+<ul>
+<li><a href="https://github.com/zsh-users/zsh-autosuggestions">zsh-autosuggestions</a> — suggests commands as you type based on your history</li>
+<li><a href="https://github.com/zsh-users/zsh-syntax-highlighting">zsh-syntax-highlighting</a> — highlights commands in real-time to catch errors</li>
+</ul>
+<p>Follow the installation instructions on their respective GitHub pages.</p>
+<h2 id="7-make-your-terminal-beautiful-with-powerlevel10k">7. Make your terminal beautiful with Powerlevel10k</h2>
+<p><a href="https://github.com/romkatv/powerlevel10k">Powerlevel10k</a> is a gorgeous Zsh theme that displays useful information like your current directory, Git status, Python environment, and more. The best part? It comes with an interactive configuration wizard that walks you through customizing it to your preferences.</p>
+<p>Follow the <a href="https://github.com/romkatv/powerlevel10k">installation instructions</a> on their GitHub page.</p>
+<h3 id="font-setup-for-other-editors">Font setup for other editors</h3>
+<p>If you use VSCode or other editors with integrated terminals, you'll want to use compatible fonts:</p>
+<ol>
+<li>Open your editor's settings</li>
+<li>Search for <code>terminal.integrated.fontFamily</code></li>
+<li>Set it to <code>MesloLGS NF</code> (this font is installed with Powerlevel10k)</li>
+</ol>
+<p>For detailed font setup instructions, check the <a href="https://github.com/romkatv/powerlevel10k/blob/master/font.md">Powerlevel10k font guide</a>.</p>
+<h2 id="8-pick-your-code-editor-and-ai-assistant">8. Pick your code editor and AI assistant</h2>
+<p>For AI engineering, you'll want both a powerful IDE and AI coding assistants. Here's my setup:</p>
+<p><strong>IDE:</strong></p>
+<ul>
+<li><a href="https://cursor.sh">Cursor</a> — a VSCode fork with native AI pair programming features</li>
+<li><a href="https://code.visualstudio.com">VSCode</a> — the industry standard with an enormous extension ecosystem</li>
+</ul>
+<p><strong>AI Assistants:</strong></p>
+<ul>
+<li><a href="https://openai.com/codex/">OpenAI Codex</a> — OpenAI's code generation model for intelligent code completion</li>
+<li><a href="https://claude.ai">Claude</a> — Anthropic's AI assistant for complex coding tasks and architecture discussions</li>
+</ul>
+<p><strong>My preference:</strong> I use Cursor as my IDE alongside Codex (or Claude Code) running in parallel.</p>
+<h2 id="9-additional-developer-tools">9. Additional developer tools</h2>
+<p>Round out your setup with these applications:</p>
+<ul>
+<li><a href="https://github.com/apps/desktop">GitHub Desktop</a> — visual Git client for managing repositories</li>
+<li><a href="https://www.docker.com">Docker</a> — containerization platform (or check out <a href="https://spacelift.io/blog/docker-alternatives">alternatives</a> like Podman)</li>
+<li><a href="https://ollama.com">Ollama</a> or <a href="https://lmstudio.ai">LM Studio</a> — run large language models locally on your Mac</li>
+</ul>
+<h2 id="10-youre-ready-to-build">10. You're ready to build</h2>
+<p>That's it! You now have a complete AI engineering setup that mirrors what I use daily. This configuration removes the friction between having an idea and building with AI models. From here, you can:</p>
+<ul>
+<li>Start new Python projects with <code>uv</code></li>
+<li>Run local LLMs for development and testing</li>
+<li>Manage your code with Git and GitHub</li>
+<li>Work efficiently in a beautiful, customized terminal</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="/feed_rss_created.xml" target="_blank" rel="noopener" title="RSS" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20 5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27zm0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.path", "navigation.indexes", "navigation.toc", "navigation.toc.sticky", "navigation.toc.maxdepth", "navigation.toc.title", "navigation.toc.collapse", "navigation.toc.collapse_empty_groups", "navigation.toc.collapse_single_children", "content.code.copy"], "search": "../../../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+      
+        <script src="../../../../../javascripts/mermaid-init.js"></script>
+      
+    
+  </body>
+</html>

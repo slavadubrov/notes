@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="EoC">
+  <style>
+    :root { color-scheme: light dark; color: #111; }
+    @media (prefers-color-scheme: dark){ :root { color: #fff; } }
+    .fg { fill: none; stroke: currentColor; }
+    .dot { fill: currentColor; }
+  </style>
+
+  <!-- Icon: Refined Context Window (Centered in 64x64) -->
+  <g transform="translate(6,6)">
+    <!-- Main Frame -->
+    <rect x="0" y="0" width="52" height="52" rx="8" class="fg" stroke-width="2"/>
+
+    <!-- The Edge -->
+    <line x1="40" y1="0" x2="40" y2="52" class="fg" stroke-width="2"/>
+
+    <!-- Structured Data (Matrix style) -->
+    <g transform="translate(10, 14)">
+      <circle cx="0" cy="0" r="2.5" class="dot"/>
+      <circle cx="10" cy="0" r="2.5" class="dot"/>
+      <circle cx="20" cy="0" r="2.5" class="dot"/>
+
+      <circle cx="0" cy="12" r="2.5" class="dot"/>
+      <circle cx="10" cy="12" r="2.5" class="dot"/>
+      <circle cx="20" cy="12" r="2.5" class="dot"/>
+
+      <circle cx="0" cy="24" r="2.5" class="dot"/>
+      <circle cx="10" cy="24" r="2.5" class="dot"/>
+      <circle cx="20" cy="24" r="2.5" class="dot"/>
+    </g>
+
+    <!-- Faded tokens outside context -->
+    <circle cx="46" cy="14" r="2" class="dot" opacity="0.3"/>
+    <circle cx="46" cy="26" r="2" class="dot" opacity="0.3"/>
+    <circle cx="46" cy="38" r="2" class="dot" opacity="0.3"/>
+  </g>
+</svg>

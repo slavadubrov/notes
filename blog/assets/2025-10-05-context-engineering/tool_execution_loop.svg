@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+
+<style>
+    .bg { fill: #1e1e1e; }
+    .node { fill: #2d2d2d; stroke: #3b82f6; stroke-width: 2; rx: 8; ry: 8; }
+    .node-text { fill: #e2e8f0; font-family: sans-serif; font-size: 14px; text-anchor: middle; dominant-baseline: middle; }
+    .edge { stroke: #64748b; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+    .label { fill: #94a3b8; font-family: sans-serif; font-size: 12px; text-anchor: middle; background-color: #1e1e1e; }
+    .title { fill: #f8fafc; font-family: sans-serif; font-size: 18px; font-weight: bold; text-anchor: middle; }
+    .group-label { fill: #94a3b8; font-family: sans-serif; font-size: 14px; font-weight: bold; text-anchor: start; }
+    .accent-green { stroke: #22c55e; }
+    .accent-red { stroke: #ef4444; }
+    .accent-yellow { stroke: #eab308; }
+    .accent-purple { stroke: #a855f7; }
+    .accent-orange { stroke: #f97316; }
+</style>
+<defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#64748b" />
+    </marker>
+</defs>
+
+<rect width="100%" height="100%" class="bg"/>
+
+<text x="400" y="30" class="title">Tool Execution Loop</text>
+
+<g transform="translate(50, 150)">
+    <rect x="0" y="0" width="120" height="60" class="node" style="stroke: #3b82f6"/>
+    <text x="60" y="30" class="node-text">Agent</text>
+</g>
+
+<g transform="translate(250, 150)">
+    <rect x="0" y="0" width="120" height="60" class="node" style="stroke: #eab308"/>
+    <text x="60" y="30" class="node-text">Planner</text>
+</g>
+
+<g transform="translate(450, 150)">
+    <rect x="0" y="0" width="120" height="60" class="node" style="stroke: #f97316"/>
+    <text x="60" y="30" class="node-text">Tool API</text>
+</g>
+
+<g transform="translate(650, 150)">
+    <rect x="0" y="0" width="120" height="60" class="node" style="stroke: #ef4444"/>
+    <text x="60" y="30" class="node-text">Verifier</text>
+</g>
+
+<!-- Edges -->
+<path d="M170 180 L250 180" class="edge"/>
+<path d="M370 180 L450 180" class="edge"/>
+<path d="M570 180 L650 180" class="edge"/>
+
+<!-- Loop back -->
+<path d="M710 210 L710 280 L110 280 L110 210" class="edge"/>
+<text x="400" y="270" class="label" style="fill:#94a3b8">Loop until task complete</text>
+
+</svg>

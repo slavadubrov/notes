@@ -1,0 +1,1073 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A comprehensive guide to building a custom Model Context Protocol (MCP) server for ML feature storage. Learn how to use FastMCP and uv to create, test, and integrate your server with Claude Desktop.">
+      
+      
+        <meta name="author" content="Viacheslav Dubrov">
+      
+      
+        <link rel="canonical" href="https://slavadubrov.github.io/blog/2025/06/10/building-a-custom-featurestorelite-mcp-server-using-uv/">
+      
+      
+        <link rel="prev" href="../../../05/11/choosing-the-right-open-source-llm-variant--file-format/">
+      
+      
+        <link rel="next" href="../../../10/05/context-engineering-in-the-agenticai-era--and-how-to-cook-it/">
+      
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS feed" href="../../../../../feed_rss_created.xml">
+        <link rel="alternate" type="application/rss+xml" title="RSS feed of updated content" href="../../../../../feed_rss_updated.xml">
+      
+      <link rel="icon" href="../../../../../assets/favicon-eoc.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
+    
+    
+      
+        <title>Building a Custom FeatureStoreLite MCP Server Using uv - Edge of Context: Tips & Tricks in Machine Learning</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.84d31ad4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/brand.css">
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#building-a-custom-featurestorelite-mcp-server-using-uv" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="Edge of Context: Tips &amp; Tricks in Machine Learning" class="md-header__button md-logo" aria-label="Edge of Context: Tips & Tricks in Machine Learning" data-md-component="logo">
+      
+  <img src="../../../../../assets/logo-eoc.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Edge of Context: Tips & Tricks in Machine Learning
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Building a Custom FeatureStoreLite MCP Server Using uv
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../../topics/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Topics
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="../../../../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Blog
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="Edge of Context: Tips &amp; Tricks in Machine Learning" class="md-nav__button md-logo" aria-label="Edge of Context: Tips & Tricks in Machine Learning" data-md-component="logo">
+      
+  <img src="../../../../../assets/logo-eoc.svg" alt="logo">
+
+    </a>
+    Edge of Context: Tips & Tricks in Machine Learning
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../topics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Topics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../../../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Blog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Introduction
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Introduction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-build-this" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why build this?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-use-uv" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why use uv?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture Overview
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-setup-and-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Setup and Installation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Setup and Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-install-uv" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1. Install uv
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-initialize-the-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2. Initialize the Project
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-building-the-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Building the Server
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Building the Server">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-the-database-layer-databasepy" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1. The Database Layer (database.py)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-the-mcp-server-featurestore_serverpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2. The MCP Server (featurestore_server.py)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-testing-with-mcp-inspector" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Testing with MCP Inspector
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-connecting-to-claude-desktop" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Connecting to Claude Desktop
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Connecting to Claude Desktop">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-configure-claude" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1. Configure Claude
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-how-the-interaction-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2. How the Interaction Works
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-example-queries" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.3. Example Queries
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Troubleshooting
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2025-06-10 00:00:00+00:00" class="md-ellipsis">June 10, 2025</time>
+                      </div>
+                    </li>
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15 13h1.5v2.82l2.44 1.41-.75 1.3L15 16.69zm4-5H5v11h4.67c-.43-.91-.67-1.93-.67-3a7 7 0 0 1 7-7c1.07 0 2.09.24 3 .67zM5 21a2 2 0 0 1-2-2V5c0-1.11.89-2 2-2h1V1h2v2h8V1h2v2h1a2 2 0 0 1 2 2v6.1c1.24 1.26 2 2.99 2 4.9a7 7 0 0 1-7 7c-1.91 0-3.64-.76-4.9-2zm11-9.85A4.85 4.85 0 0 0 11.15 16c0 2.68 2.17 4.85 4.85 4.85A4.85 4.85 0 0 0 20.85 16c0-2.68-2.17-4.85-4.85-4.85"/></svg>
+                          <time datetime="2025-06-10 00:00:00+00:00" class="md-ellipsis">June 10, 2025</time>
+                        </div>
+                      </li>
+                    
+                    
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+  <nav class="md-tags" >
+    
+      
+      
+      
+        <a href="../../../../../topics/#tag:guide" class="md-tag">guide</a>
+      
+    
+      
+      
+      
+        <a href="../../../../../topics/#tag:mcp" class="md-tag">mcp</a>
+      
+    
+      
+      
+      
+        <a href="../../../../../topics/#tag:python" class="md-tag">python</a>
+      
+    
+      
+      
+      
+        <a href="../../../../../topics/#tag:uv" class="md-tag">uv</a>
+      
+    
+  </nav>
+
+
+
+<h1 id="building-a-custom-featurestorelite-mcp-server-using-uv">Building a Custom FeatureStoreLite MCP Server Using uv</h1>
+<p><em>A step-by-step guide that shows how to create your own lightweight feature store MCP server from scratch using FastMCP, run it through <strong>uv</strong>, and integrate it with Claude Desktop.</em></p>
+<!-- more -->
+
+<hr />
+<h2 id="1-introduction">1. Introduction</h2>
+<p>The <strong>Model Context Protocol (MCP)</strong> is an open standard that enables AI assistants (like Claude) to connect to external data and tools. Instead of building custom integrations for every tool, MCP provides a universal language for AI models to interact with your world.</p>
+<p>In this tutorial, we will build a <strong>FeatureStoreLite</strong> MCP server. This server will act as a bridge between an LLM and a feature store (a database of precomputed ML features), allowing the LLM to query and retrieve feature vectors for users, products, or documents.</p>
+<h3 id="why-build-this">Why build this?</h3>
+<p>Imagine you are an ML engineer debugging a pipeline. Instead of writing SQL queries or Python scripts to check feature values, you can simply ask Claude: <em>"What is the feature vector for user_123?"</em> or <em>"Show me the metadata for product_abc"</em>.</p>
+<h3 id="why-use-uv">Why use <code>uv</code>?</h3>
+<p>We will use <strong><a href="https://docs.astral.sh/uv/">uv</a></strong>, an extremely fast Python package installer and project manager. It simplifies dependency management and makes running our server reproducible and fast.</p>
+<h3 id="architecture-overview">Architecture Overview</h3>
+<p>Here is how the components interact:</p>
+<p><img alt="MCP Architecture" src="../../../../assets/2025-06-10-mcp-server-tutorial-with-uv/mcp_architecture.svg" /></p>
+<ol>
+<li><strong>User</strong>: Asks a question in natural language.</li>
+<li><strong>Claude Desktop</strong>: The MCP Client that interprets the question and decides which tool to call.</li>
+<li><strong>MCP Server</strong>: Our Python application running <code>FastMCP</code> that exposes tools (<code>get_feature</code>, <code>store_feature</code>).</li>
+<li><strong>SQLite</strong>: The backing storage for our feature vectors.</li>
+</ol>
+<hr />
+<h2 id="2-setup-and-installation">2. Setup and Installation</h2>
+<h3 id="21-install-uv">2.1. Install <code>uv</code></h3>
+<p>If you haven't installed <code>uv</code> yet, get it now. It's a game-changer for Python development.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># macOS/Linux</span>
+curl<span class="w"> </span>-LsSf<span class="w"> </span>https://astral.sh/uv/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh
+
+<span class="c1"># Or via Homebrew</span>
+brew<span class="w"> </span>install<span class="w"> </span>uv
+</code></pre></div>
+<h3 id="22-initialize-the-project">2.2. Initialize the Project</h3>
+<p>Create a new directory and initialize a Python project. <code>uv init</code> creates a <code>pyproject.toml</code> for you.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Create project directory</span>
+mkdir<span class="w"> </span>mcp-featurestore
+<span class="nb">cd</span><span class="w"> </span>mcp-featurestore
+
+<span class="c1"># Initialize Python project</span>
+uv<span class="w"> </span>init
+
+<span class="c1"># Add the MCP SDK with CLI tools</span>
+uv<span class="w"> </span>add<span class="w"> </span><span class="s2">&quot;mcp[cli]&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="3-building-the-server">3. Building the Server</h2>
+<p>We will split our application into two files:</p>
+<ol>
+<li><code>database.py</code>: Handles SQLite operations.</li>
+<li><code>featurestore_server.py</code>: The MCP server definition.</li>
+</ol>
+<h3 id="31-the-database-layer-databasepy">3.1. The Database Layer (<code>database.py</code>)</h3>
+<p>This module manages the SQLite connection and provides helper functions. We'll also seed it with some dummy data so we have something to query.</p>
+<p>Create <code>database.py</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># database.py</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_db_path</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the database path - always in the script&#39;s directory&quot;&quot;&quot;</span>
+    <span class="n">script_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">script_dir</span><span class="p">,</span> <span class="s2">&quot;features.db&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">init_db</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the feature store database with table and sample data&quot;&quot;&quot;</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">get_db_path</span><span class="p">())</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        CREATE TABLE IF NOT EXISTS features (</span>
+<span class="s2">            key TEXT PRIMARY KEY,</span>
+<span class="s2">            vector TEXT NOT NULL,</span>
+<span class="s2">            metadata TEXT,</span>
+<span class="s2">            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP</span>
+<span class="s2">        )</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Sample data for experimentation</span>
+    <span class="n">example_features</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">(</span>
+            <span class="s2">&quot;user_123&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;[0.1, 0.2, -0.5, 0.8, 0.3, -0.1, 0.9, -0.4]&quot;</span><span class="p">,</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span> <span class="s2">&quot;segment&quot;</span><span class="p">:</span> <span class="s2">&quot;premium&quot;</span><span class="p">}),</span>
+        <span class="p">),</span>
+        <span class="p">(</span>
+            <span class="s2">&quot;product_abc&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;[0.7, -0.3, 0.4, 0.1, -0.8, 0.6, 0.2, -0.5]&quot;</span><span class="p">,</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;product&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;abc&quot;</span><span class="p">,</span> <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="s2">&quot;electronics&quot;</span><span class="p">}),</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+
+    <span class="c1"># Insert if not exists</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">vector</span><span class="p">,</span> <span class="n">metadata</span> <span class="ow">in</span> <span class="n">example_features</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                <span class="s2">&quot;INSERT INTO features (key, vector, metadata) VALUES (?, ?, ?)&quot;</span><span class="p">,</span>
+                <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">vector</span><span class="p">,</span> <span class="n">metadata</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">IntegrityError</span><span class="p">:</span>
+            <span class="k">pass</span>  <span class="c1"># Already exists</span>
+
+    <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_db_connection</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Connection</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a database connection&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">get_db_path</span><span class="p">())</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">init_db</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✅ Database initialized successfully!&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Initialize the database:</p>
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>database.py
+</code></pre></div>
+<h3 id="32-the-mcp-server-featurestore_serverpy">3.2. The MCP Server (<code>featurestore_server.py</code>)</h3>
+<p>Now for the exciting part. We use <code>FastMCP</code> to define our server. It uses decorators to turn standard Python functions into MCP Tools and Resources.</p>
+<p>Create <code>featurestore_server.py</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># featurestore_server.py</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">mcp.server.fastmcp</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastMCP</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">database</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_db_connection</span><span class="p">,</span> <span class="n">init_db</span>
+
+<span class="c1"># Initialize the MCP Server</span>
+<span class="n">mcp</span> <span class="o">=</span> <span class="n">FastMCP</span><span class="p">(</span><span class="s2">&quot;FeatureStoreLite&quot;</span><span class="p">)</span>
+
+<span class="c1"># Ensure DB is ready when server starts</span>
+<span class="n">init_db</span><span class="p">()</span>
+
+
+<span class="nd">@mcp</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s2">&quot;schema://main&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_schema</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Resource: Provide the database schema.</span>
+<span class="sd">    Resources are passive data that LLMs can read like files.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">get_db_connection</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">schema</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">&quot;SELECT sql FROM sqlite_master WHERE type=&#39;table&#39;&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sql</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">sql</span> <span class="ow">in</span> <span class="n">schema</span> <span class="k">if</span> <span class="n">sql</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">or</span> <span class="s2">&quot;No tables found.&quot;</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+<span class="nd">@mcp</span><span class="o">.</span><span class="n">tool</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">store_feature</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">vector</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Tool: Store a feature vector.</span>
+<span class="sd">    Tools are executable functions that LLMs can call to perform actions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">get_db_connection</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Validate that vector is valid JSON</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
+
+        <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">&quot;INSERT OR REPLACE INTO features (key, vector, metadata) VALUES (?, ?, ?)&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">vector</span><span class="p">,</span> <span class="n">metadata</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Successfully stored feature &#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+    <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;Error: Vector must be a valid JSON array string (e.g., &#39;[0.1, 0.2]&#39;)&quot;</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+<span class="nd">@mcp</span><span class="o">.</span><span class="n">tool</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_feature</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Tool: Retrieve a feature vector by key.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">get_db_connection</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">&quot;SELECT vector, metadata FROM features WHERE key = ?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">key</span><span class="p">,)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">row</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="n">key</span><span class="p">,</span>
+                    <span class="s2">&quot;vector&quot;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                    <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="p">},</span>
+                <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Feature &#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39; not found.&quot;</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+<span class="nd">@mcp</span><span class="o">.</span><span class="n">tool</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">list_features</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Tool: List all available feature keys.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">get_db_connection</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT key FROM features&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">([</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">])</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">mcp</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<hr />
+<h2 id="4-testing-with-mcp-inspector">4. Testing with MCP Inspector</h2>
+<p>Before connecting to Claude, use the <strong>MCP Inspector</strong> to verify your server works. This web interface lets you test tools and view resources.</p>
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>run<span class="w"> </span>mcp<span class="w"> </span>dev<span class="w"> </span>featurestore_server.py
+</code></pre></div>
+<p>This command starts the server and opens the Inspector in your browser (usually <code>http://localhost:5173</code> or similar).</p>
+<p><img alt="Inspector" src="../../../../assets/2025-06-10-mcp-server-tutorial-with-uv/inspector.png" style="width:600px;max-width:100%;height:auto;" /></p>
+<p>Try calling <code>get_feature</code> with <code>key="user_123"</code> in the Inspector to confirm it returns the JSON data.</p>
+<hr />
+<h2 id="5-connecting-to-claude-desktop">5. Connecting to Claude Desktop</h2>
+<p>Now let's connect our server to Claude Desktop so we can talk to it.</p>
+<h3 id="51-configure-claude">5.1. Configure Claude</h3>
+<p>Edit your Claude Desktop configuration file:</p>
+<ul>
+<li><strong>macOS</strong>: <code>~/Library/Application Support/Claude/claude_desktop_config.json</code></li>
+<li><strong>Windows</strong>: <code>%APPDATA%/Claude/claude_desktop_config.json</code></li>
+</ul>
+<p>Add your server to the <code>mcpServers</code> object:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;mcpServers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;featurestore&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uv&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                </span><span class="s2">&quot;run&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;--with&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;mcp[cli]&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;mcp&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;run&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;/ABSOLUTE/PATH/TO/mcp-featurestore/featurestore_server.py&quot;</span>
+<span class="w">            </span><span class="p">]</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<blockquote>
+<p><strong>⚠️ Important</strong>: You must use the <strong>absolute path</strong> to your <code>featurestore_server.py</code> file.</p>
+</blockquote>
+<h3 id="52-how-the-interaction-works">5.2. How the Interaction Works</h3>
+<p>When you ask Claude a question, the following workflow occurs:</p>
+<p><img alt="MCP Workflow" src="../../../../assets/2025-06-10-mcp-server-tutorial-with-uv/mcp_workflow.svg" /></p>
+<ol>
+<li>Claude sees the available tools (<code>get_feature</code>, <code>list_features</code>, etc.).</li>
+<li>It determines that your question requires data from the feature store.</li>
+<li>It constructs a tool call and sends it to your server.</li>
+<li>Your server executes the Python function and returns the result.</li>
+<li>Claude uses that result to answer your question.</li>
+</ol>
+<h3 id="53-example-queries">5.3. Example Queries</h3>
+<p>Restart Claude Desktop and try these prompts:</p>
+<ol>
+<li>
+<p>"List all available features."
+   <img alt="Question 2" src="../../../../assets/2025-06-10-mcp-server-tutorial-with-uv/question-2.png" style="width:600px;max-width:100%;height:auto;" /></p>
+</li>
+<li>
+<p>"Get the feature vector for user_123."
+   <img alt="Question 3" src="../../../../assets/2025-06-10-mcp-server-tutorial-with-uv/question-3.png" style="width:600px;max-width:100%;height:auto;" /></p>
+</li>
+<li>
+<p>"Store a new feature for 'new_item' with vector [0.5, 0.5] and metadata {'type': 'test'}."</p>
+</li>
+</ol>
+<hr />
+<h2 id="6-troubleshooting">6. Troubleshooting</h2>
+<p>If things aren't working, check these common issues:</p>
+<ul>
+<li>
+<p><strong>"Server connection failed"</strong>:</p>
+<ul>
+<li>Check the logs: <code>tail -f ~/Library/Logs/Claude/mcp.log</code> (macOS).</li>
+<li>Ensure you used the <strong>absolute path</strong> in the config file.</li>
+<li>Verify <code>uv</code> is in your system PATH or use the full path to the <code>uv</code> binary.</li>
+</ul>
+</li>
+<li>
+<p><strong>"Tool execution error"</strong>:</p>
+<ul>
+<li>Use the <strong>Inspector</strong> (<code>uv run mcp dev ...</code>) to debug the specific tool.</li>
+<li>Check if your <code>database.py</code> is creating the <code>features.db</code> file in the correct location.</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2 id="7-conclusion">7. Conclusion</h2>
+<p>You've just built a functional MCP server that extends Claude's capabilities! This pattern—using <code>FastMCP</code> for the server and <code>uv</code> for execution—is a powerful way to build robust AI tools quickly.</p>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://github.com/slavadubrov/mcp-featurestore">The repo of this tutorial example</a></li>
+<li><a href="https://www.anthropic.com/news/model-context-protocol">Introduction to MCP</a></li>
+<li><a href="https://github.com/modelcontextprotocol/python-sdk">MCP Python SDK</a></li>
+<li><a href="https://claude.ai/download">Claude Desktop</a></li>
+<li><a href="https://docs.astral.sh/uv/">uv</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="/feed_rss_created.xml" target="_blank" rel="noopener" title="RSS" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20 5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27zm0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.path", "navigation.indexes", "navigation.toc", "navigation.toc.sticky", "navigation.toc.maxdepth", "navigation.toc.title", "navigation.toc.collapse", "navigation.toc.collapse_empty_groups", "navigation.toc.collapse_single_children", "content.code.copy"], "search": "../../../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+      
+        <script src="../../../../../javascripts/mermaid-init.js"></script>
+      
+    
+  </body>
+</html>

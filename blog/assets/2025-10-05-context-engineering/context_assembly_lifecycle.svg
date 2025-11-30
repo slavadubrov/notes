@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 650">
+
+<style>
+    .bg { fill: #1e1e1e; }
+    .node { fill: #2d2d2d; stroke: #3b82f6; stroke-width: 2; rx: 8; ry: 8; }
+    .node-text { fill: #e2e8f0; font-family: sans-serif; font-size: 14px; text-anchor: middle; dominant-baseline: middle; }
+    .edge { stroke: #64748b; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+    .label { fill: #94a3b8; font-family: sans-serif; font-size: 12px; text-anchor: middle; background-color: #1e1e1e; }
+    .title { fill: #f8fafc; font-family: sans-serif; font-size: 18px; font-weight: bold; text-anchor: middle; }
+    .group-label { fill: #94a3b8; font-family: sans-serif; font-size: 14px; font-weight: bold; text-anchor: start; }
+    .accent-green { stroke: #22c55e; }
+    .accent-red { stroke: #ef4444; }
+    .accent-yellow { stroke: #eab308; }
+    .accent-purple { stroke: #a855f7; }
+    .accent-orange { stroke: #f97316; }
+</style>
+<defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#64748b" />
+    </marker>
+</defs>
+
+<rect width="100%" height="100%" class="bg"/>
+
+<text x="400" y="30" class="title">Context Assembly Lifecycle</text>
+
+<!-- Nodes -->
+<g transform="translate(350, 60)">
+    <rect x="-60" y="0" width="120" height="40" class="node" style="stroke: #3b82f6"/>
+    <text x="0" y="20" class="node-text">User Query</text>
+</g>
+
+<g transform="translate(350, 140)">
+    <polygon points="0,0 60,30 0,60 -60,30" class="node" style="stroke: #a855f7; fill: #2d2d2d"/>
+    <text x="0" y="30" class="node-text">Router</text>
+</g>
+
+<!-- Load Paths -->
+<g transform="translate(150, 240)">
+    <rect x="-70" y="0" width="140" height="50" class="node" style="stroke: #22c55e"/>
+    <text x="0" y="20" class="node-text">Simple</text>
+    <text x="0" y="40" class="node-text" style="font-size: 10px">(Instr + Ex)</text>
+</g>
+
+<g transform="translate(350, 240)">
+    <rect x="-70" y="0" width="140" height="50" class="node" style="stroke: #22c55e"/>
+    <text x="0" y="20" class="node-text">RAG</text>
+    <text x="0" y="40" class="node-text" style="font-size: 10px">(Instr + Ex + Know)</text>
+</g>
+
+<g transform="translate(550, 240)">
+    <rect x="-70" y="0" width="140" height="50" class="node" style="stroke: #22c55e"/>
+    <text x="0" y="20" class="node-text">Personal</text>
+    <text x="0" y="40" class="node-text" style="font-size: 10px">(Instr + Ex + Mem)</text>
+</g>
+
+<!-- Convergence -->
+<g transform="translate(350, 340)">
+    <rect x="-80" y="0" width="160" height="40" class="node accent-red"/>
+    <text x="0" y="20" class="node-text">Input Guardrails</text>
+</g>
+
+<g transform="translate(350, 420)">
+    <rect x="-80" y="0" width="160" height="40" class="node" style="stroke: #eab308"/>
+    <text x="0" y="20" class="node-text">Agent / Model</text>
+</g>
+
+<g transform="translate(350, 500)">
+    <rect x="-80" y="0" width="160" height="40" class="node accent-red"/>
+    <text x="0" y="20" class="node-text">Output Guardrails</text>
+</g>
+
+<g transform="translate(350, 570)">
+    <rect x="-60" y="0" width="120" height="40" class="node" style="stroke: #3b82f6"/>
+    <text x="0" y="20" class="node-text">Response</text>
+</g>
+
+<!-- Edges -->
+<path d="M350 100 L350 140" class="edge"/>
+
+<!-- Router Fan Out -->
+<path d="M350 200 L150 240" class="edge"/>
+<path d="M350 200 L350 240" class="edge"/>
+<path d="M350 200 L550 240" class="edge"/>
+
+<!-- Fan In -->
+<path d="M150 290 L330 340" class="edge"/>
+<path d="M350 290 L350 340" class="edge"/>
+<path d="M550 290 L370 340" class="edge"/>
+
+<path d="M350 380 L350 420" class="edge"/>
+<path d="M350 460 L350 500" class="edge"/>
+<path d="M350 540 L350 570" class="edge"/>
+
+</svg>

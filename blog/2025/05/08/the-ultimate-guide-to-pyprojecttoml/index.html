@@ -1,0 +1,955 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A practical, modern guide to using pyproject.toml for Python projects—covering packaging, dependencies, tool configuration, and workflows in one file.">
+      
+      
+        <meta name="author" content="Viacheslav Dubrov">
+      
+      
+        <link rel="canonical" href="https://slavadubrov.github.io/blog/2025/05/08/the-ultimate-guide-to-pyprojecttoml/">
+      
+      
+        <link rel="prev" href="../../07/mastering-zsh-startup-zprofile-vs-zshrc-/">
+      
+      
+        <link rel="next" href="../../10/quick-guide-on-running-llms-locally-on-macos/">
+      
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS feed" href="../../../../../feed_rss_created.xml">
+        <link rel="alternate" type="application/rss+xml" title="RSS feed of updated content" href="../../../../../feed_rss_updated.xml">
+      
+      <link rel="icon" href="../../../../../assets/favicon-eoc.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
+    
+    
+      
+        <title>The Ultimate Guide to `pyproject.toml` - Edge of Context: Tips & Tricks in Machine Learning</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.84d31ad4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/brand.css">
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#the-ultimate-guide-to-pyprojecttoml" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="Edge of Context: Tips &amp; Tricks in Machine Learning" class="md-header__button md-logo" aria-label="Edge of Context: Tips & Tricks in Machine Learning" data-md-component="logo">
+      
+  <img src="../../../../../assets/logo-eoc.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Edge of Context: Tips & Tricks in Machine Learning
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              The Ultimate Guide to `pyproject.toml`
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../../topics/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Topics
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="../../../../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Blog
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="Edge of Context: Tips &amp; Tricks in Machine Learning" class="md-nav__button md-logo" aria-label="Edge of Context: Tips & Tricks in Machine Learning" data-md-component="logo">
+      
+  <img src="../../../../../assets/logo-eoc.svg" alt="logo">
+
+    </a>
+    Edge of Context: Tips & Tricks in Machine Learning
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../topics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Topics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../../../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Blog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tldr" class="md-nav__link">
+    <span class="md-ellipsis">
+      TL;DR
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-pyprojecttoml" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is pyproject.toml?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-should-you-care" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why should you care?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Why should you care?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-one-file-to-rule-them-all" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. One file to rule them all
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-backend-agnostic-builds" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Backend-agnostic builds
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-universal-tool-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Universal tool configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#anatomy-of-a-pyprojecttoml" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anatomy of a pyproject.toml
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Anatomy of a pyproject.toml">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#breaking-it-down" class="md-nav__link">
+    <span class="md-ellipsis">
+      Breaking it down
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Breaking it down">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#build-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      [build-system]
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#project" class="md-nav__link">
+    <span class="md-ellipsis">
+      [project]
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tool" class="md-nav__link">
+    <span class="md-ellipsis">
+      [tool.*]
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#does-it-replace-requirementstxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      Does it replace requirements.txt?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choosing-a-build-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Choosing a Build Backend
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migrating-an-existing-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      Migrating an existing project
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Features
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cli-entry-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      CLI Entry Points
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#workspaces-monorepos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Workspaces (Monorepos)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#typical-workflows-with-uv" class="md-nav__link">
+    <span class="md-ellipsis">
+      Typical Workflows with uv
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Typical Workflows with uv">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#starting-a-new-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      Starting a new project
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running scripts
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Practices
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2025-05-08 00:00:00+00:00" class="md-ellipsis">May 8, 2025</time>
+                      </div>
+                    </li>
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15 13h1.5v2.82l2.44 1.41-.75 1.3L15 16.69zm4-5H5v11h4.67c-.43-.91-.67-1.93-.67-3a7 7 0 0 1 7-7c1.07 0 2.09.24 3 .67zM5 21a2 2 0 0 1-2-2V5c0-1.11.89-2 2-2h1V1h2v2h8V1h2v2h1a2 2 0 0 1 2 2v6.1c1.24 1.26 2 2.99 2 4.9a7 7 0 0 1-7 7c-1.91 0-3.64-.76-4.9-2zm11-9.85A4.85 4.85 0 0 0 11.15 16c0 2.68 2.17 4.85 4.85 4.85A4.85 4.85 0 0 0 20.85 16c0-2.68-2.17-4.85-4.85-4.85"/></svg>
+                          <time datetime="2025-05-08 00:00:00+00:00" class="md-ellipsis">May 8, 2025</time>
+                        </div>
+                      </li>
+                    
+                    
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+  <nav class="md-tags" >
+    
+      
+      
+      
+        <a href="../../../../../topics/#tag:best-practices" class="md-tag">best-practices</a>
+      
+    
+      
+      
+      
+        <a href="../../../../../topics/#tag:guide" class="md-tag">guide</a>
+      
+    
+      
+      
+      
+        <a href="../../../../../topics/#tag:python" class="md-tag">python</a>
+      
+    
+  </nav>
+
+
+
+<h1 id="the-ultimate-guide-to-pyprojecttoml">The Ultimate Guide to <code>pyproject.toml</code></h1>
+<h2 id="tldr">TL;DR</h2>
+<p>Think of <code>pyproject.toml</code> as the <strong><code>package.json</code> for Python</strong>. It's a single configuration file that holds your project's metadata, dependencies, and tool settings. Whether you use <code>.venv</code>, <code>pyenv</code>, or <code>uv</code>, this one file simplifies development and makes collaboration smoother.</p>
+<!-- more -->
+
+<h2 id="what-is-pyprojecttoml">What is <code>pyproject.toml</code>?</h2>
+<p><code>pyproject.toml</code> is a standardized configuration file that lives at the root of your Python project. It uses the TOML format (think INI files but better) and is backed by official Python Enhancement Proposals (PEPs).</p>
+<p>The file evolved in two key stages:</p>
+<ul>
+<li><strong><a href="https://peps.python.org/pep-0518/">PEP 518</a></strong> (2016) introduced the <code>[build-system]</code> table so build tools could declare their requirements in a standard way.</li>
+<li><strong><a href="https://peps.python.org/pep-0621/">PEP 621</a></strong> (2020) added the <code>[project]</code> table for core package metadata—name, version, dependencies, and more.</li>
+</ul>
+<p>Today, most Python developer tools (Black, isort, pytest, Ruff, mypy) read their configuration from <code>[tool.*]</code> sections in this file, making it the central hub for your entire project setup.</p>
+<p><img alt="Structure" src="../../../../assets/2025-05-08-guide-pyproject-toml/pyproject_structure.svg" /></p>
+<h2 id="why-should-you-care">Why should you care?</h2>
+<h3 id="1-one-file-to-rule-them-all">1. One file to rule them all</h3>
+<p>Before <code>pyproject.toml</code>, you'd juggle <code>setup.py</code>, <code>setup.cfg</code>, <code>requirements.txt</code>, <code>MANIFEST.in</code>, and various dotfiles (<code>.flake8</code>, <code>.coveragerc</code>). Now everything lives in one place.</p>
+<h3 id="2-backend-agnostic-builds">2. Backend-agnostic builds</h3>
+<p>When you run <code>pip install .</code>, pip reads <code>pyproject.toml</code> and automatically installs whatever build tools your project needs (setuptools, flit, hatchling, etc.). You are no longer tied to <code>setuptools</code>.</p>
+<h3 id="3-universal-tool-configuration">3. Universal tool configuration</h3>
+<p>Linters, formatters, test runners, and type checkers all know to look here for their settings. Your IDE, CI pipeline, and teammates all read from the same source of truth.</p>
+<p><img alt="Tool Ecosystem" src="../../../../assets/2025-05-08-guide-pyproject-toml/tool_ecosystem.svg" /></p>
+<h2 id="anatomy-of-a-pyprojecttoml">Anatomy of a <code>pyproject.toml</code></h2>
+<p>Here's what a typical file looks like with the three main sections:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 1. Build system - tells pip/build how to package your project</span>
+<span class="k">[build-system]</span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;hatchling&quot;</span><span class="p">]</span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;hatchling.build&quot;</span>
+
+<span class="c1"># 2. Project metadata and dependencies</span>
+<span class="k">[project]</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;awesome-app&quot;</span>
+<span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;0.1.0&quot;</span>
+<span class="n">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Short demo of pyproject.toml&quot;</span>
+<span class="n">readme</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;README.md&quot;</span>
+<span class="n">requires-python</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&gt;=3.12&quot;</span>
+<span class="n">dependencies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="s2">&quot;fastapi&gt;=0.111&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;uvicorn[standard]&gt;=0.30&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1"># Expose CLI commands</span>
+<span class="k">[project.scripts]</span>
+<span class="n">awesome-cli</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;awesome_app.cli:main&quot;</span>
+
+<span class="c1"># Optional dependencies (e.g., for development)</span>
+<span class="k">[project.optional-dependencies]</span>
+<span class="n">dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;pytest&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;ruff&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;mypy&quot;</span><span class="p">]</span>
+
+<span class="c1"># 3. Tool configuration</span>
+<span class="k">[tool.ruff]</span>
+<span class="n">line-length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span>
+<span class="n">target-version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;py312&quot;</span>
+
+<span class="k">[tool.pytest.ini_options]</span>
+<span class="n">addopts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;-ra -q&quot;</span>
+<span class="n">testpaths</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;tests&quot;</span><span class="p">]</span>
+</code></pre></div>
+<h3 id="breaking-it-down">Breaking it down</h3>
+<h4 id="build-system"><code>[build-system]</code></h4>
+<p>Required if you want to package/distribute your project. Tells pip and build tools (like <code>python -m build</code>) which backend to use.</p>
+<h4 id="project"><code>[project]</code></h4>
+<p>Your package metadata. This is where dependencies live instead of <code>requirements.txt</code>.</p>
+<ul>
+<li><strong><code>dependencies</code></strong>: The runtime requirements for your package.</li>
+<li><strong><code>optional-dependencies</code></strong>: Groups of extra dependencies (e.g., <code>dev</code>, <code>test</code>, <code>docs</code>).</li>
+<li><strong><code>scripts</code></strong>: Creates executable commands. In the example above, installing the package creates an <code>awesome-cli</code> command that runs the <code>main</code> function in <code>awesome_app/cli.py</code>.</li>
+</ul>
+<h4 id="tool"><code>[tool.*]</code></h4>
+<p>Configuration for any tool that supports it. Each tool gets its own namespace (e.g., <code>[tool.pytest.ini_options]</code>, <code>[tool.mypy]</code>).</p>
+<h2 id="does-it-replace-requirementstxt">Does it replace <code>requirements.txt</code>?</h2>
+<p><strong>In modern workflows, yes.</strong> Tools like <a href="https://python-poetry.org/">Poetry</a>, <a href="https://pdm-project.org/">PDM</a>, <a href="https://hatch.pypa.io/">Hatch</a>, and <a href="https://github.com/astral-sh/uv">uv</a> store dependencies directly in the <code>[project]</code> section and generate lockfiles for reproducibility.</p>
+<p>You only need <code>requirements.txt</code> if:</p>
+<ul>
+<li>You're working with legacy deployment systems that expect it.</li>
+<li>You have simple CI scripts that haven't been updated.</li>
+</ul>
+<p>Most modern tools can export a <code>requirements.txt</code> from your <code>pyproject.toml</code> when needed:</p>
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span><span class="nb">export</span><span class="w"> </span>&gt;<span class="w"> </span>requirements.txt
+</code></pre></div>
+<h2 id="choosing-a-build-backend">Choosing a Build Backend</h2>
+<p>One of the confusing parts of <code>pyproject.toml</code> is choosing a build backend. Here is a quick comparison:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Backend</th>
+<th style="text-align: left;">Best For</th>
+<th style="text-align: left;">Pros</th>
+<th style="text-align: left;">Cons</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Hatchling</strong></td>
+<td style="text-align: left;">Modern standard</td>
+<td style="text-align: left;">Fast, extensible, supports plugins</td>
+<td style="text-align: left;">Newer, less legacy support</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Flit</strong></td>
+<td style="text-align: left;">Simple packages</td>
+<td style="text-align: left;">Extremely simple, zero config</td>
+<td style="text-align: left;">Not for complex builds (C extensions)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Setuptools</strong></td>
+<td style="text-align: left;">Legacy / Complex</td>
+<td style="text-align: left;">Supports everything (C extensions, etc.)</td>
+<td style="text-align: left;">Slower, complex configuration</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Poetry</strong></td>
+<td style="text-align: left;">Poetry users</td>
+<td style="text-align: left;">Integrated with Poetry ecosystem</td>
+<td style="text-align: left;">Locked into Poetry workflow</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Recommendation:</strong> Use <strong>Hatchling</strong> for new pure-Python projects. It's the default for <code>uv</code> and is becoming the industry standard.</p>
+<h2 id="migrating-an-existing-project">Migrating an existing project</h2>
+<p>If you have a legacy Python project, here's how to modernize it:</p>
+<p><img alt="Migration Flow" src="../../../../assets/2025-05-08-guide-pyproject-toml/migration_flow.svg" /></p>
+<p><strong>Step-by-step:</strong></p>
+<ol>
+<li><strong>Add <code>[build-system]</code></strong> - Start with setuptools if you're not sure: <code>requires = ["setuptools&gt;=61", "wheel"]</code>.</li>
+<li><strong>Move to <code>[project]</code></strong> - Transfer name, version, dependencies from <code>setup.py</code> or <code>setup.cfg</code>.</li>
+<li><strong>Convert dev dependencies</strong> - Put them in <code>[project.optional-dependencies].dev</code>.</li>
+<li><strong>Configure tools</strong> - Add <code>[tool.*]</code> sections for Black, pytest, mypy, etc.</li>
+<li><strong>Handle <code>requirements.txt</code></strong> - Either drop it or generate it from lockfile for legacy systems.</li>
+</ol>
+<p>After migration, you can delete <code>setup.py</code>, <code>setup.cfg</code>, and most config dotfiles.</p>
+<h2 id="advanced-features">Advanced Features</h2>
+<h3 id="cli-entry-points">CLI Entry Points</h3>
+<p>Instead of the old <code>console_scripts</code> in <code>setup.py</code>, use <code>[project.scripts]</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="k">[project.scripts]</span>
+<span class="n">my-tool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;my_package.main:run&quot;</span>
+</code></pre></div>
+<p>When a user installs your package, they can type <code>my-tool</code> in their terminal.</p>
+<h3 id="workspaces-monorepos">Workspaces (Monorepos)</h3>
+<p>Tools like <code>uv</code> and <code>hatch</code> support workspaces, allowing you to manage multiple packages in a single repo.</p>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.uv.workspace]</span>
+<span class="n">members</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;packages/*&quot;</span><span class="p">]</span>
+</code></pre></div>
+<p>This allows you to develop multiple interdependent packages and install them all into a single virtual environment for testing.</p>
+<h2 id="typical-workflows-with-uv">Typical Workflows with <code>uv</code></h2>
+<h3 id="starting-a-new-project">Starting a new project</h3>
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>init<span class="w"> </span>my_app<span class="w">          </span><span class="c1"># creates folder with pyproject.toml and .venv</span>
+<span class="nb">cd</span><span class="w"> </span>my_app
+uv<span class="w"> </span>add<span class="w"> </span>requests<span class="w"> </span>fastapi<span class="w"> </span><span class="c1"># adds to [project.dependencies] and installs</span>
+uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w">           </span><span class="c1"># runs tests in the venv</span>
+</code></pre></div>
+<h3 id="running-scripts">Running scripts</h3>
+<p>You can define scripts in <code>pyproject.toml</code> (if using a task runner like <code>poe</code> or <code>hatch</code>) or just use <code>uv run</code>:</p>
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>main.py
+</code></pre></div>
+<h2 id="best-practices">Best Practices</h2>
+<ol>
+<li><strong>Don't pin exact versions in libraries</strong>: Use ranges (e.g., <code>requests&gt;=2.30</code>) so your library doesn't conflict with others.</li>
+<li><strong>Do pin versions in applications</strong>: Use a lockfile (<code>uv.lock</code> or <code>poetry.lock</code>) to ensure reproducible builds.</li>
+<li><strong>Group dev dependencies</strong>: Keep testing, linting, and docs dependencies in separate optional groups (e.g., <code>dev</code>, <code>test</code>, <code>docs</code>).</li>
+<li><strong>Keep it clean</strong>: Don't dump every possible config option in there. Stick to project-wide defaults.</li>
+</ol>
+<hr />
+<p><strong>Bottom line:</strong> <code>pyproject.toml</code> brings Python's project setup into the modern era. Whether you're packaging a library, managing dependencies, or configuring tools, this one file is your command center. Start with <code>uv</code> for the smoothest experience, or integrate it into your existing workflow gradually.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="/feed_rss_created.xml" target="_blank" rel="noopener" title="RSS" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20 5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27zm0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.path", "navigation.indexes", "navigation.toc", "navigation.toc.sticky", "navigation.toc.maxdepth", "navigation.toc.title", "navigation.toc.collapse", "navigation.toc.collapse_empty_groups", "navigation.toc.collapse_single_children", "content.code.copy"], "search": "../../../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+      
+        <script src="../../../../../javascripts/mermaid-init.js"></script>
+      
+    
+  </body>
+</html>

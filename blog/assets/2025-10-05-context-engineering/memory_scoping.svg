@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 500">
+
+<style>
+    .bg { fill: #1e1e1e; }
+    .node { fill: #2d2d2d; stroke: #3b82f6; stroke-width: 2; rx: 8; ry: 8; }
+    .node-text { fill: #e2e8f0; font-family: sans-serif; font-size: 14px; text-anchor: middle; dominant-baseline: middle; }
+    .edge { stroke: #64748b; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+    .label { fill: #94a3b8; font-family: sans-serif; font-size: 12px; text-anchor: middle; background-color: #1e1e1e; }
+    .title { fill: #f8fafc; font-family: sans-serif; font-size: 18px; font-weight: bold; text-anchor: middle; }
+    .group-label { fill: #94a3b8; font-family: sans-serif; font-size: 14px; font-weight: bold; text-anchor: start; }
+    .accent-green { stroke: #22c55e; }
+    .accent-red { stroke: #ef4444; }
+    .accent-yellow { stroke: #eab308; }
+    .accent-purple { stroke: #a855f7; }
+    .accent-orange { stroke: #f97316; }
+</style>
+<defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#64748b" />
+    </marker>
+</defs>
+
+<rect width="100%" height="100%" class="bg"/>
+
+<text x="300" y="30" class="title">Memory Scoping</text>
+
+<!-- Long Term -->
+<g transform="translate(50, 80)">
+    <rect x="0" y="0" width="500" height="120" class="node" style="stroke: #a855f7; fill: #2e1a36; stroke-dasharray: 5 5"/>
+    <text x="250" y="20" class="node-text" style="fill: #d8b4fe">Long-Term Memory Store</text>
+
+    <g transform="translate(30, 40)">
+        <rect x="0" y="0" width="120" height="60" class="node" style="stroke: #a855f7"/>
+        <text x="60" y="30" class="node-text">User Profile</text>
+    </g>
+    <g transform="translate(190, 40)">
+        <rect x="0" y="0" width="120" height="60" class="node" style="stroke: #a855f7"/>
+        <text x="60" y="30" class="node-text">Past Events</text>
+    </g>
+    <g transform="translate(350, 40)">
+        <rect x="0" y="0" width="120" height="60" class="node" style="stroke: #a855f7"/>
+        <text x="60" y="30" class="node-text">Preferences</text>
+    </g>
+</g>
+
+<!-- Filter -->
+<g transform="translate(200, 240)">
+    <polygon points="0,0 200,0 150,60 50,60" class="node" style="stroke: #eab308; fill: #423208"/>
+    <text x="100" y="30" class="node-text" style="fill: #fde047">Relevance Filter</text>
+</g>
+
+<!-- Short Term -->
+<g transform="translate(200, 340)">
+    <rect x="0" y="0" width="200" height="80" class="node" style="stroke: #22c55e; fill: #143320"/>
+    <text x="100" y="30" class="node-text" style="fill: #86efac">Context Window</text>
+    <text x="100" y="55" class="node-text" style="font-size: 12px; fill: #86efac">Relevant Memories Only</text>
+</g>
+
+<!-- Edges -->
+<path d="M300 200 L300 240" class="edge"/>
+<path d="M300 300 L300 340" class="edge"/>
+
+</svg>

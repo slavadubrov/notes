@@ -1,0 +1,1041 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A practical guide to navigating open-source LLM variants and file formats, covering model types (Base, Instruct, Distill, QAT, MoE), quantization formats (GGUF, GPTQ, AWQ), and hardware-specific recommendations for optimal performance.">
+      
+      
+        <meta name="author" content="Viacheslav Dubrov">
+      
+      
+        <link rel="canonical" href="https://slavadubrov.github.io/blog/2025/05/11/choosing-the-right-open-source-llm-variant--file-format/">
+      
+      
+        <link rel="prev" href="../../10/quick-guide-on-local-stable-diffusion-toolkits-for-macos/">
+      
+      
+        <link rel="next" href="../../../06/10/building-a-custom-featurestorelite-mcp-server-using-uv/">
+      
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS feed" href="../../../../../feed_rss_created.xml">
+        <link rel="alternate" type="application/rss+xml" title="RSS feed of updated content" href="../../../../../feed_rss_updated.xml">
+      
+      <link rel="icon" href="../../../../../assets/favicon-eoc.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
+    
+    
+      
+        <title>Choosing the Right Open-Source LLM Variant & File Format - Edge of Context: Tips & Tricks in Machine Learning</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.84d31ad4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/brand.css">
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#choosing-the-right-open-source-llm-variant-file-format" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="Edge of Context: Tips &amp; Tricks in Machine Learning" class="md-header__button md-logo" aria-label="Edge of Context: Tips & Tricks in Machine Learning" data-md-component="logo">
+      
+  <img src="../../../../../assets/logo-eoc.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Edge of Context: Tips & Tricks in Machine Learning
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Choosing the Right Open-Source LLM Variant & File Format
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../../topics/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Topics
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="../../../../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Blog
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="Edge of Context: Tips &amp; Tricks in Machine Learning" class="md-nav__button md-logo" aria-label="Edge of Context: Tips & Tricks in Machine Learning" data-md-component="logo">
+      
+  <img src="../../../../../assets/logo-eoc.svg" alt="logo">
+
+    </a>
+    Edge of Context: Tips & Tricks in Machine Learning
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../topics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Topics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../../../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Blog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-do-open-source-llms-have-so-many-confusing-names" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why do open-source LLMs have so many confusing names?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#model-variants-explained-the-recipe" class="md-nav__link">
+    <span class="md-ellipsis">
+      Model variants explained (the recipe)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Model variants explained (the recipe)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#base-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Base models
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instruct-chat-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Instruct / Chat models
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reasoning-cot-models-new" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reasoning / CoT Models (New!)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#distilled-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Distilled models
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#moe-mixture-of-experts-a3b-a22b-etc" class="md-nav__link">
+    <span class="md-ellipsis">
+      MoE (Mixture-of-Experts): A3B, A22B, etc.
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file-formats-explained-the-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      File formats explained (the container)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="File formats explained (the container)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#quantization-101-why-do-we-shrink-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quantization 101: Why do we shrink models?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gguf-gguf" class="md-nav__link">
+    <span class="md-ellipsis">
+      GGUF (.gguf)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GGUF (.gguf)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decoding-gguf-names-q3_k_m-q5_k_m-etc" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decoding GGUF Names (Q3_K_M, Q5_K_M, etc.)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gptq-safetensors-configjson" class="md-nav__link">
+    <span class="md-ellipsis">
+      GPTQ (.safetensors + config.json)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#awq-safetensors" class="md-nav__link">
+    <span class="md-ellipsis">
+      AWQ (.safetensors)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pytorch-safetensors-fp16bf16" class="md-nav__link">
+    <span class="md-ellipsis">
+      PyTorch / Safetensors (FP16/BF16)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-actually-run-these-serving-engines" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to actually run these? (Serving Engines)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#putting-it-all-together-a-decision-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      Putting it all together: a decision framework
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Putting it all together: a decision framework">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#quick-recommendations-by-scenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick recommendations by scenario
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-pitfalls-and-misconceptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common pitfalls and misconceptions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common pitfalls and misconceptions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#all-4-bit-models-are-the-same-quality" class="md-nav__link">
+    <span class="md-ellipsis">
+      "All 4-bit models are the same quality"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#moe-models-work-with-any-inference-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      "MoE models work with any inference engine"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#distilled-models-are-just-smaller-versions" class="md-nav__link">
+    <span class="md-ellipsis">
+      "Distilled models are just smaller versions"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#i-should-quantize-my-qat-model-further-to-save-space" class="md-nav__link">
+    <span class="md-ellipsis">
+      "I should quantize my QAT model further to save space"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bigger-is-always-better" class="md-nav__link">
+    <span class="md-ellipsis">
+      "Bigger is always better"
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tldr-just-tell-me-what-to-download" class="md-nav__link">
+    <span class="md-ellipsis">
+      TL;DR - Just tell me what to download
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2025-05-11 00:00:00+00:00" class="md-ellipsis">May 11, 2025</time>
+                      </div>
+                    </li>
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15 13h1.5v2.82l2.44 1.41-.75 1.3L15 16.69zm4-5H5v11h4.67c-.43-.91-.67-1.93-.67-3a7 7 0 0 1 7-7c1.07 0 2.09.24 3 .67zM5 21a2 2 0 0 1-2-2V5c0-1.11.89-2 2-2h1V1h2v2h8V1h2v2h1a2 2 0 0 1 2 2v6.1c1.24 1.26 2 2.99 2 4.9a7 7 0 0 1-7 7c-1.91 0-3.64-.76-4.9-2zm11-9.85A4.85 4.85 0 0 0 11.15 16c0 2.68 2.17 4.85 4.85 4.85A4.85 4.85 0 0 0 20.85 16c0-2.68-2.17-4.85-4.85-4.85"/></svg>
+                          <time datetime="2025-11-27 00:00:00+00:00" class="md-ellipsis">November 27, 2025</time>
+                        </div>
+                      </li>
+                    
+                    
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+  <nav class="md-tags" >
+    
+      
+      
+      
+        <a href="../../../../../topics/#tag:guide" class="md-tag">guide</a>
+      
+    
+      
+      
+      
+        <a href="../../../../../topics/#tag:llm" class="md-tag">llm</a>
+      
+    
+  </nav>
+
+
+
+<h1 id="choosing-the-right-open-source-llm-variant-file-format">Choosing the Right Open-Source LLM Variant &amp; File Format</h1>
+<hr />
+<h2 id="why-do-open-source-llms-have-so-many-confusing-names">Why do open-source LLMs have so many confusing names?</h2>
+<p>You've probably seen model names like <code>Llama-3.1-8B-Instruct.Q4_K_M.gguf</code> or <code>Mistral-7B-v0.3-A3B.awq</code> and wondered what all those suffixes mean. It looks like a secret code, but the short answer is: <strong>they tell you two critical things.</strong></p>
+<p>Open-source LLMs vary along <strong>two independent dimensions</strong>:</p>
+<ol>
+<li><strong>Model variant</strong> – the suffix in the name (<code>-Instruct</code>, <code>-Distill</code>, <code>-A3B</code>, etc.) describes <em>how</em> the model was trained and <em>what</em> it's optimized for.</li>
+<li><strong>File format</strong> – the extension (<code>.gguf</code>, <code>.gptq</code>, <code>.awq</code>, etc.) describes <em>how</em> the weights are stored and <em>where</em> they run best (CPU, GPU, mobile, etc.).</li>
+</ol>
+<p>Think of it like this: the <strong>model variant is the recipe</strong>, and the <strong>file format is the container</strong>. You can put the same soup (recipe) into a thermos, a bowl, or a takeout box (container) depending on where you plan to eat it.</p>
+<p><img alt="LLM Variant vs Format" src="../../../../assets/2025-05-11-llm-variant-guide/llm_variant_vs_format.svg" /></p>
+<p>Understanding both dimensions helps you avoid downloading 20 GB of the wrong model at midnight and then spending hours debugging CUDA errors.</p>
+<!-- more -->
+
+<hr />
+<h2 id="model-variants-explained-the-recipe">Model variants explained (the recipe)</h2>
+<p>This is about the <em>brain</em> of the model. How was it taught?</p>
+<h3 id="base-models">Base models</h3>
+<p><strong>What it is:</strong> The raw, pre-trained model straight from the training run. Think of it as the unfiltered brain that learned language patterns from massive text datasets (the entire internet) but hasn't been taught to follow instructions. It just predicts the next word.</p>
+<p><strong>When to use it:</strong></p>
+<ul>
+<li>You're planning to <strong>fine-tune</strong> it for your specific domain.</li>
+<li>You're doing research and need the "pure" foundation.</li>
+<li>You want maximum creative freedom (no safety guardrails).</li>
+</ul>
+<p><strong>Trade-offs:</strong> Won't reliably follow instructions. If you ask "What is the capital of France?", it might reply "and what is the capital of Germany?" because it thinks it's completing a list of questions.</p>
+<h3 id="instruct-chat-models">Instruct / Chat models</h3>
+<p><strong>What it is:</strong> A base model that went through additional training (Supervised Fine-Tuning + RLHF) to understand and follow human instructions. This is what most people actually want when they say "I want an LLM."</p>
+<p><strong>When to use it:</strong></p>
+<ul>
+<li>Building chatbots, AI agents, or RAG applications.</li>
+<li>Function calling and tool use.</li>
+<li>Day-to-day coding assistance.</li>
+<li><strong>95% of production use cases.</strong></li>
+</ul>
+<p><strong>Trade-offs:</strong> Slightly larger and slower than base models due to the extra training layers. May be less "creative" due to alignment training that makes it more predictable and helpful.</p>
+<h3 id="reasoning-cot-models-new">Reasoning / CoT Models (New!)</h3>
+<p><strong>What it is:</strong> A new breed of models (like DeepSeek-R1 or o1-derivatives) trained with "Chain of Thought" (CoT) reinforcement learning. They "think" before they speak, generating internal reasoning tokens to solve complex logic, math, or coding problems before outputting the final answer.</p>
+<p><strong>When to use it:</strong></p>
+<ul>
+<li>Complex coding tasks and debugging.</li>
+<li>Math problems and logic puzzles.</li>
+<li>When you need the model to double-check its work and avoid hallucinations.</li>
+</ul>
+<p><strong>Trade-offs:</strong> <strong>Slower inference</strong>. They generate many "thought" tokens that you might not see but still have to wait for. They can also be overly verbose for simple "hello world" tasks.</p>
+<h3 id="distilled-models">Distilled models</h3>
+<p><strong>What it is:</strong> A smaller "student" model trained to mimic the behavior of a larger "teacher" model. Think of it as compressed knowledge—you get 70-80% of the performance at 30-50% of the size.</p>
+<p><strong>When to use it:</strong></p>
+<ul>
+<li>Mobile or edge devices with limited resources.</li>
+<li>Cost-sensitive SaaS where every millisecond counts.</li>
+<li>High-throughput scenarios where you need to serve many requests.</li>
+</ul>
+<p><strong>Trade-offs:</strong> Some loss in complex reasoning ability, but excellent efficiency. The token-per-watt ratio is hard to beat.</p>
+<h3 id="moe-mixture-of-experts-a3b-a22b-etc">MoE (Mixture-of-Experts): A3B, A22B, etc.</h3>
+<p><strong>What it is:</strong> A clever architecture where the model has many "expert" sub-networks, but only activates a subset for each token. "A3B" means "3 billion parameters active" out of a much larger total (often 30B+).</p>
+<p><strong>When to use it:</strong></p>
+<ul>
+<li>You want "big model" smarts but only have 12-24 GB VRAM.</li>
+<li>You need the reasoning power of a 30B model but with 7B inference costs.</li>
+<li>You're running locally and want the best performance-per-memory ratio.</li>
+</ul>
+<p><strong>Trade-offs:</strong> Takes more disk space (you're storing all the experts). Not every inference framework supports MoE routing yet—check compatibility first.</p>
+<p><img alt="Choosing Model Variant" src="../../../../assets/2025-05-11-llm-variant-guide/choose_model_variant.svg" /></p>
+<blockquote>
+<p><strong>Rule of thumb:</strong></p>
+<ul>
+<li>Start with an <strong>Instruct</strong> model—it's what most people need.</li>
+<li>Hit memory or latency limits? Try a <strong>Distilled</strong> or <strong>MoE</strong> variant.</li>
+<li>Need to solve a complex riddle? Try a <strong>Reasoning</strong> model.</li>
+</ul>
+</blockquote>
+<hr />
+<h2 id="file-formats-explained-the-container">File formats explained (the container)</h2>
+<p>Now that you know <em>what</em> kind of model you want, you need to pick <em>how</em> it's packaged. File formats determine where your model runs best and how much memory it needs.</p>
+<h3 id="quantization-101-why-do-we-shrink-models">Quantization 101: Why do we shrink models?</h3>
+<p>Before we talk formats, let's talk <strong>Quantization</strong>.
+Standard models use 16-bit numbers (FP16) for every weight. That's precise but huge.
+Quantization reduces these to 8-bit, 4-bit, or even 2-bit numbers.</p>
+<ul>
+<li><strong>FP16</strong>: 2 bytes per parameter. (13B model ≈ 26 GB)</li>
+<li><strong>4-bit</strong>: 0.5 bytes per parameter. (13B model ≈ 6.5 GB)</li>
+</ul>
+<p>You lose a tiny bit of "intelligence" but gain massive speed and memory savings.</p>
+<h3 id="gguf-gguf">GGUF (<code>.gguf</code>)</h3>
+<p><strong>What it is:</strong> The successor to GGML and now the <strong>de-facto standard for local inference</strong>. A single file that contains the model weights, metadata, and even the prompt template.</p>
+<p><strong>Best for:</strong></p>
+<ul>
+<li><strong>Apple Silicon (M1/M2/M3)</strong>: It works natively with Metal acceleration.</li>
+<li><strong>CPU Inference</strong>: If you don't have a dedicated GPU.</li>
+<li><strong>Easy Setup</strong>: Works with <code>llama.cpp</code>, Ollama, and LM Studio.</li>
+</ul>
+<p><strong>Why it's great:</strong> One file, works everywhere. Supports multiple quantization levels.</p>
+<h4 id="decoding-gguf-names-q3_k_m-q5_k_m-etc">Decoding GGUF Names (Q3_K_M, Q5_K_M, etc.)</h4>
+<p>You'll often see a long list of files like <code>Q3_K_M</code>, <code>Q4_K_S</code>, <code>Q5_K_M</code>. These aren't random; they are specific "K-quant" formats.</p>
+<p><strong>How to read <code>Q3_K_M</code>:</strong></p>
+<ul>
+<li><strong>Q3</strong>: Average <strong>3-bit</strong> quantization for the weights.</li>
+<li><strong>K</strong>: Uses the <strong>K-quant</strong> scheme (a newer, smarter quantization method that uses non-uniform precision).</li>
+<li><strong>M</strong>: <strong>Medium</strong> block size. This refers to the internal layout (<code>S</code> = Small, <code>L</code> = Large).</li>
+</ul>
+<p><strong>Which one should you pick?</strong></p>
+<ul>
+<li><strong>Q3_K_M (The "Budget" Choice)</strong>: Use when you are tight on memory. It has a noticeable quality drop but allows you to run larger models on weaker hardware.</li>
+<li><strong>Q4_K_M (The "Standard")</strong>: The sweet spot. Best balance of speed, size, and perplexity. Indistinguishable from uncompressed for most tasks.</li>
+<li><strong>Q5_K_M (The "Premium")</strong>: Use if you have VRAM to spare. Quality is very close to FP16 / Q8 while still being quite compact.</li>
+</ul>
+<blockquote>
+<p><strong>Pro Tip:</strong> It is often better to run a <strong>larger model at lower quantization</strong> (e.g., Llama-70B at Q3) than a <strong>smaller model at high quantization</strong> (e.g., Llama-8B at Q8). Intelligence scales with parameter count more than precision.</p>
+</blockquote>
+<h3 id="gptq-safetensors-configjson">GPTQ (<code>.safetensors</code> + <code>config.json</code>)</h3>
+<p><strong>What it is:</strong> Post-training quantization optimized specifically for <strong>Nvidia GPUs</strong>. It uses second-order information to minimize accuracy loss when compressing.</p>
+<p><strong>Best for:</strong></p>
+<ul>
+<li><strong>Production Servers</strong>: Running on Linux with Nvidia GPUs (CUDA).</li>
+<li><strong>High Throughput</strong>: Very fast inference at 4-bit.</li>
+<li><strong>ExLlamaV2</strong>: Can be run with the ExLlamaV2 loader for extreme speed.</li>
+</ul>
+<p><strong>Watch out for:</strong> Requires a GPU. Won't run efficiently on CPU or Mac.</p>
+<h3 id="awq-safetensors">AWQ (<code>.safetensors</code>)</h3>
+<p><strong>What it is:</strong> Activation-Aware Weight Quantization. It analyzes which weights matter most during inference and preserves their precision better than naive quantization.</p>
+<p><strong>Best for:</strong></p>
+<ul>
+<li><strong>Accuracy</strong>: Often matches FP16 accuracy more closely than GPTQ at 4-bit.</li>
+<li><strong>vLLM</strong>: Supported natively by the vLLM serving engine.</li>
+</ul>
+<p><strong>Why it's great:</strong> It's "smarter" quantization. If you care about squeezing every drop of quality out of a 4-bit model, AWQ is often the winner.</p>
+<h3 id="pytorch-safetensors-fp16bf16">PyTorch / Safetensors (FP16/BF16)</h3>
+<p><strong>What it is:</strong> Full-precision weights with no quantization. The original format most models are released in.</p>
+<p><strong>Best for:</strong></p>
+<ul>
+<li><strong>Cloud inference</strong> with powerful GPUs (A100, H100).</li>
+<li><strong>Fine-tuning</strong> and continued training.</li>
+<li>When accuracy is paramount and memory isn't a constraint.</li>
+</ul>
+<p><strong>Trade-offs:</strong> Largest memory and disk footprint. A 70B model in FP16 needs ~140 GB VRAM!</p>
+<p><img alt="Choosing File Format" src="../../../../assets/2025-05-11-llm-variant-guide/choose_file_format.svg" /></p>
+<blockquote>
+<p><strong>Tip:</strong> When in doubt, start with <strong>GGUF Q4_K_M</strong>. It's the Swiss Army knife of LLM formats—runs on 8GB VRAM GPUs, modern CPUs, and everything in between. You can always optimize later.</p>
+</blockquote>
+<hr />
+<h2 id="how-to-actually-run-these-serving-engines">How to actually run these? (Serving Engines)</h2>
+<p>You have the file. Now what? You need an engine to run it.</p>
+<ol>
+<li>
+<p><strong>Ollama</strong>: The easiest CLI tool.</p>
+<ul>
+<li><em>Uses</em>: GGUF.</li>
+<li><em>Good for</em>: Mac, Linux, Windows, Local development.</li>
+<li><em>Command</em>: <code>ollama run llama3</code></li>
+</ul>
+</li>
+<li>
+<p><strong>LM Studio</strong>: A beautiful GUI application.</p>
+<ul>
+<li><em>Uses</em>: GGUF.</li>
+<li><em>Good for</em>: Beginners, testing models visually, Mac/Windows.</li>
+</ul>
+</li>
+<li>
+<p><strong>vLLM</strong>: The production standard.</p>
+<ul>
+<li><em>Uses</em>: AWQ, GPTQ, Safetensors (FP16).</li>
+<li><em>Good for</em>: High-performance servers, deploying APIs, Linux/Docker.</li>
+<li><em>Note</em>: Doesn't support GGUF well (yet).</li>
+</ul>
+</li>
+<li>
+<p><strong>Llama.cpp</strong>: The engine behind Ollama.</p>
+<ul>
+<li><em>Uses</em>: GGUF.</li>
+<li><em>Good for</em>: Low-level integration, running on Raspberry Pis, Android, etc.</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2 id="putting-it-all-together-a-decision-framework">Putting it all together: a decision framework</h2>
+<p>Here's a practical flowchart to help you choose. Start with your constraints (hardware and use case), then pick the appropriate combination.</p>
+<p><img alt="LLM Decision Tree" src="../../../../assets/2025-05-11-llm-variant-guide/llm_decision_tree.svg" /></p>
+<h3 id="quick-recommendations-by-scenario">Quick recommendations by scenario</h3>
+<p><strong>Scenario 1: Building a chatbot on a MacBook Pro (16GB RAM)</strong></p>
+<ul>
+<li><strong>Model:</strong> Instruct (Llama-3-8B or Mistral-7B)</li>
+<li><strong>Format:</strong> GGUF Q4_K_M</li>
+<li><strong>Why:</strong> Runs smoothly on CPU/Metal, fits in memory, one-file simplicity.</li>
+</ul>
+<p><strong>Scenario 2: RAG system on a server with RTX 4090 (24GB VRAM)</strong></p>
+<ul>
+<li><strong>Model:</strong> Instruct or MoE (Mixtral 8x7B or Qwen-14B)</li>
+<li><strong>Format:</strong> EXL2 (via ExLlamaV2) or AWQ 4-bit</li>
+<li><strong>Why:</strong> Maximizes the 24GB VRAM. EXL2 is blazing fast on Nvidia cards.</li>
+</ul>
+<p><strong>Scenario 3: Fine-tuning for domain-specific use on cloud GPU</strong></p>
+<ul>
+<li><strong>Model:</strong> Base</li>
+<li><strong>Format:</strong> FP16 Safetensors</li>
+<li><strong>Why:</strong> You need full precision for training. Start with the unaligned base model.</li>
+</ul>
+<p><strong>Scenario 4: High-throughput API with cost constraints</strong></p>
+<ul>
+<li><strong>Model:</strong> Distilled (DeepSeek-Distill or similar)</li>
+<li><strong>Format:</strong> AWQ 4-bit running on vLLM</li>
+<li><strong>Why:</strong> vLLM + AWQ offers incredible throughput (tokens/sec) per dollar.</li>
+</ul>
+<hr />
+<h2 id="common-pitfalls-and-misconceptions">Common pitfalls and misconceptions</h2>
+<h3 id="all-4-bit-models-are-the-same-quality">"All 4-bit models are the same quality"</h3>
+<p><strong>Not true.</strong> A QAT 4-bit model (trained in 4-bit) often beats an 8-bit post-training quantized model. The <em>method</em> matters. AWQ typically preserves more accuracy than naive GPTQ.</p>
+<h3 id="moe-models-work-with-any-inference-engine">"MoE models work with any inference engine"</h3>
+<p><strong>Not yet.</strong> <code>llama.cpp</code> handles MoE routing well. Support in other engines varies. Always check compatibility before downloading a 50GB MoE model.</p>
+<h3 id="distilled-models-are-just-smaller-versions">"Distilled models are just smaller versions"</h3>
+<p><strong>Nope.</strong> A distilled 7B model can outperform a vanilla 13B model because it learned from a much larger teacher (often 70B+). It's compressed <em>knowledge</em>, not just compressed <em>parameters</em>.</p>
+<h3 id="i-should-quantize-my-qat-model-further-to-save-space">"I should quantize my QAT model further to save space"</h3>
+<p><strong>Don't.</strong> QAT models were already trained in low-bit precision. Quantizing them again usually degrades quality significantly. Use them as-is.</p>
+<h3 id="bigger-is-always-better">"Bigger is always better"</h3>
+<p><strong>Context matters.</strong> A well-tuned 8B Instruct model often outperforms a poorly-aligned 70B base model for specific tasks. Match the model variant to your use case—size isn't everything.</p>
+<hr />
+<h2 id="tldr-just-tell-me-what-to-download">TL;DR - Just tell me what to download</h2>
+<blockquote>
+<p><strong>If you just want something that works:</strong></p>
+<ol>
+<li>Download a <strong><code>&lt;model-name&gt;-Instruct.Q4_K_M.gguf</code></strong> file from Hugging Face.</li>
+<li>Run it with <strong>Ollama</strong> or <strong>LM Studio</strong>.</li>
+<li>If it's too slow → try a smaller model or Distilled variant.</li>
+<li>If you're out of memory → try a Q3_K_M quantization.</li>
+<li>If quality isn't good enough → move up to Q5_K_M or switch to a larger model.</li>
+</ol>
+<p>Start simple, optimize only when needed. The defaults are good enough for 90% of use cases.</p>
+</blockquote>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="/feed_rss_created.xml" target="_blank" rel="noopener" title="RSS" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20 5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27zm0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.path", "navigation.indexes", "navigation.toc", "navigation.toc.sticky", "navigation.toc.maxdepth", "navigation.toc.title", "navigation.toc.collapse", "navigation.toc.collapse_empty_groups", "navigation.toc.collapse_single_children", "content.code.copy"], "search": "../../../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+      
+        <script src="../../../../../javascripts/mermaid-init.js"></script>
+      
+    
+  </body>
+</html>

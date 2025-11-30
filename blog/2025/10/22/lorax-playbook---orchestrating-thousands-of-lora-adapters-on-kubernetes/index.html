@@ -1,0 +1,1125 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A hands-on guide for serving many fine-tuned adapters on one GPU with LoRAX, from architecture insights to Kubernetes deployments and API usage.">
+      
+      
+        <meta name="author" content="Viacheslav Dubrov">
+      
+      
+        <link rel="canonical" href="https://slavadubrov.github.io/blog/2025/10/22/lorax-playbook---orchestrating-thousands-of-lora-adapters-on-kubernetes/">
+      
+      
+        <link rel="prev" href="../../20/domain-driven-design-for-ai-agents-a-beginner-friendly-guide/">
+      
+      
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS feed" href="../../../../../feed_rss_created.xml">
+        <link rel="alternate" type="application/rss+xml" title="RSS feed of updated content" href="../../../../../feed_rss_updated.xml">
+      
+      <link rel="icon" href="../../../../../assets/favicon-eoc.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
+    
+    
+      
+        <title>LoRAX Playbook - Orchestrating Thousands of LoRA Adapters on Kubernetes - Edge of Context: Tips & Tricks in Machine Learning</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.84d31ad4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/brand.css">
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lorax-playbook-orchestrating-thousands-of-lora-adapters-on-kubernetes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="Edge of Context: Tips &amp; Tricks in Machine Learning" class="md-header__button md-logo" aria-label="Edge of Context: Tips & Tricks in Machine Learning" data-md-component="logo">
+      
+  <img src="../../../../../assets/logo-eoc.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Edge of Context: Tips & Tricks in Machine Learning
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              LoRAX Playbook - Orchestrating Thousands of LoRA Adapters on Kubernetes
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../../topics/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Topics
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="../../../../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Blog
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="Edge of Context: Tips &amp; Tricks in Machine Learning" class="md-nav__button md-logo" aria-label="Edge of Context: Tips & Tricks in Machine Learning" data-md-component="logo">
+      
+  <img src="../../../../../assets/logo-eoc.svg" alt="logo">
+
+    </a>
+    Edge of Context: Tips & Tricks in Machine Learning
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../topics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Topics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../../../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Blog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#background-what-is-lora" class="md-nav__link">
+    <span class="md-ellipsis">
+      Background: What is LoRA?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-problem-lorax-solves" class="md-nav__link">
+    <span class="md-ellipsis">
+      The problem LoRAX solves
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-works-four-core-innovations" class="md-nav__link">
+    <span class="md-ellipsis">
+      How it works: four core innovations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How it works: four core innovations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-economics-near-constant-cost-scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      The economics: near-constant cost scaling
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#request-flow-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      Request flow diagram
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-use-lorax" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to use LoRAX
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-memory-hierarchy-and-request-scheduling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture: memory hierarchy and request scheduling
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploy-lorax-on-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deploy LoRAX on Kubernetes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deploy LoRAX on Kubernetes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-start-with-the-official-helm-chart" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick start with the official Helm chart
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#customize-the-base-model-and-scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Customize the base model and scaling
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#working-with-the-lorax-apis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Working with the LoRAX APIs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Working with the LoRAX APIs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rest-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      REST API
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#python-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python client
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#openai-compatible-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      OpenAI-compatible endpoint
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trade-offs-to-consider" class="md-nav__link">
+    <span class="md-ellipsis">
+      Trade-offs to consider
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Trade-offs to consider">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-lorax-does-well" class="md-nav__link">
+    <span class="md-ellipsis">
+      What LoRAX does well
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limitations-and-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limitations and constraints
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alternatives-lorax-vs-vllm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternatives: LoRAX vs. vLLM
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-started-a-practical-roadmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      Getting started: a practical roadmap
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Getting started: a practical roadmap">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-start-small" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Start small
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-measure-and-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Measure and profile
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-optimize-for-your-workload" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Optimize for your workload
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-scale-horizontally" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Scale horizontally
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-monitor-continuously" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Monitor continuously
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2025-10-22 00:00:00+00:00" class="md-ellipsis">October 22, 2025</time>
+                      </div>
+                    </li>
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15 13h1.5v2.82l2.44 1.41-.75 1.3L15 16.69zm4-5H5v11h4.67c-.43-.91-.67-1.93-.67-3a7 7 0 0 1 7-7c1.07 0 2.09.24 3 .67zM5 21a2 2 0 0 1-2-2V5c0-1.11.89-2 2-2h1V1h2v2h8V1h2v2h1a2 2 0 0 1 2 2v6.1c1.24 1.26 2 2.99 2 4.9a7 7 0 0 1-7 7c-1.91 0-3.64-.76-4.9-2zm11-9.85A4.85 4.85 0 0 0 11.15 16c0 2.68 2.17 4.85 4.85 4.85A4.85 4.85 0 0 0 20.85 16c0-2.68-2.17-4.85-4.85-4.85"/></svg>
+                          <time datetime="2025-10-22 00:00:00+00:00" class="md-ellipsis">October 22, 2025</time>
+                        </div>
+                      </li>
+                    
+                    
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+  <nav class="md-tags" >
+    
+      
+      
+      
+        <a href="../../../../../topics/#tag:deployment" class="md-tag">Deployment</a>
+      
+    
+      
+      
+      
+        <a href="../../../../../topics/#tag:inference" class="md-tag">Inference</a>
+      
+    
+      
+      
+      
+        <a href="../../../../../topics/#tag:kubernetes" class="md-tag">Kubernetes</a>
+      
+    
+      
+      
+      
+        <a href="../../../../../topics/#tag:llm" class="md-tag">LLM</a>
+      
+    
+      
+      
+      
+        <a href="../../../../../topics/#tag:lora" class="md-tag">LoRA</a>
+      
+    
+  </nav>
+
+
+
+<h1 id="lorax-playbook-orchestrating-thousands-of-lora-adapters-on-kubernetes">LoRAX Playbook - Orchestrating Thousands of LoRA Adapters on Kubernetes</h1>
+<p>Serving dozens of fine-tuned large language models used to mean provisioning one GPU per model. <strong>LoRAX (LoRA eXchange)</strong> flips that math on its head: keep a single base model in memory and hot-swap lightweight LoRA adapters per request.</p>
+<p>This guide shows you how LoRAX achieves <strong>near-constant cost per token</strong> regardless of how many fine-tunes you're serving. We'll cover:</p>
+<ul>
+<li><strong>What LoRA is</strong> and why it's a game-changer.</li>
+<li><strong>LoRAX vs. vLLM</strong>: When to use which.</li>
+<li><strong>Kubernetes Deployment</strong>: A production-ready Helm guide.</li>
+<li><strong>API Usage</strong>: REST, Python, and OpenAI-compatible examples.</li>
+</ul>
+<!-- more -->
+
+<h2 id="background-what-is-lora">Background: What is LoRA?</h2>
+<p><strong>Low-Rank Adaptation (LoRA)</strong> is a fine-tuning technique that freezes the pre-trained model weights and injects trainable rank decomposition matrices into each layer of the Transformer architecture.</p>
+<p>In simple terms: instead of retraining the entire model (which is slow and produces massive files), LoRA trains a tiny set of "diffs" that represent the new knowledge.</p>
+<ul>
+<li><strong>Full Fine-tuning</strong>: Produces a 20GB+ file for a 7B model.</li>
+<li><strong>LoRA Fine-tuning</strong>: Produces a ~100MB adapter file.</li>
+</ul>
+<p>This massive size reduction is what makes dynamic serving possible. You can store thousands of adapters on disk and load them into GPU memory in milliseconds.</p>
+<h2 id="the-problem-lorax-solves">The problem LoRAX solves</h2>
+<p>Traditional multi-model serving is expensive. Each fine-tuned model needs its own GPU memory allocation, which means serving 50 customer-specific models requires 50 separate deployments—or at least 50x the memory. The costs scale linearly with every new variant you add.</p>
+<p>LoRAX is an Apache 2.0 project from <a href="https://github.com/predibase/lorax">Predibase</a> that extends the <a href="https://github.com/huggingface/text-generation-inference">Hugging Face Text Generation Inference server</a> with three critical features: dynamic adapter loading, tiered weight caching, and multi-adapter batching. These let you serve hundreds of tenant-specific LoRA adapters on a single Ampere-class GPU without sacrificing throughput or latency.</p>
+<p>Here's the key insight: LoRA fine-tuning produces small delta weights (adapters) rather than full model copies. LoRAX exploits this by loading just the base model into GPU memory and injecting adapter weights on demand. Unused adapters consume zero VRAM.</p>
+<h2 id="how-it-works-four-core-innovations">How it works: four core innovations</h2>
+<p><strong>1. Dynamic adapter loading</strong></p>
+<p>Adapter weights are injected just-in-time for each request. The base model stays resident in GPU memory while adapters load on the fly without blocking other requests. This means you can catalog thousands of adapters but only pay memory costs for the ones actively serving traffic.</p>
+<p><strong>2. Tiered weight caching</strong></p>
+<p>LoRAX stages adapters across three layers: GPU VRAM for hot adapters, CPU RAM for warm ones, and disk for cold storage. This hierarchy prevents out-of-memory crashes while keeping swap times fast enough that users don't notice the difference.</p>
+<p><strong>3. Continuous multi-adapter batching</strong></p>
+<p>Here's where the magic happens. LoRAX extends continuous batching strategies to work across different adapters in parallel. Requests targeting different fine-tunes can share the same forward pass, keeping the GPU fully utilized. Benchmarks from Predibase show that processing 1M tokens spread across 32 different adapters takes about the same time as 1M tokens on a single model.</p>
+<p><strong>4. Battle-tested foundation</strong></p>
+<p>LoRAX builds on Hugging Face's Text Generation Inference (TGI) server, inheriting production-grade optimizations: FlashAttention 2, paged attention, SGMV kernels for multi-adapter inference, and streaming responses. You get the stability of TGI plus the flexibility of dynamic adapter switching.</p>
+<h3 id="the-economics-near-constant-cost-scaling">The economics: near-constant cost scaling</h3>
+<p>The chart below demonstrates the cost advantage. While traditional dedicated deployments (dark gray) scale linearly—double the models means double the cost—LoRAX (orange) keeps per-token costs nearly flat regardless of how many adapters you serve. Even hosted API fine-tunes from providers like OpenAI (light gray) can't match this efficiency for multi-model scenarios.</p>
+<p><img alt="LoRAX cost per million tokens vs number of models" src="https://slavadubrov.github.io/blog/assets/2025-10-22-lorax-serving-guide/lorax-performance.png" /></p>
+<p><em>Cost per million tokens as the number of fine-tuned models increases. LoRAX maintains near-constant costs through efficient multi-adapter batching, while dedicated deployments scale linearly. Source: <a href="https://github.com/predibase/lorax">LoRAX GitHub</a></em></p>
+<h3 id="request-flow-diagram">Request flow diagram</h3>
+<p><img alt="LoRAX Request Flow" src="../../../../assets/2025-10-22-lorax-serving-guide/lorax-request-flow.svg" /></p>
+<h2 id="when-to-use-lorax">When to use LoRAX</h2>
+<p>LoRAX makes economic and operational sense in specific scenarios. Here's when it shines:</p>
+<p><strong>Multi-tenant SaaS applications</strong></p>
+<p>You're building a platform where each of your 500 customers gets a customized chatbot fine-tuned on their data. Traditional serving would require 500 model deployments. LoRAX serves all 500 from a single GPU by loading the relevant adapter when a customer request arrives.</p>
+<p><strong>Domain-specific expert routers</strong></p>
+<p>Your company maintains specialized LLMs for law, medicine, finance, and engineering. Instead of four separate 13B model deployments, LoRAX runs one base LLaMA 2 13B instance and routes to the appropriate adapter based on the incoming request domain.</p>
+<p><strong>Rapid experimentation and A/B testing</strong></p>
+<p>Testing 10 different fine-tuning approaches in production? With LoRAX you deploy once and switch between variants by changing the <code>adapter_id</code> parameter. No infrastructure changes, no service restarts.</p>
+<p><strong>Resource-constrained or edge deployments</strong></p>
+<p>On-prem installations or edge devices often have limited GPU resources. A single NVIDIA A10G can host a quantized 7B base model plus dozens of task-specific adapters, eliminating the need for one GPU per model.</p>
+<h2 id="architecture-memory-hierarchy-and-request-scheduling">Architecture: memory hierarchy and request scheduling</h2>
+<p>The core of LoRAX is its three-tier memory hierarchy. Understanding this helps you predict performance and plan capacity.</p>
+<p><img alt="LoRAX Memory Hierarchy" src="../../../../assets/2025-10-22-lorax-serving-guide/lorax-memory-hierarchy.svg" /></p>
+<p>LoRAX treats each adapter as a lightweight "view" on the shared base model. The scheduler coalesces requests so that serving 32 different adapters can be as fast as serving one—even across a million tokens of throughput. Adapters typically weigh 10-200MB each, compared to multi-gigabyte full models.</p>
+<h2 id="deploy-lorax-on-kubernetes">Deploy LoRAX on Kubernetes</h2>
+<p>LoRAX ships with production-ready Helm charts and Docker images, making Kubernetes deployment straightforward.</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<p>Before you start, ensure you have:</p>
+<ul>
+<li>A Kubernetes cluster with NVIDIA GPUs (Ampere generation or newer: A10, A100, H100)</li>
+<li><a href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html">NVIDIA Container Runtime</a> configured on GPU nodes</li>
+<li><code>kubectl</code> and <code>helm</code> installed locally</li>
+<li>Persistent storage for adapter caches—mount a PersistentVolume to <code>/data</code> in the pod</li>
+</ul>
+<h3 id="quick-start-with-the-official-helm-chart">Quick start with the official Helm chart</h3>
+<p><a href="https://helm.sh/">Helm</a> is the package manager for Kubernetes—it simplifies deploying applications by bundling all the necessary Kubernetes resources (Deployments, Services, ConfigMaps, etc.) into a single "chart." Instead of writing and managing dozens of YAML files manually, you can deploy complex applications with a single command.</p>
+<p>Predibase retired their public Helm repository in late 2024, so the supported workflow is to clone the LoRAX repository and install the chart from disk. Run these commands from your workstation:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Clone the LoRAX repository and switch into it</span>
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/predibase/lorax.git
+<span class="nb">cd</span><span class="w"> </span>lorax
+
+<span class="c1"># Make sure kubectl can talk to your cluster</span>
+kubectl<span class="w"> </span>config<span class="w"> </span>current-context
+kubectl<span class="w"> </span>get<span class="w"> </span>nodes
+
+<span class="c1"># Build chart dependencies (generates charts/lorax/charts/*.tgz)</span>
+helm<span class="w"> </span>dependency<span class="w"> </span>update<span class="w"> </span>charts/lorax
+
+<span class="c1"># Optional: render manifests locally to verify everything is templating</span>
+helm<span class="w"> </span>template<span class="w"> </span>mistral-7b-release<span class="w"> </span>charts/lorax<span class="w"> </span>&gt;<span class="w"> </span>/tmp/lorax-rendered.yaml
+
+<span class="c1"># Deploy with default settings (Mistral-7B-Instruct)</span>
+helm<span class="w"> </span>upgrade<span class="w"> </span>--install<span class="w"> </span>mistral-7b-release<span class="w"> </span>charts/lorax
+
+<span class="c1"># Watch the pod come up</span>
+kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-w
+
+<span class="c1"># Check logs to see model loading progress</span>
+kubectl<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>deploy/mistral-7b-release-lorax
+</code></pre></div>
+<p>The chart creates a Deployment (one replica by default) and a ClusterIP Service listening on port 80. The first startup downloads the base model from Hugging Face and loads it into GPU memory—this can take a few minutes depending on your network and GPU. Subsequent restarts reuse the cached weights from the persistent volume.</p>
+<blockquote>
+<p><strong>Tip:</strong> If <code>helm upgrade --install</code> returns <code>Kubernetes cluster unreachable</code>, your current kubeconfig context points at a cluster that is offline. Start your local cluster (e.g., Docker Desktop, kind, minikube) or switch to a reachable context with <code>kubectl config use-context</code>. Running <code>kubectl get nodes</code> before deploying helps confirm the API server is available.</p>
+</blockquote>
+<h3 id="customize-the-base-model-and-scaling">Customize the base model and scaling</h3>
+<p>You can swap in a different base model or adjust resources by creating a custom values file. Here's an example <code>llama2-values.yaml</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Use LLaMA 2 7B Chat instead of Mistral</span>
+<span class="nt">modelId</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">meta-llama/Llama-2-7b-chat-hf</span>
+
+<span class="c1"># Enable 4-bit quantization to save VRAM</span>
+<span class="nt">modelArgs</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">quantization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;bitsandbytes&quot;</span>
+
+<span class="c1"># Scale to 2 replicas for high availability</span>
+<span class="nt">replicaCount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+
+<span class="c1"># Request exactly 1 GPU per pod</span>
+<span class="nt">resources</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">limits</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">nvidia.com/gpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+</code></pre></div>
+<p>Deploy with your custom configuration:</p>
+<div class="highlight"><pre><span></span><code>helm<span class="w"> </span>upgrade<span class="w"> </span>--install<span class="w"> </span>-f<span class="w"> </span>llama2-values.yaml<span class="w"> </span>llama2-chat-release<span class="w"> </span>charts/lorax
+</code></pre></div>
+<p>Run those commands from the cloned <code>lorax/</code> repository so Helm can locate the chart directory.</p>
+<p>LoRAX supports popular open-source models out of the box: LLaMA 2, CodeLlama, Mistral, Mixtral, Qwen, and others. Check the <a href="https://github.com/predibase/lorax">model compatibility list</a> for the latest additions.</p>
+<p><strong>Exposing the service</strong></p>
+<p>The default Service type is ClusterIP, which only allows access within the cluster. For external traffic, either:</p>
+<ul>
+<li>Create a LoadBalancer Service (on cloud providers)</li>
+<li>Set up an Ingress with TLS termination</li>
+<li>Place an API gateway in front for authentication and rate limiting</li>
+</ul>
+<p><strong>Cleanup</strong></p>
+<p>When you're done testing, free up the GPU resources:</p>
+<div class="highlight"><pre><span></span><code>helm<span class="w"> </span>uninstall<span class="w"> </span>mistral-7b-release
+</code></pre></div>
+<p>This removes the Deployment, Service, and all pods. Cached model weights remain in the PersistentVolume unless you delete that separately.</p>
+<h2 id="working-with-the-lorax-apis">Working with the LoRAX APIs</h2>
+<p>Once deployed, LoRAX exposes three ways to interact with it: a REST API compatible with Hugging Face TGI, a Python client library, and an OpenAI-compatible endpoint. All three methods support dynamic adapter switching.</p>
+<h3 id="rest-api">REST API</h3>
+<p>The <code>/generate</code> endpoint accepts JSON payloads with your prompt and optional parameters. Using the base model without any adapter:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Basic request to the base model (no adapter)</span>
+curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8080/generate<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
+<span class="s1">    &quot;inputs&quot;: &quot;Write a short poem about the sea.&quot;,</span>
+<span class="s1">    &quot;parameters&quot;: {</span>
+<span class="s1">      &quot;max_new_tokens&quot;: 64,</span>
+<span class="s1">      &quot;temperature&quot;: 0.7</span>
+<span class="s1">    }</span>
+<span class="s1">  }&#39;</span>
+</code></pre></div>
+<p>The response includes the generated text and metadata like token counts and timing information.</p>
+<p><strong>Loading a specific adapter</strong></p>
+<p>Add an <code>adapter_id</code> parameter to target a fine-tuned model. Here's an example using a math-specialized adapter:</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8080/generate<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
+<span class="s1">    &quot;inputs&quot;: &quot;Natalia sold 48 clips in April, and then half as many in May. How many clips did she sell in total?&quot;,</span>
+<span class="s1">    &quot;parameters&quot;: {</span>
+<span class="s1">      &quot;max_new_tokens&quot;: 64,</span>
+<span class="s1">      &quot;adapter_id&quot;: &quot;vineetsharma/qlora-adapter-Mistral-7B-Instruct-v0.1-gsm8k&quot;</span>
+<span class="s1">    }</span>
+<span class="s1">  }&#39;</span>
+</code></pre></div>
+<p>On the first call with a new <code>adapter_id</code>, LoRAX downloads the adapter from Hugging Face Hub and caches it under <code>/data</code>. Subsequent requests use the cached version. You can also load adapters from local paths by specifying <code>"adapter_source": "local"</code> alongside a file path.</p>
+<h3 id="python-client">Python client</h3>
+<p>For programmatic access, install the <code>lorax-client</code> package:</p>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>lorax-client
+</code></pre></div>
+<p>The client wraps the REST API with a clean interface:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">lorax</span><span class="w"> </span><span class="kn">import</span> <span class="n">Client</span>
+
+<span class="c1"># Connect to your LoRAX instance (default port 8080)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">&quot;http://localhost:8080&quot;</span><span class="p">)</span>
+
+<span class="n">prompt</span> <span class="o">=</span> <span class="s2">&quot;Explain the significance of the moon landing in 1969.&quot;</span>
+
+<span class="c1"># 1. Generate using the base model (no adapter loaded)</span>
+<span class="n">base_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Base model:&quot;</span><span class="p">,</span> <span class="n">base_response</span><span class="o">.</span><span class="n">generated_text</span><span class="p">)</span>
+
+<span class="c1"># 2. Generate using a fine-tuned adapter</span>
+<span class="c1"># The adapter_id can be a Hugging Face repo ID or a local path</span>
+<span class="n">adapter_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
+    <span class="n">prompt</span><span class="p">,</span>
+    <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span>
+    <span class="n">adapter_id</span><span class="o">=</span><span class="s2">&quot;alignment-handbook/zephyr-7b-dpo-lora&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;With adapter:&quot;</span><span class="p">,</span> <span class="n">adapter_response</span><span class="o">.</span><span class="n">generated_text</span><span class="p">)</span>
+</code></pre></div>
+<p>The client supports streaming responses, adjusting decoding parameters (temperature, top-p, repetition penalty), and accessing token-level details. Check the <a href="https://github.com/predibase/lorax">client reference</a> for advanced usage patterns.</p>
+<h3 id="openai-compatible-endpoint">OpenAI-compatible endpoint</h3>
+<p>LoRAX implements the OpenAI Chat Completions API under the <code>/v1</code> path. This lets you drop LoRAX into tools that expect OpenAI's API format—LangChain, Semantic Kernel, or custom applications.</p>
+<p>Use the <code>model</code> field to specify which adapter to load:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">openai</span>
+
+<span class="c1"># Point the OpenAI client at LoRAX</span>
+<span class="n">openai</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="s2">&quot;EMPTY&quot;</span>  <span class="c1"># LoRAX doesn&#39;t require an API key by default</span>
+<span class="n">openai</span><span class="o">.</span><span class="n">api_base</span> <span class="o">=</span> <span class="s2">&quot;http://localhost:8080/v1&quot;</span>
+
+<span class="c1"># The model parameter becomes the adapter_id</span>
+<span class="c1"># This allows seamless integration with tools like LangChain</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">ChatCompletion</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;alignment-handbook/zephyr-7b-dpo-lora&quot;</span><span class="p">,</span>
+    <span class="n">messages</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You are a friendly chatbot who speaks like a pirate.&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;How many parrots can a person own?&quot;</span><span class="p">},</span>
+    <span class="p">],</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s2">&quot;choices&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;message&quot;</span><span class="p">][</span><span class="s2">&quot;content&quot;</span><span class="p">])</span>
+</code></pre></div>
+<p>This compatibility unlocks two powerful use cases:</p>
+<ol>
+<li><strong>Drop-in replacement:</strong> Migrate existing applications from OpenAI's hosted models to your own infrastructure by changing one configuration line</li>
+<li><strong>Tool integration:</strong> Use LoRAX with any framework that supports OpenAI's API without custom adapters</li>
+</ol>
+<p>Note that the first request to a new adapter may have higher latency while LoRAX downloads and loads it. Plan for this in user-facing applications by preloading popular adapters or showing loading states.</p>
+<h2 id="trade-offs-to-consider">Trade-offs to consider</h2>
+<h3 id="what-lorax-does-well">What LoRAX does well</h3>
+<p><strong>Dramatic cost reduction for multi-model scenarios</strong></p>
+<p>Serve hundreds or thousands of fine-tuned models on a single GPU. Traditional approaches would require separate deployments for each model, multiplying infrastructure costs linearly. LoRAX keeps costs nearly constant as you add adapters.</p>
+<p><strong>Zero memory waste</strong></p>
+<p>Adapters are loaded just-in-time when requests arrive. Unused models consume no VRAM. This means you can maintain a catalog of 1,000+ specialized models but only pay for the handful actively serving traffic at any moment.</p>
+<p><strong>Production-grade performance</strong></p>
+<p>Continuous multi-adapter batching keeps latency and throughput comparable to single-model serving. Predibase benchmarks show that serving 32 different adapters simultaneously adds minimal overhead compared to serving one model.</p>
+<p><strong>Proven foundation</strong></p>
+<p>Built on Hugging Face TGI, LoRAX inherits battle-tested optimizations: FlashAttention 2, paged attention, streaming token generation, and SGMV kernels for efficient multi-adapter inference.</p>
+<p><strong>Deployment maturity</strong></p>
+<p>Ships with Docker images, Helm charts, Prometheus metrics, and OpenTelemetry tracing. The Apache 2.0 license means you can use it commercially without restrictions.</p>
+<p><strong>Broad model support</strong></p>
+<p>Works with popular open-source architectures: LLaMA 2, CodeLlama, Mistral, Mixtral, Qwen, and more. Supports quantization (4-bit via bitsandbytes, GPTQ, AWQ) to reduce memory footprint.</p>
+<h3 id="limitations-and-constraints">Limitations and constraints</h3>
+<p><strong>Tied to LoRA-based fine-tuning</strong></p>
+<p>All your adapters must come from LoRA-style fine-tuning of the same base model. Full fine-tunes that produce standalone models won't work without conversion. If you have completely different model architectures, you'll need separate LoRAX deployments for each base.</p>
+<p><strong>Cold start latency</strong></p>
+<p>The first request after startup loads the base model into GPU memory (can take 30-90 seconds for larger models). First-time adapter requests also incur a download delay if pulling from Hugging Face. Plan for this with health checks and preloading strategies.</p>
+<p><strong>Cache thrashing under bursty load</strong></p>
+<p>If traffic suddenly hits dozens of different adapters, LoRAX may shuffle weights between GPU, CPU RAM, and disk. While adapter swaps are fast (~10ms from RAM), a very large working set can cause temporary slowdowns. Monitor GPU memory and adapter cache hit rates.</p>
+<p><strong>Fast-moving project</strong></p>
+<p>LoRAX forked from TGI in late 2023 and evolves rapidly. Expect frequent updates and occasional breaking changes as the maintainers track upstream TGI improvements and add new features. Pin versions carefully in production.</p>
+<h2 id="alternatives-lorax-vs-vllm">Alternatives: LoRAX vs. vLLM</h2>
+<p><a href="https://github.com/vllm-project/vllm">vLLM</a> is another popular high-throughput serving engine that recently added multi-LoRA support. How do they compare?</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">LoRAX</th>
+<th style="text-align: left;">vLLM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Primary Focus</strong></td>
+<td style="text-align: left;"><strong>Massive Scale</strong>: Serving hundreds/thousands of adapters.</td>
+<td style="text-align: left;"><strong>High Throughput</strong>: Maximum tokens/sec for fewer active adapters.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Architecture</strong></td>
+<td style="text-align: left;"><strong>Dynamic Swapping</strong>: Aggressively offloads to CPU/disk.</td>
+<td style="text-align: left;"><strong>Batching</strong>: Optimized for concurrent execution of active adapters.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Best For</strong></td>
+<td style="text-align: left;"><strong>Long-tail SaaS</strong>: 1000s of tenants, sporadic usage.</td>
+<td style="text-align: left;"><strong>High-traffic tiers</strong>: 5-10 heavily used adapters.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Base</strong></td>
+<td style="text-align: left;">Hugging Face TGI</td>
+<td style="text-align: left;">Custom Paged Attention Engine</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Choose LoRAX if:</strong> You have a "long tail" of adapters (e.g., one per user) where most are idle at any given time. LoRAX's tiered caching excels here.</p>
+<p><strong>Choose vLLM if:</strong> You have a small set of highly active adapters and raw throughput is your top priority.</p>
+<h2 id="getting-started-a-practical-roadmap">Getting started: a practical roadmap</h2>
+<p>If LoRAX fits your use case, here's how to move from prototype to production:</p>
+<h3 id="1-start-small">1. Start small</h3>
+<p>Deploy LoRAX with the base model you're already using and 3-5 representative adapters. Verify that adapter loading works and measure baseline latency for your workload.</p>
+<h3 id="2-measure-and-profile">2. Measure and profile</h3>
+<ul>
+<li>Track adapter cache hit rates and GPU memory usage under realistic traffic patterns</li>
+<li>Identify your "hot" adapters (top 20% by request volume) and consider preloading them at startup</li>
+<li>Measure P50, P95, and P99 latency for both cached and cold adapter loads</li>
+</ul>
+<h3 id="3-optimize-for-your-workload">3. Optimize for your workload</h3>
+<ul>
+<li>If you have a few very popular adapters, increase GPU memory allocation to keep more adapters hot</li>
+<li>If you have long-tail usage across hundreds of adapters, tune the tiered cache settings to balance RAM and disk</li>
+<li>Use quantization (4-bit bitsandbytes or GPTQ) if VRAM is tight</li>
+</ul>
+<h3 id="4-scale-horizontally">4. Scale horizontally</h3>
+<p>Once you understand single-instance behavior, add replicas for high availability. Place a load balancer in front that routes based on <code>adapter_id</code> to improve cache locality—requests for the same adapter hitting the same replica means better cache utilization.</p>
+<h3 id="5-monitor-continuously">5. Monitor continuously</h3>
+<p>Set up dashboards for GPU utilization, adapter cache metrics, and request latency broken down by adapter. Watch for cache thrashing during traffic spikes and adjust your scaling strategy accordingly.</p>
+<p>With LoRAX, orchestrating specialized LLM experiences becomes a matter of routing adapter IDs—not provisioning endless GPUs. The economics shift from linear scaling to near-constant costs, making multi-model serving viable even for small teams.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="/feed_rss_created.xml" target="_blank" rel="noopener" title="RSS" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20 5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27zm0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.path", "navigation.indexes", "navigation.toc", "navigation.toc.sticky", "navigation.toc.maxdepth", "navigation.toc.title", "navigation.toc.collapse", "navigation.toc.collapse_empty_groups", "navigation.toc.collapse_single_children", "content.code.copy"], "search": "../../../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+      
+        <script src="../../../../../javascripts/mermaid-init.js"></script>
+      
+    
+  </body>
+</html>

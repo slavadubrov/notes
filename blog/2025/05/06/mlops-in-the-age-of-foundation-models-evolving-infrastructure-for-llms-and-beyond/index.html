@@ -1,0 +1,1242 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="An exploration of how ML infrastructure and MLOps practices have evolved in response to the rise of large-scale foundation models, contrasting classic MLOps with modern paradigms and highlighting key changes, patterns, and tools.">
+      
+      
+        <meta name="author" content="Viacheslav Dubrov">
+      
+      
+        <link rel="canonical" href="https://slavadubrov.github.io/blog/2025/05/06/mlops-in-the-age-of-foundation-models-evolving-infrastructure-for-llms-and-beyond/">
+      
+      
+        <link rel="prev" href="../../04/scaling-large-language-models---practical-multi-gpu-and-multi-node-strategies-for-2025/">
+      
+      
+        <link rel="next" href="../../07/mastering-zsh-startup-zprofile-vs-zshrc-/">
+      
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS feed" href="../../../../../feed_rss_created.xml">
+        <link rel="alternate" type="application/rss+xml" title="RSS feed of updated content" href="../../../../../feed_rss_updated.xml">
+      
+      <link rel="icon" href="../../../../../assets/favicon-eoc.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
+    
+    
+      
+        <title>MLOps in the Age of Foundation Models. Evolving Infrastructure for LLMs and Beyond - Edge of Context: Tips & Tricks in Machine Learning</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.84d31ad4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/brand.css">
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#mlops-in-the-age-of-foundation-models-evolving-infrastructure-for-llms-and-beyond" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="Edge of Context: Tips &amp; Tricks in Machine Learning" class="md-header__button md-logo" aria-label="Edge of Context: Tips & Tricks in Machine Learning" data-md-component="logo">
+      
+  <img src="../../../../../assets/logo-eoc.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Edge of Context: Tips & Tricks in Machine Learning
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              MLOps in the Age of Foundation Models. Evolving Infrastructure for LLMs and Beyond
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../../topics/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Topics
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="../../../../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Blog
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="Edge of Context: Tips &amp; Tricks in Machine Learning" class="md-nav__button md-logo" aria-label="Edge of Context: Tips & Tricks in Machine Learning" data-md-component="logo">
+      
+  <img src="../../../../../assets/logo-eoc.svg" alt="logo">
+
+    </a>
+    Edge of Context: Tips & Tricks in Machine Learning
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../topics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Topics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../../../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Blog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-the-mlops-landscape-a-few-years-ago-pre-foundation-model-era" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. The MLOps Landscape a Few Years Ago (Pre-Foundation Model Era)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. The MLOps Landscape a Few Years Ago (Pre-Foundation Model Era)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-end-to-end-pipelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1. End-to-End Pipelines
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-experiment-tracking-and-model-versioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2. Experiment Tracking and Model Versioning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-continuous-training-cicd" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3. Continuous Training &amp; CI/CD
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-infrastructure-and-serving" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.4. Infrastructure and Serving
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-feature-stores-and-data-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.5. Feature Stores and Data Management
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-paradigm-shift-rise-of-large-scale-foundation-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. The Paradigm Shift: Rise of Large-Scale Foundation Models
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. The Paradigm Shift: Rise of Large-Scale Foundation Models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-pretrained-beats-from-scratch" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1. Pretrained Beats From Scratch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-model-size-and-computational-demands" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2. Model Size and Computational Demands
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-emergence-of-llmops" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3. Emergence of LLMOps
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-foundation-models-as-a-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.4. Foundation Models as a Service
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-new-requirements-and-capabilities-in-modern-ml-infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. New Requirements and Capabilities in Modern ML Infrastructure
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. New Requirements and Capabilities in Modern ML Infrastructure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-distributed-training-and-model-parallelism" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1. Distributed Training and Model Parallelism
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-efficient-fine-tuning-techniques" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2. Efficient Fine-Tuning Techniques
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-prompt-engineering-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3. Prompt Engineering &amp; Management
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-retrieval-augmented-generation-rag" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.4. Retrieval-Augmented Generation (RAG)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-data-streaming-and-real-time-data-feeds" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.5. Data Streaming and Real-Time Data Feeds
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-scalable-and-specialized-serving-infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.6. Scalable and Specialized Serving Infrastructure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-monitoring-observability-and-guardrails" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.7. Monitoring, Observability, and Guardrails
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-evolving-system-architecture-and-design-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Evolving System Architecture and Design Patterns
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Evolving System Architecture and Design Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-modular-pipelines-orchestration" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1. Modular Pipelines &amp; Orchestration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-model-hubs-and-registries" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2. Model Hubs and Registries
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-feature-stores-vs-vector-databases" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.3. Feature Stores vs. Vector Databases
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-unified-platforms-end-to-end" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.4. Unified Platforms (End-to-End)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-inference-gateways-and-apis" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.5. Inference Gateways and APIs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46-agentic-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.6. Agentic Systems
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-getting-started-with-llmops" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Getting Started with LLMOps
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-conclusion-from-mlops-to-llmops-and-beyond" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Conclusion: From MLOps to LLMOps and Beyond
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2025-05-06 00:00:00+00:00" class="md-ellipsis">May 6, 2025</time>
+                      </div>
+                    </li>
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15 13h1.5v2.82l2.44 1.41-.75 1.3L15 16.69zm4-5H5v11h4.67c-.43-.91-.67-1.93-.67-3a7 7 0 0 1 7-7c1.07 0 2.09.24 3 .67zM5 21a2 2 0 0 1-2-2V5c0-1.11.89-2 2-2h1V1h2v2h8V1h2v2h1a2 2 0 0 1 2 2v6.1c1.24 1.26 2 2.99 2 4.9a7 7 0 0 1-7 7c-1.91 0-3.64-.76-4.9-2zm11-9.85A4.85 4.85 0 0 0 11.15 16c0 2.68 2.17 4.85 4.85 4.85A4.85 4.85 0 0 0 20.85 16c0-2.68-2.17-4.85-4.85-4.85"/></svg>
+                          <time datetime="2025-05-06 00:00:00+00:00" class="md-ellipsis">May 6, 2025</time>
+                        </div>
+                      </li>
+                    
+                    
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+  <nav class="md-tags" >
+    
+      
+      
+      
+        <a href="../../../../../topics/#tag:infrastructure" class="md-tag">infrastructure</a>
+      
+    
+      
+      
+      
+        <a href="../../../../../topics/#tag:llmops" class="md-tag">llmops</a>
+      
+    
+      
+      
+      
+        <a href="../../../../../topics/#tag:mlops" class="md-tag">mlops</a>
+      
+    
+  </nav>
+
+
+
+<h1 id="mlops-in-the-age-of-foundation-models-evolving-infrastructure-for-llms-and-beyond">MLOps in the Age of Foundation Models. Evolving Infrastructure for LLMs and Beyond</h1>
+<p>The field of machine learning has undergone a seismic shift with the rise of large-scale foundation models. From giant language models like GPT-4 to image diffusion models like Stable Diffusion, these powerful models have fundamentally changed how we build and operate ML systems.</p>
+<p>In this post, I'll explore how ML infrastructure and MLOps practices have evolved to support foundation models. We'll contrast the "classic" era of MLOps with modern paradigms, examine what's changed, and look at the new patterns and workflows that have emerged. Think of it as upgrading from a standard toolbox to a fully automated factory—the principles are similar, but the scale and complexity are on a different level.</p>
+<!-- more -->
+
+<h2 id="1-the-mlops-landscape-a-few-years-ago-pre-foundation-model-era">1. The MLOps Landscape a Few Years Ago (Pre-Foundation Model Era)</h2>
+<p>A few years back, MLOps primarily meant applying DevOps principles to machine learning. The goal was simple: automate the model lifecycle from data preparation to deployment and monitoring.</p>
+<p>Back then, ML systems were built around relatively smaller models, often trained from scratch on domain-specific data. Here's what the "classic" MLOps era looked like:</p>
+<p><img alt="Classic MLOps Pipeline" src="../../../../assets/2025-05-06-from-mlops-to-llmops/classic_mlops_pipeline.svg" /></p>
+<h3 id="11-end-to-end-pipelines">1.1. End-to-End Pipelines</h3>
+<p>Teams built end-to-end pipelines for data extraction, training, validation, and deployment. Apache Airflow orchestrated ETL and training workflows, while CI/CD systems ran automated tests and pushed models to production. The focus was on reproducibility and automation: package models in Docker containers, deploy them as REST microservices or batch jobs, and keep everything running smoothly.</p>
+<h3 id="12-experiment-tracking-and-model-versioning">1.2. Experiment Tracking and Model Versioning</h3>
+<p>Managing experiments and versions was critical. Platforms like MLflow and Weights &amp; Biases (W&amp;B) became popular for logging training runs, hyperparameters, and metrics. Data scientists could compare experiments and reliably reproduce results. Models were registered in model registries with version numbers, making rollbacks straightforward when a new model underperformed.</p>
+<h3 id="13-continuous-training-cicd">1.3. Continuous Training &amp; CI/CD</h3>
+<p>Classic MLOps pipelines emphasized continuous integration of new data and models. A typical pipeline might retrain a model nightly or weekly as new data arrived, run a battery of tests, and if tests passed, deploy the new model automatically. Automation tools like Jenkins and GitLab CI/CD ensured that any change in data or code would trigger the pipeline reliably.</p>
+<h3 id="14-infrastructure-and-serving">1.4. Infrastructure and Serving</h3>
+<p>Serving a model in production meant a relatively small footprint—perhaps a few CPU cores or a single GPU for real-time inference. Kubernetes and Docker became the standard for deploying scalable inference services. Monitoring focused on:</p>
+<ul>
+<li><strong>Performance metrics</strong>: latency, throughput, memory usage</li>
+<li><strong>Model metrics</strong>: prediction accuracy, concept drift detection</li>
+<li><strong>System health</strong>: uptime, error rates</li>
+</ul>
+<h3 id="15-feature-stores-and-data-management">1.5. Feature Stores and Data Management</h3>
+<p>For many ML applications (especially in finance or e-commerce), engineered features were as important as models. Feature stores provided a central place to manage features, ensuring consistency between training and serving. The emphasis was on structured data pipelines and feature engineering. Unstructured data like text and images required custom handling outside these stores.</p>
+<p><strong>In summary</strong>: Classic MLOps revolved around small-to-medium models and explicit feature engineering. The tooling was designed for managing many experiments and deployments—scaling out a large number of models for different tasks rather than scaling one enormous model. This paradigm worked well until models started growing dramatically in size and capability.</p>
+<h2 id="2-the-paradigm-shift-rise-of-large-scale-foundation-models">2. The Paradigm Shift: Rise of Large-Scale Foundation Models</h2>
+<p>Around 2018-2020, everything changed. Researchers began introducing foundation models—extremely large models pretrained on vast corpora, capable of being adapted to many tasks.</p>
+<p>The progression was rapid:</p>
+<ul>
+<li><strong>2018-2019</strong>: BERT and GPT-2 showed the power of transfer learning</li>
+<li><strong>2020-2021</strong>: GPT-3 and PaLM demonstrated what massive scale could achieve</li>
+<li><strong>2021-2023</strong>: Image models like DALL-E and Stable Diffusion brought generative AI to the mainstream</li>
+<li><strong>2023-2024</strong>: Foundation models became ubiquitous—available everywhere from Hugging Face to AWS Bedrock</li>
+</ul>
+<p>As one practitioner noted in early 2024: "Foundational models are everywhere now—a stark change from just two years ago."</p>
+<p>This shift created a fundamentally different paradigm. If classic models were like specialized kitchen gadgets (a toaster, a blender), foundation models are like a professional chef who can learn to cook anything with a little instruction.</p>
+<p><img alt="Classic MLOps vs LLMOps" src="../../../../assets/2025-05-06-from-mlops-to-llmops/mlops_vs_llmops.svg" /></p>
+<p>Here's how foundation models changed ML infrastructure:</p>
+<h3 id="21-pretrained-beats-from-scratch">2.1. Pretrained Beats From Scratch</h3>
+<p>Instead of training models from scratch, teams started with powerful pretrained models and fine-tuned them for specific tasks. This approach:</p>
+<ul>
+<li><strong>Cuts training time</strong> from weeks to hours or days</li>
+<li><strong>Reduces data requirements</strong> from millions to thousands of examples</li>
+<li><strong>Enables smaller teams</strong> to build sophisticated AI applications</li>
+</ul>
+<p>The largest models (with billions of parameters) are often used as-is via APIs or fine-tuned minimally. By 2024, the ML engineer's skillset shifted from "how to build models" to "how to leverage and integrate foundation models"—treating the model as a service rather than reinventing the wheel.</p>
+<h3 id="22-model-size-and-computational-demands">2.2. Model Size and Computational Demands</h3>
+<p>The sheer scale of these models introduced new challenges. A model with 175 billion parameters cannot be handled with the same infrastructure as one with 50 million parameters.</p>
+<p><strong>Key scaling challenges</strong>:</p>
+<ul>
+<li><strong>Training</strong>: Requires powerful hardware (GPUs, TPUs) and distributed computing</li>
+<li><strong>Model parallelism</strong>: Sharding a single model across multiple GPUs</li>
+<li><strong>Data parallelism</strong>: Synchronizing multiple GPU workers during training</li>
+<li><strong>Inference</strong>: Often requires multiple GPUs or specialized runtimes to keep latency acceptable</li>
+</ul>
+<p>Libraries like DeepSpeed and ZeRO (Zero Redundancy Optimizer) were developed specifically to make training giant models feasible. The infrastructure requirements jumped by orders of magnitude.</p>
+<h3 id="23-emergence-of-llmops">2.3. Emergence of LLMOps</h3>
+<p>It became clear that operating these large models in production required extensions to classic MLOps. This led to <strong>LLMOps</strong> (Large Language Model Operations)—essentially MLOps specialized for large models.</p>
+<p>LLMOps builds on classic MLOps principles but addresses unique challenges:</p>
+<ul>
+<li><strong>Computational resources</strong>: Managing expensive GPU clusters</li>
+<li><strong>Prompt engineering</strong>: Optimizing model behavior through input design</li>
+<li><strong>Safety monitoring</strong>: Detecting bias, harmful content, and data leakage</li>
+<li><strong>Performance management</strong>: Balancing latency, quality, and cost</li>
+</ul>
+<p>Issues that barely registered for smaller models—like producing biased text or leaking training data—became major considerations at LLM scale.</p>
+<p><img alt="Nested relationship of MLOps specialties - Machine Learning Ops (outermost), Generative AI Ops, LLM Ops, and Retrieval-Augmented Generation Ops (innermost)" src="https://www.nvidia.com/content/nvidiaGDC/us/en_US/glossary/mlops/_jcr_content/root/responsivegrid/nv_container_1795650_1945302252/nv_image_2134560435_.coreimg.100.1290.jpeg/1741240029246/ai-ops-hierarchy.jpeg" /></p>
+<p>This diagram from NVIDIA illustrates how general MLOps (outer circle) has branched into specialized subfields like generative AI operations (for all generative models), LLMOps (for large language models), and even RAGOps for retrieval-augmented generation. The concentric circles indicate that these specializations build on the foundation of classic MLOps.</p>
+<h3 id="24-foundation-models-as-a-service">2.4. Foundation Models as a Service</h3>
+<p>Another major shift was the rise of <strong>models as a service</strong>. Instead of deploying their own models, many applications now call external APIs:</p>
+<p><strong>API Providers</strong>:</p>
+<ul>
+<li>OpenAI, Cohere, AI21 Labs offer hosted LLMs</li>
+<li>Google's Vertex AI provides Model Garden with pretrained models</li>
+<li>AWS Bedrock hosts proprietary foundation models</li>
+</ul>
+<p><strong>Model Hubs</strong>:</p>
+<ul>
+<li>Hugging Face hosts thousands of pretrained models</li>
+<li>Models can be downloaded or run in the cloud</li>
+<li>Version control and community sharing became standard</li>
+</ul>
+<p>This changed ML architecture fundamentally. Production pipelines might call external APIs for inference, introducing new considerations:</p>
+<ul>
+<li><strong>Latency</strong>: Network calls add overhead</li>
+<li><strong>Cost</strong>: Pay-per-token pricing models</li>
+<li><strong>Data privacy</strong>: Sending data to third parties</li>
+<li><strong>Vendor lock-in</strong>: Dependency on external services</li>
+</ul>
+<p>But it also saves the massive effort of managing model infrastructure.</p>
+<p><strong>The paradigm shift</strong>: From "your data + your model code = trained model" to "your data + adaptation of a pretrained model = fine-tuned model (or just prompt it with your data)."</p>
+<h2 id="3-new-requirements-and-capabilities-in-modern-ml-infrastructure">3. New Requirements and Capabilities in Modern ML Infrastructure</h2>
+<p>With foundation models at the center, today's ML infrastructure must support capabilities that were niche or non-existent just a few years ago. Here are the key new requirements:</p>
+<h3 id="31-distributed-training-and-model-parallelism">3.1. Distributed Training and Model Parallelism</h3>
+<p>Training a model with billions of parameters is beyond the capacity of a single machine. Modern ML infrastructure orchestrates distributed training across multiple nodes:</p>
+<p><img alt="Distributed Training" src="../../../../assets/2025-05-06-from-mlops-to-llmops/distributed_training.svg" /></p>
+<p><strong>Two main approaches</strong>:</p>
+<ul>
+<li><strong>Model parallelism</strong>: Split the model's layers across multiple GPUs (each GPU handles part of the model)</li>
+<li><strong>Data parallelism</strong>: Replicate the model across GPUs and split the training data (synchronize gradients)</li>
+</ul>
+<p><strong>Tools that enable this</strong>:</p>
+<ul>
+<li>PyTorch Lightning, Horovod for general distributed training</li>
+<li>NVIDIA's Megatron-LM for massive transformer models</li>
+<li>Google's JAX/TPU ecosystem for TPU clusters</li>
+</ul>
+<p>A few years ago, most teams trained models on a single server. Now, ML platforms must handle launching jobs on GPU clusters, managing faults, and aggregating gradients from dozens or hundreds of workers seamlessly.</p>
+<h3 id="32-efficient-fine-tuning-techniques">3.2. Efficient Fine-Tuning Techniques</h3>
+<p>Training from scratch is impractical for huge models, but even fine-tuning a multi-billion parameter model can be resource-intensive. This led to parameter-efficient fine-tuning methods:</p>
+<p><strong>Modern fine-tuning approaches</strong>:</p>
+<ul>
+<li><strong>LoRA (Low-Rank Adaptation)</strong>: Updates only a small subset of parameters (adapters) instead of the entire network, dramatically reducing computational cost</li>
+<li><strong>Prompt Tuning</strong>: Optimizes only the prompt embeddings, keeping the model frozen</li>
+<li><strong>Adapter Modules</strong>: Adds small trainable layers between frozen model layers</li>
+</ul>
+<p>Here is a simple example of how you might configure LoRA using the <code>peft</code> library:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">peft</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoraConfig</span><span class="p">,</span> <span class="n">get_peft_model</span>
+
+<span class="c1"># Configure LoRA</span>
+<span class="n">peft_config</span> <span class="o">=</span> <span class="n">LoraConfig</span><span class="p">(</span>
+    <span class="n">r</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+    <span class="n">lora_alpha</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+    <span class="n">target_modules</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;q_proj&quot;</span><span class="p">,</span> <span class="s2">&quot;v_proj&quot;</span><span class="p">],</span>
+    <span class="n">lora_dropout</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">bias</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span>
+    <span class="n">task_type</span><span class="o">=</span><span class="s2">&quot;CAUSAL_LM&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Apply to base model</span>
+<span class="c1"># model = get_peft_model(base_model, peft_config)</span>
+<span class="c1"># model.print_trainable_parameters()</span>
+</code></pre></div>
+<p>ML infrastructure must now support complex workflows: load a base model from a hub, apply fine-tuned weight deltas, and deploy the combined model. Traditional training pipelines evolved significantly to accommodate this multi-step customization.</p>
+<h3 id="33-prompt-engineering-management">3.3. Prompt Engineering &amp; Management</h3>
+<p>One surprising new artifact in modern ML pipelines is <strong>the prompt</strong>. With LLMs, much of the model's behavior is controlled through the text prompt or input format you give it.</p>
+<p>This created an entirely new discipline. Teams now:</p>
+<ul>
+<li>Maintain <strong>prompt libraries</strong> and templates</li>
+<li>Use <strong>version control</strong> for prompts (just like code)</li>
+<li>Run <strong>A/B tests</strong> to compare prompt variants</li>
+<li>Store <strong>prompt versions</strong> alongside model versions</li>
+</ul>
+<p>This is fundamentally different from classic ML, where inputs were just data features—not natural language instructions. Frameworks like LangChain now include prompt optimization as a first-class feature.</p>
+<p><strong>Example prompt evolution</strong>:</p>
+<div class="highlight"><pre><span></span><code>v1: &quot;Classify this text as positive or negative: {text}&quot;
+v2: &quot;You are a sentiment analyzer. Classify: {text}&quot;
+v3: &quot;Analyze sentiment. Return only &#39;positive&#39; or &#39;negative&#39;: {text}&quot;
+</code></pre></div>
+<p>Each version can produce different results, so tracking and testing prompts became as important as tracking model weights.</p>
+<h3 id="34-retrieval-augmented-generation-rag">3.4. Retrieval-Augmented Generation (RAG)</h3>
+<p>Foundation models have a fixed knowledge cutoff and limited context windows. To keep responses accurate and up-to-date, <strong>Retrieval-Augmented Generation (RAG)</strong> has become a best practice.</p>
+<p><strong>How RAG works</strong>:</p>
+<p><img alt="RAG Workflow" src="../../../../assets/2025-05-06-from-mlops-to-llmops/rag_workflow.svg" /></p>
+<p>Instead of continuously retraining the model on new data (costly and slow), RAG fetches information at query time. The retrieved documents are appended to the prompt as additional context.</p>
+<p>Here's a simplified view of how this looks in code using LangChain:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">langchain.vectorstores</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pinecone</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain.llms</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain.chains</span><span class="w"> </span><span class="kn">import</span> <span class="n">RetrievalQA</span>
+
+<span class="c1"># 1. Load the vector database</span>
+<span class="c1"># vector_db = Pinecone.from_existing_index(&quot;my-index&quot;, embeddings)</span>
+
+<span class="c1"># 2. Initialize the LLM</span>
+<span class="c1"># llm = OpenAI(temperature=0)</span>
+
+<span class="c1"># 3. Create the RAG chain</span>
+<span class="c1"># qa_chain = RetrievalQA.from_chain_type(</span>
+<span class="c1">#     llm=llm,</span>
+<span class="c1">#     chain_type=&quot;stuff&quot;,</span>
+<span class="c1">#     retriever=vector_db.as_retriever()</span>
+<span class="c1"># )</span>
+
+<span class="c1"># 4. Ask a question</span>
+<span class="c1"># response = qa_chain.run(&quot;How does LLMOps differ from MLOps?&quot;)</span>
+</code></pre></div>
+<p><strong>New infrastructure components</strong>:</p>
+<ul>
+<li><strong>Vector databases</strong> (Pinecone, Weaviate, FAISS, Milvus) for fast similarity search on embeddings</li>
+<li><strong>Embedding models</strong> to convert documents into vectors</li>
+<li><strong>Index management</strong> to keep embeddings in sync with the latest data</li>
+</ul>
+<p>In many ways, vector databases have replaced traditional feature stores. Unstructured data and semantic search took center stage over manual feature engineering.</p>
+<h3 id="35-data-streaming-and-real-time-data-feeds">3.5. Data Streaming and Real-Time Data Feeds</h3>
+<p>Modern applications—especially LLM-powered assistants—continuously ingest data: chat conversations, sensor data, event streams. This data needs to update the model's knowledge (via RAG) or trigger responses in real-time.</p>
+<p><strong>The shift</strong>:</p>
+<ul>
+<li><strong>Classic MLOps</strong>: Batch processing (daily/weekly training jobs)</li>
+<li><strong>Modern LLMOps</strong>: Real-time streaming data pipelines</li>
+</ul>
+<p><strong>Technologies driving this</strong>:</p>
+<ul>
+<li><strong>Kafka</strong> and event streaming platforms</li>
+<li><strong>Real-time databases</strong> (Redis, DynamoDB)</li>
+<li><strong>Online feature stores</strong> with continuous updates</li>
+<li><strong>Streaming embeddings</strong> that update vector indexes in real-time</li>
+</ul>
+<p>The boundary between data engineering and MLOps has blurred. Data pipelines now directly feed model inference rather than just training.</p>
+<h3 id="36-scalable-and-specialized-serving-infrastructure">3.6. Scalable and Specialized Serving Infrastructure</h3>
+<p>Serving a massive model is challenging. Modern ML infrastructure must support three key capabilities:</p>
+<p><strong>High-Throughput, Low-Latency Serving</strong></p>
+<p>Interactive applications (chatbots, image generators) demand fast responses. This requires:</p>
+<ul>
+<li><strong>GPU/TPU acceleration</strong> for quick inference</li>
+<li><strong>Model quantization</strong> to reduce precision and speed up serving</li>
+<li><strong>GPU batching</strong> to serve multiple requests in parallel</li>
+<li><strong>Optimized serving engines</strong> like NVIDIA's TensorRT, Triton Inference Server, or DeepSpeed-Inference</li>
+</ul>
+<p><strong>Serverless and Elastic Scaling</strong></p>
+<p>A new trend toward serverless ML has emerged. Platforms like Modal offer "AWS Lambda but with GPU support"—you provide code, they handle infrastructure and scaling.</p>
+<p>Benefits:</p>
+<ul>
+<li>No always-running servers</li>
+<li>Compute spins up on-demand</li>
+<li>Scale to zero when idle (pay only per execution)</li>
+<li>Automatic scaling under load</li>
+</ul>
+<p>Tradeoffs:</p>
+<ul>
+<li>Cold-start latency when spinning up</li>
+<li>Managing statelessness</li>
+<li>Less control over infrastructure</li>
+</ul>
+<p>This works well for irregular workloads where managing GPU clusters is overkill.</p>
+<p><strong>Distributed Model Serving</strong></p>
+<p>For models too large for a single GPU, inference itself can be distributed. The model is sharded across multiple machines, each handling part of the forward pass.</p>
+<p>Example: Serving a 175B parameter model on-premises requires multiple GPUs working together. Modern ML infrastructure must launch distributed inference replicas and route requests appropriately.</p>
+<h3 id="37-monitoring-observability-and-guardrails">3.7. Monitoring, Observability, and Guardrails</h3>
+<p>With great power comes great responsibility. Large models can generate incorrect or inappropriate outputs in ways small models never did. Modern ML systems need three layers of monitoring:</p>
+<p><strong>Performance and Reliability</strong></p>
+<p>The basics still matter:</p>
+<ul>
+<li>Latency, throughput, memory usage</li>
+<li>GPU utilization and costs</li>
+<li>Autoscaling policies (scale up under load, fall back to smaller models if needed)</li>
+</ul>
+<p><strong>Output Quality and Safety</strong></p>
+<p>We now monitor the <em>content</em> of outputs:</p>
+<ul>
+<li><strong>Content filtering</strong>: Detect hate speech, PII, harmful content</li>
+<li><strong>Moderation APIs</strong>: Use OpenAI's moderation API or custom filters</li>
+<li><strong>Bias detection</strong>: Continuously evaluate for biased responses</li>
+<li><strong>Guardrails</strong>: Intercept adversarial inputs and ensure outputs stay within bounds</li>
+</ul>
+<p>These "guardrails" have become essential in LLMOps—they're not optional.</p>
+<p><strong>Feedback Loops</strong></p>
+<p>Continuous improvement now includes human feedback:</p>
+<ul>
+<li>Collect user interactions (likes, corrections, ratings)</li>
+<li>Use feedback to fine-tune models or adjust prompts</li>
+<li><strong>RLHF (Reinforcement Learning from Human Feedback)</strong>: Explicitly use human ratings to refine behavior</li>
+</ul>
+<p>The infrastructure must support collecting and managing this feedback data securely.</p>
+<hr />
+<p><strong>In summary</strong>: Today's ML infrastructure manages entire ecosystems—base models, fine-tuning adapters, prompt templates, retrieval indexes, monitoring detectors, and more. The complexity is higher, but so is the capability.</p>
+<h2 id="4-evolving-system-architecture-and-design-patterns">4. Evolving System Architecture and Design Patterns</h2>
+<p>Given these new requirements, how are ML systems actually structured today? Here are the key design patterns that have emerged:</p>
+<h3 id="41-modular-pipelines-orchestration">4.1. Modular Pipelines &amp; Orchestration</h3>
+<p><strong>Classic tools</strong> (Kubeflow Pipelines, Apache Airflow) are still used for:</p>
+<ul>
+<li>Fine-tuning workflows</li>
+<li>Batch scoring jobs</li>
+<li>Periodic model retraining</li>
+</ul>
+<p><strong>New tools</strong> have emerged for modern needs:</p>
+<ul>
+<li><strong>Metaflow, Flyte, ZenML</strong>: Pythonic workflows that integrate seamlessly with ML libraries</li>
+<li><strong>Lightweight orchestration</strong>: For low-latency inference, application code often replaces heavyweight workflow engines</li>
+</ul>
+<p>The key difference: engineers no longer need to leave their development environment to manage the flow from data to deployment.</p>
+<h3 id="42-model-hubs-and-registries">4.2. Model Hubs and Registries</h3>
+<p>Model management evolved with centralized hubs:</p>
+<p><strong>External hubs</strong>:</p>
+<ul>
+<li><strong>Hugging Face Hub</strong>: Thousands of models, datasets, and scripts</li>
+<li>One-stop shop for ML components</li>
+<li>Plug-and-play architecture (fetch models at startup)</li>
+</ul>
+<p><strong>Internal registries</strong>:</p>
+<ul>
+<li>MLflow Registry, SageMaker Model Registry for bespoke models</li>
+<li>Combined with external foundation models</li>
+</ul>
+<p><strong>The shift</strong>: Instead of building everything in-house, engineers now plan for how to fine-tune and adapt third-party models. This has accelerated development dramatically.</p>
+<h3 id="43-feature-stores-vs-vector-databases">4.3. Feature Stores vs. Vector Databases</h3>
+<p>The data layer has fundamentally changed:</p>
+<p><img alt="Feature Store vs Vector DB" src="../../../../assets/2025-05-06-from-mlops-to-llmops/feature_store_vs_vector_db.svg" /></p>
+<p><strong>Traditional feature stores</strong> handled structured data with manual feature engineering.</p>
+<p><strong>Modern vector databases</strong> (Pinecone, Weaviate, Chroma, Milvus) handle:</p>
+<ul>
+<li>High-dimensional embeddings</li>
+<li>Fast similarity search</li>
+<li>Semantic search and deduplication</li>
+<li>RAG for LLMs</li>
+</ul>
+<p>You'll often see both: a vector DB for unstructured semantic lookup and a data warehouse for structured analytics.</p>
+<h3 id="44-unified-platforms-end-to-end">4.4. Unified Platforms (End-to-End)</h3>
+<p>The complexity of modern ML has driven adoption of end-to-end platforms that abstract infrastructure details.</p>
+<p><strong>Cloud platforms</strong> evolved to support foundation models:</p>
+<ul>
+<li><strong>Google Vertex AI</strong>: Auto-distributed training on TPU pods, Model Garden with LLMs, one-click deployment</li>
+<li><strong>AWS SageMaker</strong>: Distributed training, model parallelism, and Bedrock for hosted foundation models</li>
+<li><strong>Azure Machine Learning</strong>: Integrated training, deployment, and monitoring</li>
+</ul>
+<p>These platforms provide managed services like "fine-tune this 20B parameter model on your data" or "embed and index your text data for retrieval."</p>
+<p><strong>Open-source and startups</strong>:</p>
+<ul>
+<li><strong>MosaicML</strong> (now Databricks): Efficient training and deployment for large models</li>
+<li><strong>Argilla, Label Studio</strong>: Data labeling and prompt dataset creation</li>
+<li><strong>ClearML, MLflow</strong>: Experiment tracking tied to pipeline execution</li>
+</ul>
+<h3 id="45-inference-gateways-and-apis">4.5. Inference Gateways and APIs</h3>
+<p>The proliferation of model sizes led to <strong>inference gateways</strong>—routers that intelligently direct requests:</p>
+<p><img alt="Inference Gateway" src="../../../../assets/2025-05-06-from-mlops-to-llmops/inference_gateway.svg" /></p>
+<p><strong>Use cases</strong>:</p>
+<ul>
+<li>Route based on latency requirements</li>
+<li>Different models for different subscription tiers</li>
+<li>A/B testing new models on a fraction of traffic</li>
+<li>Fallback to smaller models under high load</li>
+</ul>
+<p>This decouples the client-facing API from model implementation, allowing seamless model swaps and testing.</p>
+<h3 id="46-agentic-systems">4.6. Agentic Systems</h3>
+<p>A cutting-edge pattern: <strong>AI agents</strong> that dynamically choose sequences of actions to accomplish tasks.</p>
+<p>Unlike static chains, agents can:</p>
+<ul>
+<li>Call external tools (calculators, search engines, databases)</li>
+<li>Decide workflows at runtime based on context</li>
+<li>Invoke different models for different subtasks</li>
+</ul>
+<p><strong>Enabling frameworks</strong>:</p>
+<ul>
+<li>LangChain's agent mode</li>
+<li>OpenAI's function calling</li>
+<li>AutoGPT and similar systems</li>
+</ul>
+<p>This emerging pattern requires new operational practices (sometimes called "AgentOps"):</p>
+<ul>
+<li>Robust monitoring to prevent unwanted actions</li>
+<li>Detailed logging to trace decision paths</li>
+<li>Safety guardrails to limit agent capabilities</li>
+</ul>
+<p><img alt="Agentic Workflow" src="../../../../assets/2025-05-06-from-mlops-to-llmops/agentic_workflow.svg" /></p>
+<p>While not yet widespread in production, agentic systems represent the frontier of LLMOps.</p>
+<h2 id="5-getting-started-with-llmops">5. Getting Started with LLMOps</h2>
+<p>If you are new to this field, the ecosystem can feel overwhelming. Here is a recommended path to get your hands dirty:</p>
+<ol>
+<li><strong>Play with APIs</strong>: Start by using OpenAI or Anthropic APIs to understand prompt engineering.</li>
+<li><strong>Build a RAG App</strong>: Use <strong>LangChain</strong> or <strong>LlamaIndex</strong> to build a simple "Chat with your PDF" app. This introduces you to vector databases and retrieval.</li>
+<li><strong>Try Fine-Tuning</strong>: Use <strong>Hugging Face</strong> to fine-tune a small model (like Llama-3-8B or Mistral-7B) on a custom dataset using Google Colab.</li>
+<li><strong>Deploy</strong>: Try deploying your fine-tuned model using <strong>vLLM</strong> or <strong>Ollama</strong> locally, then move to a cloud provider.</li>
+</ol>
+<h2 id="6-conclusion-from-mlops-to-llmops-and-beyond">6. Conclusion: From MLOps to LLMOps and Beyond</h2>
+<p>In just a few years, we've witnessed a transformation in how we approach machine learning in production.</p>
+<p><strong>What remains the same</strong>:</p>
+<ul>
+<li>Automation, reproducibility, collaboration</li>
+<li>Focus on reliability and efficiency</li>
+<li>DevOps principles applied to ML</li>
+</ul>
+<p><strong>What changed dramatically</strong>:</p>
+<ul>
+<li>Scale: From millions to billions of parameters</li>
+<li>Approach: From training from scratch to adapting foundation models</li>
+<li>Infrastructure: From single servers to distributed GPU clusters</li>
+<li>Data layer: From feature stores to vector databases</li>
+<li>Monitoring: From performance metrics to content safety guardrails</li>
+</ul>
+<p>This gave rise to <strong>LLMOps</strong>—a specialization of MLOps for managing the lifecycle of large models. It's not just hype. The differences are tangible in day-to-day workflows:</p>
+<ul>
+<li>How we fine-tune models (LoRA, adapters)</li>
+<li>How we deploy them (distributed serving, serverless GPUs)</li>
+<li>How we monitor them (content filtering, bias detection)</li>
+<li>What infrastructure we need (vector databases, GPU clusters)</li>
+</ul>
+<p><strong>The evolution continues</strong>. As models grow and AI systems become more autonomous, we're already seeing:</p>
+<ul>
+<li><strong>AgentOps</strong> for managing AI agents</li>
+<li><strong>RAGOps</strong> for retrieval-augmented systems</li>
+<li>Even more specialized operational practices</li>
+</ul>
+<p>But the end goal remains: <strong>reliably deliver the benefits of machine learning to end-users and business applications, at scale and with trustworthiness.</strong></p>
+<p>Teams that successfully navigate this evolution harness foundation models to build products faster than ever—while maintaining the reliability and efficiency that good operations provide.</p>
+<h2 id="references">References</h2>
+<p>The insights and examples in this post are supported by recent research and industry sources, including an MDPI review on transitioning from MLOps to LLMOps, NVIDIA's technical blogs on GenAIOps and LLMOps, and various practitioner articles and discussions capturing the state of ML in 2024. Platforms like Modal and Ray have published guides showing new deployment patterns (serverless GPUs, distributed serving) in action.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="/feed_rss_created.xml" target="_blank" rel="noopener" title="RSS" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20 5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27zm0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.path", "navigation.indexes", "navigation.toc", "navigation.toc.sticky", "navigation.toc.maxdepth", "navigation.toc.title", "navigation.toc.collapse", "navigation.toc.collapse_empty_groups", "navigation.toc.collapse_single_children", "content.code.copy"], "search": "../../../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+      
+        <script src="../../../../../javascripts/mermaid-init.js"></script>
+      
+    
+  </body>
+</html>

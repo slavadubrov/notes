@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <defs>
+    <style>
+      .start { fill: #e1bee7; stroke: #8e24aa; stroke-width: 2; rx: 15; }
+      .decision { fill: #fff9c4; stroke: #fbc02d; stroke-width: 2; rx: 5; }
+      .action { fill: #e3f2fd; stroke: #1565c0; stroke-width: 2; rx: 5; }
+      .result { fill: #c8e6c9; stroke: #2e7d32; stroke-width: 2; rx: 5; }
+      .arrow { stroke: #333; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text { font-family: Arial, sans-serif; font-size: 12px; text-anchor: middle; }
+      .label { font-size: 10px; fill: #555; background-color: white; padding: 2px; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+  </defs>
+
+  <rect width="100%" height="100%" fill="white" />
+
+  <!-- Nodes -->
+  <rect x="300" y="20" width="200" height="40" class="start" />
+  <text x="400" y="45" class="text">Start: Scaling LLMs</text>
+
+  <rect x="300" y="100" width="200" height="40" class="decision" />
+  <text x="400" y="125" class="text">Fits on 1 GPU?</text>
+
+  <rect x="50" y="160" width="200" height="40" class="result" />
+  <text x="150" y="185" class="text">Standard Training (No Parallelism)</text>
+
+  <rect x="550" y="160" width="200" height="40" class="decision" />
+  <text x="650" y="185" class="text">Multiple GPUs in 1 Node?</text>
+
+  <rect x="700" y="240" width="90" height="40" class="result" />
+  <text x="745" y="265" class="text" font-size="10">Need Cluster</text>
+
+  <rect x="300" y="220" width="200" height="40" class="action" />
+  <text x="400" y="245" class="text">Start with FSDP</text>
+
+  <rect x="300" y="300" width="200" height="40" class="decision" />
+  <text x="400" y="325" class="text">Is FSDP Enough?</text>
+
+  <rect x="50" y="360" width="200" height="40" class="result" />
+  <text x="150" y="385" class="text">Use Pure FSDP</text>
+
+  <rect x="400" y="400" width="200" height="40" class="result" />
+  <text x="500" y="425" class="text">Add Tensor Parallel (TP)</text>
+
+  <rect x="600" y="400" width="180" height="40" class="result" />
+  <text x="690" y="425" class="text">Add Context Parallel (CP)</text>
+
+  <rect x="300" y="480" width="200" height="40" class="decision" />
+  <text x="400" y="505" class="text">Multi-Node / Massive?</text>
+
+  <rect x="300" y="550" width="200" height="40" class="result" />
+  <text x="400" y="575" class="text">Combine (TP + PP + FSDP)</text>
+
+  <!-- Arrows -->
+
+  <!-- Start -> Fits on 1 GPU -->
+  <path d="M 400 60 L 400 100" class="arrow" />
+
+  <!-- Fits on 1 GPU -> Yes -> Standard Training -->
+  <path d="M 300 120 L 150 120 L 150 160" class="arrow" />
+  <text x="225" y="115" class="label">Yes</text>
+
+  <!-- Fits on 1 GPU -> No -> Multiple GPUs -->
+  <path d="M 500 120 L 650 120 L 650 160" class="arrow" />
+  <text x="525" y="115" class="label">No</text>
+
+  <!-- Multiple GPUs -> No -> Need Cluster -->
+  <path d="M 750 180 L 780 180 L 780 240" class="arrow" />
+  <text x="765" y="175" class="label">No</text>
+
+  <!-- Multiple GPUs -> Yes -> Start with FSDP -->
+  <path d="M 550 180 L 400 180 L 400 220" class="arrow" />
+  <text x="475" y="175" class="label">Yes</text>
+
+  <!-- Start with FSDP -> Is FSDP Enough -->
+  <path d="M 400 260 L 400 300" class="arrow" />
+
+  <!-- Is FSDP Enough -> Yes -> Use Pure FSDP -->
+  <path d="M 300 320 L 150 320 L 150 360" class="arrow" />
+  <text x="225" y="315" class="label">Yes</text>
+
+  <!-- Is FSDP Enough -> No -> Split to TP and CP -->
+  <!-- We draw a shared path segment then split -->
+  <!-- Shared segment: Right from decision box -->
+  <path d="M 500 320 L 600 320 L 600 340" stroke="#333" stroke-width="2" fill="none" />
+
+  <!-- Split to TP (Left) -->
+  <path d="M 600 340 L 500 340 L 500 400" class="arrow" />
+  <text x="530" y="335" class="label">Layers too big</text>
+
+  <!-- Split to CP (Right) -->
+  <path d="M 600 340 L 700 340 L 700 400" class="arrow" />
+  <text x="630" y="335" class="label">Context too long</text>
+
+  <!-- TP -> Multi-Node -->
+  <path d="M 500 440 L 500 460 L 400 460 L 400 480" class="arrow" />
+
+  <!-- CP -> Multi-Node -->
+  <path d="M 690 440 L 690 460 L 400 460 L 400 480" class="arrow" />
+
+  <!-- Multi-Node -> Combine -->
+  <path d="M 400 520 L 400 550" class="arrow" />
+
+</svg>

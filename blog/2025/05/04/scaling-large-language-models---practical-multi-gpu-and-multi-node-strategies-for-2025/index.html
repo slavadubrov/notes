@@ -1,0 +1,1176 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A practical guide to scaling large language models across multiple GPUs and nodes, with real-world strategies from Hugging Face's Ultra-Scale Playbook.">
+      
+      
+        <meta name="author" content="Viacheslav Dubrov">
+      
+      
+        <link rel="canonical" href="https://slavadubrov.github.io/blog/2025/05/04/scaling-large-language-models---practical-multi-gpu-and-multi-node-strategies-for-2025/">
+      
+      
+        <link rel="prev" href="../../../04/19/quick-guide-on-setting-up-a-macbook-for-ai-engineering/">
+      
+      
+        <link rel="next" href="../../06/mlops-in-the-age-of-foundation-models-evolving-infrastructure-for-llms-and-beyond/">
+      
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS feed" href="../../../../../feed_rss_created.xml">
+        <link rel="alternate" type="application/rss+xml" title="RSS feed of updated content" href="../../../../../feed_rss_updated.xml">
+      
+      <link rel="icon" href="../../../../../assets/favicon-eoc.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
+    
+    
+      
+        <title>Scaling Large Language Models - Practical Multi-GPU and Multi-Node Strategies for 2025 - Edge of Context: Tips & Tricks in Machine Learning</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.84d31ad4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/brand.css">
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#scaling-large-language-models-practical-multi-gpu-and-multi-node-strategies-for-2025" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="Edge of Context: Tips &amp; Tricks in Machine Learning" class="md-header__button md-logo" aria-label="Edge of Context: Tips & Tricks in Machine Learning" data-md-component="logo">
+      
+  <img src="../../../../../assets/logo-eoc.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Edge of Context: Tips & Tricks in Machine Learning
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Scaling Large Language Models - Practical Multi-GPU and Multi-Node Strategies for 2025
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../../topics/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Topics
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="../../../../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Blog
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="Edge of Context: Tips &amp; Tricks in Machine Learning" class="md-nav__button md-logo" aria-label="Edge of Context: Tips & Tricks in Machine Learning" data-md-component="logo">
+      
+  <img src="../../../../../assets/logo-eoc.svg" alt="logo">
+
+    </a>
+    Edge of Context: Tips & Tricks in Machine Learning
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../topics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Topics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../../../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Blog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-scaling-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Scaling Matters
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-parallelism-techniques-explained-simply" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Parallelism Techniques Explained Simply
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Parallelism Techniques Explained Simply">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-data-parallelism-dp" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 Data Parallelism (DP)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-fully-sharded-data-parallelism-fsdp" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2 Fully Sharded Data Parallelism (FSDP)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.2 Fully Sharded Data Parallelism (FSDP)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-enabling-fsdp-in-pytorch" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: Enabling FSDP in PyTorch
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-tensor-parallelism-tp" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3 Tensor Parallelism (TP)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-pipeline-parallelism-pp" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.4 Pipeline Parallelism (PP)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-context-parallelism-cp" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.5 Context Parallelism (CP)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-expert-parallelism-mixture-of-experts-moe" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.6 Expert Parallelism (Mixture of Experts - MoE)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-comparison-which-parallelism-should-you-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Comparison: Which Parallelism Should You Use?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-practical-training-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Practical Training Strategies
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Practical Training Strategies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-single-machine-2-8-gpus" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 Single Machine (2-8 GPUs)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-small-cluster-2-16-nodes-128-gpus" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 Small Cluster (2-16 nodes, ≤128 GPUs)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-large-cluster-hundreds-or-thousands-of-gpus" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3 Large Cluster (Hundreds or Thousands of GPUs)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-practical-tools-worth-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Practical Tools Worth Learning
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Practical Tools Worth Learning">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-accelerate-config-for-fsdp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: Accelerate Config for FSDP
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-making-the-right-choice-a-decision-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Making the Right Choice: A Decision Framework
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-the-ultra-scale-cheatsheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. The Ultra-Scale Cheatsheet
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2025-05-04 00:00:00+00:00" class="md-ellipsis">May 4, 2025</time>
+                      </div>
+                    </li>
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15 13h1.5v2.82l2.44 1.41-.75 1.3L15 16.69zm4-5H5v11h4.67c-.43-.91-.67-1.93-.67-3a7 7 0 0 1 7-7c1.07 0 2.09.24 3 .67zM5 21a2 2 0 0 1-2-2V5c0-1.11.89-2 2-2h1V1h2v2h8V1h2v2h1a2 2 0 0 1 2 2v6.1c1.24 1.26 2 2.99 2 4.9a7 7 0 0 1-7 7c-1.91 0-3.64-.76-4.9-2zm11-9.85A4.85 4.85 0 0 0 11.15 16c0 2.68 2.17 4.85 4.85 4.85A4.85 4.85 0 0 0 20.85 16c0-2.68-2.17-4.85-4.85-4.85"/></svg>
+                          <time datetime="2025-11-24 00:00:00+00:00" class="md-ellipsis">November 24, 2025</time>
+                        </div>
+                      </li>
+                    
+                    
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+  <nav class="md-tags" >
+    
+      
+      
+      
+        <a href="../../../../../topics/#tag:deep-learning" class="md-tag">Deep Learning</a>
+      
+    
+      
+      
+      
+        <a href="../../../../../topics/#tag:distributed-training" class="md-tag">Distributed Training</a>
+      
+    
+      
+      
+      
+        <a href="../../../../../topics/#tag:gpu" class="md-tag">GPU</a>
+      
+    
+      
+      
+      
+        <a href="../../../../../topics/#tag:llm" class="md-tag">LLM</a>
+      
+    
+      
+      
+      
+        <a href="../../../../../topics/#tag:parallelism" class="md-tag">Parallelism</a>
+      
+    
+  </nav>
+
+
+
+<h1 id="scaling-large-language-models-practical-multi-gpu-and-multi-node-strategies-for-2025">Scaling Large Language Models - Practical Multi-GPU and Multi-Node Strategies for 2025</h1>
+<p>The race to build bigger, better language models continues at breakneck speed. Today's state-of-the-art models require massive computing resources that no single GPU can handle. Whether you're training a custom LLM or deploying one for inference, understanding how to distribute this workload is essential.</p>
+<p>This guide walks through practical strategies for scaling LLMs across multiple GPUs and nodes, incorporating insights from Hugging Face's <a href="https://huggingface.co/spaces/nanotron/ultrascale-playbook">Ultra-Scale Playbook</a>.</p>
+<!-- more -->
+
+<h2 id="prerequisites">Prerequisites</h2>
+<p>Before diving in, you should be familiar with:</p>
+<ul>
+<li><strong>Basic Deep Learning</strong>: Backpropagation, gradients, and optimizers (AdamW).</li>
+<li><strong>Transformer Architecture</strong>: Attention mechanisms, Feed-Forward Networks (FFN).</li>
+<li><strong>PyTorch Basics</strong>: <code>nn.Module</code>, <code>DataLoader</code>, and the training loop.</li>
+</ul>
+<h2 id="why-scaling-matters">Why Scaling Matters</h2>
+<p>Modern LLMs have outgrown single GPUs. Here's why scaling is no longer optional:</p>
+<ul>
+<li><strong>Model size</strong>: A 70B parameter model needs ~140GB in FP16 format - that's nearly 2x what an A100 (80GB) can hold</li>
+<li><strong>Training time</strong>: Even with 8 top-tier A100 GPUs, training a 13B model from scratch takes weeks</li>
+<li><strong>Context length</strong>: Long contexts (32k+ tokens) easily exceed single-GPU memory limits</li>
+<li><strong>Inference speed</strong>: For production workloads, distributing inference reduces latency and increases throughput</li>
+</ul>
+<p>The solution? Split the workload across multiple GPUs. Let's explore how.</p>
+<h2 id="1-parallelism-techniques-explained-simply">1. Parallelism Techniques Explained Simply</h2>
+<h3 id="11-data-parallelism-dp">1.1 Data Parallelism (DP)</h3>
+<p><strong>The idea:</strong> Multiple workers with identical instruction manuals (the model), each working on different examples.</p>
+<p><strong>How it works:</strong></p>
+<ol>
+<li>Each GPU gets a complete copy of the model</li>
+<li>Each GPU processes different batches of data</li>
+<li>After computing gradients, all GPUs synchronize by averaging their gradients</li>
+<li>Everyone updates their model copy with the averaged gradients</li>
+</ol>
+<p><strong>When to use it:</strong></p>
+<ul>
+<li>Your model fits comfortably on a single GPU</li>
+<li>You want to process more data faster</li>
+<li>You need the simplest distributed setup with minimal code changes</li>
+</ul>
+<p><strong>Limitation:</strong> Memory inefficient - every GPU stores the full model, so you're not saving memory, just increasing throughput.</p>
+<p><img alt="Data Parallelism" src="../../../../assets/2025-05-04-scaling-llms/data_parallelism.svg" /></p>
+<p><strong>Tools</strong>: <a href="https://pytorch.org/docs/stable/notes/ddp.html">PyTorch DDP</a>, <a href="https://horovod.ai/">Horovod</a>.</p>
+<h3 id="12-fully-sharded-data-parallelism-fsdp">1.2 Fully Sharded Data Parallelism (FSDP)</h3>
+<p><strong>The idea:</strong> Like Data Parallelism, but memory-efficient. Each worker keeps only part of the instruction manual and borrows pages from colleagues when needed.</p>
+<p><strong>How it works:</strong></p>
+<ol>
+<li>Model parameters, gradients, and optimizer states are <strong>sharded</strong> (split) across all GPUs</li>
+<li>During forward pass: each GPU gathers the parameters it needs from other GPUs</li>
+<li>After using them, it discards those borrowed parameters to save memory</li>
+<li>During backward pass: same gathering happens for gradient computation</li>
+<li>After backward pass: gradients are reduced and each GPU updates only its own parameter shard</li>
+</ol>
+<p><strong>When to use it:</strong></p>
+<ul>
+<li>Your model is too large for a single GPU (typically &gt;10B parameters)</li>
+<li>You want to train bigger models without changing your code much</li>
+<li>You're working on a single machine with multiple GPUs</li>
+</ul>
+<p><strong>Real-world impact:</strong> FSDP lets you train models 4-8x larger than what fits on one GPU.</p>
+<p><img alt="FSDP" src="../../../../assets/2025-05-04-scaling-llms/fsdp.svg" /></p>
+<blockquote>
+<p>[!NOTE] &gt; <strong>Understanding ZeRO Stages</strong>
+FSDP is often described in terms of "ZeRO stages" (Zero Redundancy Optimizer):</p>
+<ul>
+<li><strong>Stage 1</strong>: Shard optimizer states only (4x memory savings).</li>
+<li><strong>Stage 2</strong>: Shard gradients + optimizer states (8x memory savings).</li>
+<li><strong>Stage 3</strong>: Shard parameters + gradients + optimizer states (Linear memory savings with N GPUs).</li>
+</ul>
+<p>PyTorch FSDP defaults to Stage 3 behavior.</p>
+</blockquote>
+<h4 id="example-enabling-fsdp-in-pytorch">Example: Enabling FSDP in PyTorch</h4>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">torch.distributed.fsdp</span><span class="w"> </span><span class="kn">import</span> <span class="n">FullyShardedDataParallel</span> <span class="k">as</span> <span class="n">FSDP</span>
+
+<span class="c1"># 1. Wrap your model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">MyLLM</span><span class="p">()</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">FSDP</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+<span class="c1"># 2. Train as usual</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+<span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+</code></pre></div>
+<p><strong>Tools</strong>: <a href="https://pytorch.org/docs/stable/fsdp.html">PyTorch FSDP</a>, <a href="https://www.deepspeed.ai/tutorials/zero/">DeepSpeed ZeRO-3</a>.</p>
+<h3 id="13-tensor-parallelism-tp">1.3 Tensor Parallelism (TP)</h3>
+<p><strong>The idea:</strong> Split individual layers across GPUs - like dividing a massive spreadsheet calculation where each person computes a few columns.</p>
+<p><strong>How it works:</strong></p>
+<ol>
+<li>Take a single layer's weight matrix and split it into chunks</li>
+<li>Each GPU gets one chunk and computes its portion of the output</li>
+<li>Results are combined (via all-reduce or concatenation) before passing to the next layer</li>
+<li>This happens at <strong>every</strong> layer in the model</li>
+</ol>
+<p><strong>When to use it:</strong></p>
+<ul>
+<li>Individual layers are too large even with FSDP (e.g., huge attention or FFN layers)</li>
+<li>You have fast GPU-to-GPU connections (NVLink/NVSwitch)</li>
+<li>You're working within a single node (TP doesn't scale well across nodes due to communication overhead)</li>
+</ul>
+<p><strong>Sweet spot:</strong> TP degree of 2-8 within a single machine with NVLink.</p>
+<p><img alt="Tensor Parallelism" src="../../../../assets/2025-05-04-scaling-llms/tensor_parallelism.svg" /></p>
+<p><strong>Tools</strong>: <a href="https://github.com/NVIDIA/Megatron-LM">Megatron-LM</a>, <a href="https://github.com/NVIDIA/TensorRT-LLM">TensorRT-LLM</a>, <a href="https://github.com/hpcaitech/ColossalAI">ColossalAI</a>.</p>
+<h3 id="14-pipeline-parallelism-pp">1.4 Pipeline Parallelism (PP)</h3>
+<p><strong>The idea:</strong> Split the model vertically by layers - like an assembly line where each station handles specific layers.</p>
+<p><strong>How it works:</strong></p>
+<ol>
+<li>Divide your model into stages (e.g., layers 1-10, 11-20, 21-30)</li>
+<li>Assign each stage to a different GPU</li>
+<li>Send micro-batches through the pipeline: GPU 1 processes batch 1, sends output to GPU 2, then starts on batch 2</li>
+<li>Multiple micro-batches flow through simultaneously to keep all GPUs busy</li>
+</ol>
+<p><strong>When to use it:</strong></p>
+<ul>
+<li>Very deep models that don't fit on available GPUs even with FSDP</li>
+<li>Multi-node training where inter-node bandwidth is limited</li>
+<li>Combined with TP and FSDP for massive models</li>
+</ul>
+<p><strong>Challenge:</strong> Pipeline "bubbles" (idle time) at the start and end of each batch. Use multiple micro-batches to minimize this.</p>
+<p><img alt="Pipeline Parallelism" src="../../../../assets/2025-05-04-scaling-llms/pipeline_parallelism.svg" /></p>
+<p><strong>Tools</strong>: <a href="https://www.deepspeed.ai/tutorials/pipeline/">DeepSpeed PP</a>, <a href="https://github.com/NVIDIA/Megatron-LM">Megatron-LM</a>, <a href="https://arxiv.org/abs/1811.06965">GPipe</a>.</p>
+<h3 id="15-context-parallelism-cp">1.5 Context Parallelism (CP)</h3>
+<p><strong>The idea:</strong> For handling extremely long sequences - different people read different paragraphs of a book, then share key information.</p>
+<p><strong>How it works:</strong></p>
+<ol>
+<li>Split a long sequence (e.g., 64K tokens) across multiple GPUs (e.g., 4 GPUs × 16K tokens each)</li>
+<li>Each GPU runs self-attention on its local chunk</li>
+<li>GPUs exchange keys and values to compute cross-attention (how tokens in one chunk relate to tokens in other chunks)</li>
+<li>Results are merged to produce the final output</li>
+</ol>
+<p><strong>When to use it:</strong></p>
+<ul>
+<li>Processing very long contexts (64K, 128K, or even 1M+ tokens)</li>
+<li>Document analysis, long-form code generation, or book-length reasoning</li>
+<li>When context length is the bottleneck, not model size</li>
+</ul>
+<p><strong>Real-world impact:</strong> Context Parallelism enables 100K+ token processing on consumer hardware that would otherwise max out at 8K tokens.</p>
+<p><img alt="Context Parallelism" src="../../../../assets/2025-05-04-scaling-llms/context_parallelism.svg" /></p>
+<p><strong>Tools</strong>: <a href="https://github.com/huggingface/picotron">Picotron</a>, <a href="https://github.com/huggingface/nanotron">Nanotron</a>.</p>
+<h3 id="16-expert-parallelism-mixture-of-experts-moe">1.6 Expert Parallelism (Mixture of Experts - MoE)</h3>
+<p><strong>The idea:</strong> Specialized consultants - instead of activating the entire model for every input, each token gets routed only to the "experts" it needs.</p>
+<p><strong>How it works:</strong></p>
+<ol>
+<li>Replace dense feed-forward layers with multiple "expert" networks (e.g., 8 or 64 experts)</li>
+<li>A gating network decides which experts (usually top-2) should process each token</li>
+<li>Only those selected experts activate for that token</li>
+<li>Different experts can live on different GPUs</li>
+</ol>
+<p><strong>When to use it:</strong></p>
+<ul>
+<li>You want a model with 100B+ total parameters but only want to activate 13B per token</li>
+<li>You need better parameter efficiency than dense models</li>
+<li>You're okay with more complex training dynamics</li>
+</ul>
+<p><strong>Real-world examples:</strong> Mixtral-8x7B (56B total params, 13B active), Grok, DeepSeek-V2.</p>
+<p><strong>Trade-off:</strong> More parameters with less compute per token, but training can be trickier due to load balancing between experts.</p>
+<p><img alt="Mixture of Experts" src="../../../../assets/2025-05-04-scaling-llms/moe.svg" /></p>
+<p><strong>Tools</strong>: <a href="https://github.com/huggingface/picotron">Picotron</a>, <a href="https://github.com/huggingface/nanotron">Nanotron</a>.</p>
+<h3 id="quick-comparison-which-parallelism-should-you-use">Quick Comparison: Which Parallelism Should You Use?</h3>
+<table>
+<thead>
+<tr>
+<th>Technique</th>
+<th>What It Splits</th>
+<th>Best For</th>
+<th>Memory Savings</th>
+<th>Communication Cost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Data Parallelism (DP)</strong></td>
+<td>Data batches</td>
+<td>Models that fit on 1 GPU</td>
+<td>None (copies model)</td>
+<td>Low (only gradients)</td>
+</tr>
+<tr>
+<td><strong>FSDP</strong></td>
+<td>Model + optimizer + gradients</td>
+<td>Models too big for 1 GPU</td>
+<td>High (4-8x)</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><strong>Tensor Parallelism (TP)</strong></td>
+<td>Individual layers</td>
+<td>Huge layers, fast GPUs</td>
+<td>Medium</td>
+<td>High (per layer)</td>
+</tr>
+<tr>
+<td><strong>Pipeline Parallelism (PP)</strong></td>
+<td>Layer groups (stages)</td>
+<td>Very deep models</td>
+<td>Medium</td>
+<td>Low (between stages)</td>
+</tr>
+<tr>
+<td><strong>Context Parallelism (CP)</strong></td>
+<td>Sequence length</td>
+<td>Long contexts (64K+ tokens)</td>
+<td>High (for activations)</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><strong>Expert Parallelism (MoE)</strong></td>
+<td>Experts in MoE layers</td>
+<td>Massive sparse models</td>
+<td>None (more params, less FLOPs)</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rule of thumb:</strong> Start with FSDP. Add TP if individual layers are too big. Add PP if you need multiple nodes. Add CP if context length is your bottleneck.</p>
+<h2 id="2-practical-training-strategies">2. Practical Training Strategies</h2>
+<p>Now that you understand the techniques, here's what to actually do based on your hardware setup.</p>
+<h3 id="21-single-machine-2-8-gpus">2.1 Single Machine (2-8 GPUs)</h3>
+<p><strong>Recommended approach:</strong> FSDP, optionally + TP</p>
+<p><strong>What to do:</strong></p>
+<ol>
+<li>Start with pure FSDP using PyTorch FSDP or DeepSpeed ZeRO-2/ZeRO-3</li>
+<li>If your model has huge attention or FFN layers that still don't fit, add TP=2</li>
+<li>Use Hugging Face <code>accelerate</code> or PyTorch <code>torchrun</code> for easy setup</li>
+</ol>
+<p><strong>Hardware-specific tips:</strong></p>
+<ul>
+<li>Consumer GPUs (RTX 4090, etc.) with PCIe: Stick to TP=1 or TP=2 max</li>
+<li>Server GPUs (A100, H100) with NVLink: You can efficiently use TP=2 to TP=4</li>
+<li>8 GPUs in one box: FSDP alone often works great for models up to 70B</li>
+</ul>
+<h3 id="22-small-cluster-2-16-nodes-128-gpus">2.2 Small Cluster (2-16 nodes, ≤128 GPUs)</h3>
+<p><strong>Recommended approach:</strong> 2D or 3D parallelism (TP + FSDP, optionally + PP)</p>
+<p><strong>What to do:</strong></p>
+<ol>
+<li>Use TP within each node (e.g., TP=4 or TP=8 per node with NVLink)</li>
+<li>Use FSDP across nodes for data parallelism</li>
+<li>If your model is extremely deep, add PP to split it vertically across nodes</li>
+</ol>
+<p><strong>Why this works:</strong></p>
+<ul>
+<li>Fast intra-node connections (NVLink) handle TP's high communication needs</li>
+<li>Slower inter-node connections (InfiniBand) only need to sync FSDP shards</li>
+<li>Minimizes cross-node bandwidth requirements</li>
+</ul>
+<p><strong>Pro tip:</strong> When using Pipeline Parallelism, set your number of micro-batches to at least 4× your pipeline degree to keep GPUs busy and minimize "bubbles."</p>
+<h3 id="23-large-cluster-hundreds-or-thousands-of-gpus">2.3 Large Cluster (Hundreds or Thousands of GPUs)</h3>
+<p><strong>Recommended approach:</strong> 4D parallelism (DP × TP × PP × CP)</p>
+<p><strong>What to do:</strong></p>
+<ol>
+<li>Combine all four parallelism strategies to handle the largest models</li>
+<li>Carefully map parallelism strategies to your hardware topology</li>
+<li>Use tools like Megatron-LM or Nanotron that support 4D parallelism out of the box</li>
+</ol>
+<p><strong>When you need this:</strong></p>
+<ul>
+<li>Training models with 70B+ parameters and 32K+ context windows</li>
+<li>Pretraining from scratch (not fine-tuning)</li>
+<li>Production-scale model training at big labs</li>
+</ul>
+<p><strong>Performance expectations:</strong></p>
+<ul>
+<li>With good InfiniBand networking: ~70-80% scaling efficiency</li>
+<li>With excellent setup and tuning: ~85% scaling efficiency possible</li>
+</ul>
+<p><strong>Real-world example:</strong> Training a 70B model with 32K context on 512 GPUs:</p>
+<ul>
+<li>TP=8 (within each 8-GPU node)</li>
+<li>PP=4 (pipeline across 4 nodes)</li>
+<li>CP=4 (split context across 4 chunks)</li>
+<li>DP=4 (data parallelism for throughput)</li>
+<li>Total: 8 × 4 × 4 × 4 = 512 GPUs</li>
+</ul>
+<h2 id="3-practical-tools-worth-learning">3. Practical Tools Worth Learning</h2>
+<p>Here's a quick guide to the most useful tools and when to reach for them:</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>When to Use It</th>
+<th>Learning Curve</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Hugging Face Accelerate</strong></td>
+<td>Any distributed training with minimal code changes</td>
+<td>★☆☆☆☆</td>
+<td>Beginners, quick prototypes</td>
+</tr>
+<tr>
+<td><strong>PyTorch FSDP</strong></td>
+<td>Medium-large models (1-30B) on single node</td>
+<td>★★☆☆☆</td>
+<td>Most common use case</td>
+</tr>
+<tr>
+<td><strong>DeepSpeed ZeRO</strong></td>
+<td>Multi-node training with good documentation</td>
+<td>★★★☆☆</td>
+<td>Production training</td>
+</tr>
+<tr>
+<td><strong>Megatron-LM</strong></td>
+<td>Very large models (70B+), 3D/4D parallelism</td>
+<td>★★★★☆</td>
+<td>Advanced/production at scale</td>
+</tr>
+<tr>
+<td><strong>Nanotron</strong></td>
+<td>Learning/research on modern parallelism strategies</td>
+<td>★★★☆☆</td>
+<td>Education, experimentation</td>
+</tr>
+<tr>
+<td><strong>vLLM</strong></td>
+<td>Fast inference with PagedAttention and KV caching</td>
+<td>★★☆☆☆</td>
+<td>Serving models in production</td>
+</tr>
+<tr>
+<td><strong>TensorRT-LLM</strong></td>
+<td>Maximum inference speed on NVIDIA GPUs</td>
+<td>★★★★☆</td>
+<td>Production inference optimization</td>
+</tr>
+</tbody>
+</table>
+<h4 id="example-accelerate-config-for-fsdp">Example: Accelerate Config for FSDP</h4>
+<p>To get started with FSDP using Hugging Face Accelerate, you can run <code>accelerate config</code> or create a <code>config.yaml</code> like this:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">compute_environment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LOCAL_MACHINE</span>
+<span class="nt">distributed_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FSDP</span>
+<span class="nt">fsdp_config</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">fsdp_auto_wrap_policy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TRANSFORMER_BASED_WRAP</span>
+<span class="w">    </span><span class="nt">fsdp_backward_prefetch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BACKWARD_PRE</span>
+<span class="w">    </span><span class="nt">fsdp_state_dict_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SHARDED_STATE_DICT</span>
+<span class="nt">machine_rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="nt">main_process_ip</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="nt">main_process_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="nt">main_training_function</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
+<span class="nt">mixed_precision</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bf16</span>
+<span class="nt">num_machines</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="nt">num_processes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span>
+<span class="nt">use_cpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</code></pre></div>
+<p><strong>My recommendation for getting started:</strong> Start with Hugging Face Accelerate for learning, then graduate to PyTorch FSDP or DeepSpeed when you need more control.</p>
+<h2 id="4-making-the-right-choice-a-decision-framework">4. Making the Right Choice: A Decision Framework</h2>
+<p>Still not sure what to use? Follow this decision tree:</p>
+<p><strong>Step 1: Does your model fit on a single GPU?</strong></p>
+<ul>
+<li>✅ <strong>Yes</strong> → Use standard training (no parallelism needed)</li>
+<li>❌ <strong>No</strong> → Continue to Step 2</li>
+</ul>
+<p><strong>Step 2: Do you have multiple GPUs in one machine?</strong></p>
+<ul>
+<li>✅ <strong>Yes</strong> → Start with FSDP</li>
+<li>❌ <strong>No</strong> → You'll need a cluster or smaller model (skip to Step 4)</li>
+</ul>
+<p><strong>Step 3: Is FSDP alone enough?</strong></p>
+<ul>
+<li>✅ <strong>Yes</strong> → You're done! Use pure FSDP</li>
+<li>❌ <strong>No, individual layers are too big</strong> → Add TP=2 or TP=4</li>
+<li>❌ <strong>No, context is too long</strong> → Add CP</li>
+</ul>
+<p><strong>Step 4: Training across multiple nodes?</strong></p>
+<ul>
+<li>Start with: TP within nodes + FSDP across nodes</li>
+<li>If model is very deep: Add PP to split layers across nodes</li>
+<li>If you have 100+ GPUs and long contexts: Consider 4D parallelism (TP + PP + DP + CP)</li>
+</ul>
+<p><strong>Visual decision tree:</strong></p>
+<p><img alt="Scaling Decision Tree" src="../../../../assets/2025-05-04-scaling-llms/scaling_decision_tree.svg" /></p>
+<h2 id="5-the-ultra-scale-cheatsheet">5. The Ultra-Scale Cheatsheet</h2>
+<p>For a comprehensive visual summary, check out this guide from Hugging Face's team:</p>
+<p><img alt="Ultra-Scale LLM Cheatsheet" src="https://nanotron-ultrascale-playbook.static.hf.space/assets/images/ultra-cheatsheet.svg" /></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Scaling LLMs is both an art and a science. The key takeaways:</p>
+<ol>
+<li><strong>Start simple:</strong> Most people should begin with FSDP. It handles the majority of use cases.</li>
+<li><strong>Add complexity only when needed:</strong> Don't jump straight to 4D parallelism unless you're training at massive scale.</li>
+<li><strong>Match strategy to hardware:</strong> TP works best within nodes, FSDP across nodes, PP for extreme depth.</li>
+<li><strong>Tools matter:</strong> Use Accelerate to learn, FSDP or DeepSpeed for production.</li>
+</ol>
+<p>The techniques here follow logical patterns based on hardware constraints and model architecture. With the right approach, you can scale from a single GPU to thousands, training models that would have been impossible just a few years ago.</p>
+<p><strong>Further resources:</strong></p>
+<ul>
+<li><a href="https://huggingface.co/spaces/nanotron/ultrascale-playbook">Hugging Face Ultra-Scale Playbook</a> - Interactive guide with more details</li>
+<li><a href="https://pytorch.org/tutorials/intermediate/FSDP_tutorial.html">PyTorch FSDP Tutorial</a> - Official getting started guide</li>
+<li><a href="https://www.deepspeed.ai/tutorials/">DeepSpeed Tutorials</a> - Comprehensive DeepSpeed documentation</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="/feed_rss_created.xml" target="_blank" rel="noopener" title="RSS" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20 5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27zm0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.path", "navigation.indexes", "navigation.toc", "navigation.toc.sticky", "navigation.toc.maxdepth", "navigation.toc.title", "navigation.toc.collapse", "navigation.toc.collapse_empty_groups", "navigation.toc.collapse_single_children", "content.code.copy"], "search": "../../../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+      
+        <script src="../../../../../javascripts/mermaid-init.js"></script>
+      
+    
+  </body>
+</html>
