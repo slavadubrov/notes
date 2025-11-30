@@ -61,8 +61,8 @@ markdown_extensions: # Configures Markdown extensions for additional functionali
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.highlight:
-      anchor_linenums: true
       linenums: false
+      use_pygments: true
   - attr_list # Enables custom attributes for Markdown elements
   - md_in_html # Allows Markdown syntax inside HTML blocks
   - pymdownx.emoji: # Adds support for emoji shortcodes
