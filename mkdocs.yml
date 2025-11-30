@@ -76,6 +76,14 @@ markdown_extensions: # Configures Markdown extensions for additional functionali
 
 plugins: # Configures MkDocs plugins for extended functionality
   - search # Adds search functionality to the site
+  - kroki:
+      server_url: https://kroki.io
+      fence_prefix: mermaid
+      file_types:
+        - png
+        - svg
+      file_type_overrides:
+        mermaid: png
   - blog: # Enables blog functionality
       post_excerpt: required # fail the build if <!-- more --> is missing
       post_readtime: false # don't show reading‑time badges

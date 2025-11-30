@@ -12,6 +12,7 @@ dependencies = [
     "mkdocs-material>=9.5.2",
     "mkdocs-rss-plugin>=1.17.4",
     "pymdown-extensions>=10.15",
+    "mkdocs-kroki-plugin>=1.0.0",
 ]
 
 [dependency-groups]
