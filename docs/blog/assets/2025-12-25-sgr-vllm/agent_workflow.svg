@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520">
+  <defs>
+    <linearGradient id="phase1Grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="phase2Grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0891b2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="phase3Grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="4" stdDeviation="4" flood-opacity="0.15"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+    <marker id="arrowPurple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#8b5cf6"/>
+    </marker>
+    <marker id="arrowCyan" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#06b6d4"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
+    </marker>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="900" height="520" fill="#0f172a"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="bold" fill="#f8fafc" text-anchor="middle">SGR Discount Manager - Agent Workflow</text>
+  <text x="450" y="55" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">github.com/slavadubrov/sgr-discount-manager</text>
+  
+  <!-- User Input -->
+  <g transform="translate(30, 90)">
+    <rect x="0" y="0" width="130" height="80" rx="12" fill="#1e293b" stroke="#475569" stroke-width="2" filter="url(#shadow)"/>
+    <text x="65" y="25" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#f8fafc" text-anchor="middle">👤 User Query</text>
+    <rect x="10" y="35" width="110" height="35" rx="4" fill="#0f172a"/>
+    <text x="65" y="52" font-family="system-ui, sans-serif" font-size="9" fill="#94a3b8" text-anchor="middle">"I want a discount</text>
+    <text x="65" y="64" font-family="system-ui, sans-serif" font-size="9" fill="#94a3b8" text-anchor="middle">or I'm leaving!"</text>
+  </g>
+  
+  <!-- Arrow to Phase 1 -->
+  <path d="M165,130 L195,130" stroke="#8b5cf6" stroke-width="2" fill="none" marker-end="url(#arrowPurple)"/>
+  
+  <!-- Phase 1: Routing -->
+  <g transform="translate(200, 80)">
+    <rect x="0" y="0" width="200" height="175" rx="14" fill="#1e293b" stroke="#8b5cf6" stroke-width="3" filter="url(#shadow)"/>
+    
+    <!-- Phase header -->
+    <rect x="0" y="0" width="200" height="45" rx="14" fill="url(#phase1Grad)"/>
+    <rect x="0" y="30" width="200" height="15" fill="url(#phase1Grad)"/>
+    <text x="100" y="22" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="white" text-anchor="middle">Phase 1: Routing</text>
+    <text x="100" y="38" font-family="system-ui, sans-serif" font-size="10" fill="#ddd6fe" text-anchor="middle">RouterSchema</text>
+    
+    <!-- LLM call -->
+    <rect x="20" y="55" width="160" height="30" rx="6" fill="#5b21b6" stroke="#a78bfa" stroke-width="1"/>
+    <text x="100" y="74" font-family="system-ui, sans-serif" font-size="10" fill="white" text-anchor="middle">🧠 vLLM + xgrammar</text>
+    
+    <!-- Decision -->
+    <rect x="20" y="95" width="160" height="65" rx="6" fill="#0f172a" stroke="#475569" stroke-width="1"/>
+    <text x="30" y="112" font-family="monospace" font-size="9" fill="#c4b5fd">action: FeatureLookup</text>
+    <text x="30" y="127" font-family="monospace" font-size="9" fill="#a78bfa">  tool: "fetch_user"</text>
+    <text x="30" y="142" font-family="monospace" font-size="9" fill="#a78bfa">  user_id: "user_102"</text>
+    <text x="30" y="155" font-family="monospace" font-size="9" fill="#a78bfa">  rationale: "pricing.."</text>
+  </g>
+  
+  <!-- Arrow to Phase 2 -->
+  <path d="M405,170 L435,170" stroke="#06b6d4" stroke-width="2" fill="none" marker-end="url(#arrowCyan)"/>
+  
+  <!-- Phase 2: Context Retrieval -->
+  <g transform="translate(440, 80)">
+    <rect x="0" y="0" width="200" height="175" rx="14" fill="#1e293b" stroke="#06b6d4" stroke-width="3" filter="url(#shadow)"/>
+    
+    <!-- Phase header -->
+    <rect x="0" y="0" width="200" height="45" rx="14" fill="url(#phase2Grad)"/>
+    <rect x="0" y="30" width="200" height="15" fill="url(#phase2Grad)"/>
+    <text x="100" y="22" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="white" text-anchor="middle">Phase 2: Context</text>
+    <text x="100" y="38" font-family="system-ui, sans-serif" font-size="10" fill="#cffafe" text-anchor="middle">HybridFeatureStore</text>
+    
+    <!-- Hot store -->
+    <rect x="15" y="55" width="80" height="50" rx="6" fill="#0e7490" stroke="#22d3ee" stroke-width="1"/>
+    <text x="55" y="72" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="white" text-anchor="middle">🔥 SQLite</text>
+    <text x="55" y="85" font-family="system-ui, sans-serif" font-size="8" fill="#a5f3fc" text-anchor="middle">cart_value</text>
+    <text x="55" y="97" font-family="system-ui, sans-serif" font-size="8" fill="#a5f3fc" text-anchor="middle">margin</text>
+    
+    <!-- Cold store -->
+    <rect x="105" y="55" width="80" height="50" rx="6" fill="#0e7490" stroke="#22d3ee" stroke-width="1"/>
+    <text x="145" y="72" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="white" text-anchor="middle">❄️ DuckDB</text>
+    <text x="145" y="85" font-family="system-ui, sans-serif" font-size="8" fill="#a5f3fc" text-anchor="middle">LTV</text>
+    <text x="145" y="97" font-family="system-ui, sans-serif" font-size="8" fill="#a5f3fc" text-anchor="middle">churn_prob</text>
+    
+    <!-- Retrieved context -->
+    <rect x="15" y="115" width="170" height="45" rx="6" fill="#0f172a" stroke="#475569" stroke-width="1"/>
+    <text x="25" y="132" font-family="monospace" font-size="8" fill="#67e8f9">LTV: $1,500 | Margin: 20%</text>
+    <text x="25" y="147" font-family="monospace" font-size="8" fill="#67e8f9">Churn: 0.75 | Cart: $200</text>
+  </g>
+  
+  <!-- Arrow to Phase 3 -->
+  <path d="M645,170 L675,170" stroke="#10b981" stroke-width="2" fill="none" marker-end="url(#arrowGreen)"/>
+  
+  <!-- Phase 3: Pricing Logic -->
+  <g transform="translate(680, 80)">
+    <rect x="0" y="0" width="200" height="175" rx="14" fill="#1e293b" stroke="#10b981" stroke-width="3" filter="url(#shadow)"/>
+    
+    <!-- Phase header -->
+    <rect x="0" y="0" width="200" height="45" rx="14" fill="url(#phase3Grad)"/>
+    <rect x="0" y="30" width="200" height="15" fill="url(#phase3Grad)"/>
+    <text x="100" y="22" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="white" text-anchor="middle">Phase 3: SGR Logic</text>
+    <text x="100" y="38" font-family="system-ui, sans-serif" font-size="10" fill="#d1fae5" text-anchor="middle">PricingLogic Schema</text>
+    
+    <!-- LLM call -->
+    <rect x="20" y="55" width="160" height="30" rx="6" fill="#047857" stroke="#6ee7b7" stroke-width="1"/>
+    <text x="100" y="74" font-family="system-ui, sans-serif" font-size="10" fill="white" text-anchor="middle">🧠 vLLM + xgrammar</text>
+    
+    <!-- Output -->
+    <rect x="15" y="95" width="170" height="65" rx="6" fill="#0f172a" stroke="#475569" stroke-width="1"/>
+    <text x="25" y="110" font-family="monospace" font-size="8" fill="#6ee7b7">churn_analysis: "High"</text>
+    <text x="25" y="123" font-family="monospace" font-size="8" fill="#6ee7b7">margin_math: "$200*0.2=$40"</text>
+    <text x="25" y="136" font-family="monospace" font-size="8" fill="#6ee7b7">max_discount: 15.0</text>
+    <text x="25" y="149" font-family="monospace" font-size="8" fill="#6ee7b7">offer_code: "SAVE15"</text>
+  </g>
+  
+  <!-- Bottom: Schema definitions -->
+  <g transform="translate(30, 280)">
+    <rect x="0" y="0" width="420" height="210" rx="12" fill="#1e293b" stroke="#8b5cf6" stroke-width="2" filter="url(#shadow)"/>
+    <text x="210" y="25" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#c4b5fd" text-anchor="middle">RouterSchema (Phase 1)</text>
+    
+    <rect x="15" y="40" width="390" height="155" rx="6" fill="#0f172a" stroke="#475569" stroke-width="1"/>
+    <text x="25" y="60" font-family="monospace" font-size="10" fill="#e0e7ff">class FeatureLookup(BaseModel):</text>
+    <text x="25" y="77" font-family="monospace" font-size="10" fill="#a5b4fc">    rationale: str</text>
+    <text x="25" y="94" font-family="monospace" font-size="10" fill="#a5b4fc">    tool_name: Literal["fetch_user_features"]</text>
+    <text x="25" y="111" font-family="monospace" font-size="10" fill="#a5b4fc">    user_id: str</text>
+    <text x="25" y="135" font-family="monospace" font-size="10" fill="#e0e7ff">class GeneralResponse(BaseModel):</text>
+    <text x="25" y="152" font-family="monospace" font-size="10" fill="#a5b4fc">    tool_name: Literal["respond"]</text>
+    <text x="25" y="169" font-family="monospace" font-size="10" fill="#a5b4fc">    content: str</text>
+    <text x="25" y="186" font-family="monospace" font-size="10" fill="#e0e7ff">class RouterSchema(BaseModel):</text>
+    <text x="166" y="186" font-family="monospace" font-size="10" fill="#a5b4fc">action: Union[...]</text>
+  </g>
+  
+  <g transform="translate(470, 280)">
+    <rect x="0" y="0" width="410" height="210" rx="12" fill="#1e293b" stroke="#10b981" stroke-width="2" filter="url(#shadow)"/>
+    <text x="205" y="25" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#6ee7b7" text-anchor="middle">PricingLogic (Phase 3)</text>
+    
+    <rect x="15" y="40" width="380" height="155" rx="6" fill="#0f172a" stroke="#475569" stroke-width="1"/>
+    <text x="25" y="60" font-family="monospace" font-size="10" fill="#d1fae5">class PricingLogic(BaseModel):</text>
+    <text x="25" y="80" font-family="monospace" font-size="10" fill="#6ee7b7">    # 1. Data Analysis</text>
+    <text x="25" y="97" font-family="monospace" font-size="10" fill="#a7f3d0">    churn_analysis: str</text>
+    <text x="25" y="114" font-family="monospace" font-size="10" fill="#a7f3d0">    financial_analysis: str</text>
+    <text x="25" y="131" font-family="monospace" font-size="10" fill="#6ee7b7">    # 2. Math Enforcement</text>
+    <text x="25" y="148" font-family="monospace" font-size="10" fill="#a7f3d0">    margin_math: str</text>
+    <text x="25" y="165" font-family="monospace" font-size="10" fill="#a7f3d0">    max_discount_percent: float</text>
+    <text x="25" y="182" font-family="monospace" font-size="10" fill="#6ee7b7">    # 3. Final Output</text>
+    <text x="166" y="182" font-family="monospace" font-size="10" fill="#a7f3d0">offer_code, customer_message</text>
+  </g>
+</svg>
