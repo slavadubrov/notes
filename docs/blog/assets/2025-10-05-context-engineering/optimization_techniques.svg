@@ -84,7 +84,7 @@
 
     <!-- When to apply section -->
     <text x="50" y="295" class="section-label">WHEN TO APPLY:</text>
-    
+
     <g transform="translate(30, 310)">
         <rect x="0" y="0" width="195" height="55" rx="8" ry="8" fill="#0f172a" stroke="#3b82f6" stroke-width="1" />
         <text x="97" y="22" class="card-desc" style="fill: #3b82f6;">Use for:</text>

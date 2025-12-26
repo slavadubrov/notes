@@ -190,8 +190,8 @@ Your code validates `args` against the tool's schema _before_ calling the API.
 #### Memory Patterns
 
 - **Entity memories** (names, IDs, preferences) + expiry policies.
-- **Short‑term summaries** to keep context window lean.
-- **Scoped retrieval** from long‑term store (vector/kv/graph).
+- **Scoped retrieval** from long-term store (vector/kv/graph).
+- **Compression integration**: When short-term memory grows large, apply [Context Compression Strategies](#context-compression-strategies).
 
 ![Memory Scoping](../assets/2025-10-05-context-engineering/memory_scoping.svg)
 
@@ -227,7 +227,7 @@ A Skill is an organized folder containing instructions, scripts, and resources t
 
 #### Skills Pattern: Progressive Disclosure
 
-The key design principle is **progressive disclosure**—loading information only when needed:
+The key design principle is **progressive disclosure**—loading information only when needed. See [The Progressive Disclosure Principle](#the-progressive-disclosure-principle) for the general pattern.
 
 1. **Level 1 (Startup)**: Only skill names and descriptions are loaded into context
 2. **Level 2 (Activation)**: When relevant, the full SKILL.md is loaded
@@ -413,7 +413,7 @@ Models develop attention patterns from training data where shorter sequences pre
 
 ![Progressive Disclosure](../assets/2025-10-05-context-engineering/progressive_disclosure.svg)
 
-**The Progressive Disclosure Principle**
+#### The Progressive Disclosure Principle
 
 Progressive disclosure manages context efficiently by loading information only as needed. At startup, agents load only skill names and descriptions—sufficient to know when a skill might be relevant. Full content loads only when activated for specific tasks.
 
@@ -563,6 +563,8 @@ _Sources: RULER benchmark [[3]](#references), Understanding AI research (2024), 
 
 ## Context Compression Strategies
 
+> **Terminology note**: Context compression is an umbrella category that includes several techniques: summarization (for conversation history and memory), observation masking (for tool outputs), and selective trimming. The memory summarization referenced in the [Memory](#4-memory) section is one application of these broader compression strategies.
+
 When agent sessions generate millions of tokens of conversation history, compression becomes mandatory. The naive approach is aggressive compression to minimize tokens per request. **The correct optimization target is tokens per task** [[4]](#references): total tokens consumed to complete a task, including re-fetching costs when compression loses critical information.
 
 ![Compression Strategies](../assets/2025-10-05-context-engineering/compression_strategies.svg)
@@ -671,7 +673,7 @@ If compression preserved the right information, the agent answers correctly. If 
 
 ## Context Optimization Techniques
 
-Context optimization extends effective capacity through strategic compression, masking, caching, and partitioning. Effective optimization can **double or triple effective context capacity** without requiring larger models.
+Context optimization extends effective capacity through strategic compression, masking, caching, and partitioning. **These techniques build on the [Context Compression Strategies](#context-compression-strategies) covered earlier**, applying them systematically for production use. Effective optimization can **double or triple effective context capacity** without requiring larger models.
 
 ![Optimization Techniques](../assets/2025-10-05-context-engineering/optimization_techniques.svg)
 
@@ -1032,6 +1034,11 @@ _This article incorporates content from the Agent Skills for Context Engineering
 
 6. **Anthropic. (2024).** "Model Context Protocol (MCP) Specification." [https://modelcontextprotocol.io/](https://modelcontextprotocol.io/)
     - Official specification for the MCP standard for AI-tool integration.
+
+### Memory Management
+
+- **LangChain/LangGraph. (2024).** "How to add memory to the prebuilt ReAct agent."
+  [https://langchain-ai.github.io/langgraph/how-tos/create-react-agent-memory/](https://langchain-ai.github.io/langgraph/how-tos/create-react-agent-memory/) — Demonstrates that summarization is one technique for managing memory within context limits.
 
 ### Additional Resources
 
