@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520">
+    <style>
+        .bg { fill: #1e1e1e; }
+        .title { fill: #f8fafc; font-family: sans-serif; font-size: 22px; font-weight: bold; text-anchor: middle; }
+        .subtitle { fill: #94a3b8; font-family: sans-serif; font-size: 13px; text-anchor: middle; }
+        .card { rx: 12; ry: 12; }
+        .card-title { fill: #f8fafc; font-family: sans-serif; font-size: 15px; font-weight: bold; text-anchor: middle; }
+        .card-desc { fill: #cbd5e1; font-family: sans-serif; font-size: 11px; text-anchor: middle; }
+        .metric { fill: #22c55e; font-family: sans-serif; font-size: 13px; font-weight: bold; text-anchor: middle; }
+        .metric-box { fill: #1e293b; rx: 6; ry: 6; }
+        .use-case { fill: #94a3b8; font-family: sans-serif; font-size: 10px; text-anchor: middle; font-style: italic; }
+        .section-label { fill: #64748b; font-family: sans-serif; font-size: 11px; font-weight: bold; text-anchor: start; }
+        .result-box { fill: #052e16; stroke: #22c55e; stroke-width: 2; rx: 10; ry: 10; }
+        .result-text { fill: #86efac; font-family: sans-serif; font-size: 14px; font-weight: bold; text-anchor: middle; }
+        .flow-line { stroke: #475569; stroke-width: 2; stroke-dasharray: 5 5; }
+        .number { fill: #f8fafc; font-family: sans-serif; font-size: 14px; font-weight: bold; }
+    </style>
+
+    <rect width="100%" height="100%" class="bg" />
+
+    <!-- Title -->
+    <text x="450" y="35" class="title">Context Optimization Techniques</text>
+    <text x="450" y="58" class="subtitle">Four strategies to extend effective context capacity 2-3x without larger models</text>
+
+    <!-- Horizontal flow line -->
+    <line x1="50" y1="260" x2="850" y2="260" class="flow-line" />
+
+    <!-- Technique 1: Compaction -->
+    <g transform="translate(30, 90)">
+        <rect x="0" y="0" width="195" height="150" class="card" fill="#1e3a5f" stroke="#3b82f6" stroke-width="2" />
+        <circle cx="25" cy="25" r="15" fill="#3b82f6" />
+        <text x="25" y="30" class="number" text-anchor="middle">1</text>
+        <text x="105" y="30" class="card-title">Compaction</text>
+        <line x1="15" y1="45" x2="180" y2="45" stroke="#3b82f6" stroke-width="1" opacity="0.4" />
+        <text x="97" y="68" class="card-desc">Summarize context when</text>
+        <text x="97" y="83" class="card-desc">approaching window limits</text>
+        <text x="97" y="98" class="card-desc">Reinitialize with summary</text>
+        <rect x="25" y="110" width="145" height="28" class="metric-box" stroke="#3b82f6" stroke-width="1" />
+        <text x="97" y="129" class="metric">50-70% token reduction</text>
+    </g>
+
+    <!-- Technique 2: Observation Masking -->
+    <g transform="translate(245, 90)">
+        <rect x="0" y="0" width="195" height="150" class="card" fill="#2e1e3f" stroke="#a855f7" stroke-width="2" />
+        <circle cx="25" cy="25" r="15" fill="#a855f7" />
+        <text x="25" y="30" class="number" text-anchor="middle">2</text>
+        <text x="105" y="30" class="card-title">Observation Masking</text>
+        <line x1="15" y1="45" x2="180" y2="45" stroke="#a855f7" stroke-width="1" opacity="0.4" />
+        <text x="97" y="68" class="card-desc">Replace tool outputs</text>
+        <text x="97" y="83" class="card-desc">with compact references</text>
+        <text x="97" y="98" class="card-desc">Tool outputs = 80% of tokens</text>
+        <rect x="25" y="110" width="145" height="28" class="metric-box" stroke="#a855f7" stroke-width="1" />
+        <text x="97" y="129" class="metric">60-80% reduction</text>
+    </g>
+
+    <!-- Technique 3: KV-Cache -->
+    <g transform="translate(460, 90)">
+        <rect x="0" y="0" width="195" height="150" class="card" fill="#1e3f2e" stroke="#22c55e" stroke-width="2" />
+        <circle cx="25" cy="25" r="15" fill="#22c55e" />
+        <text x="25" y="30" class="number" text-anchor="middle">3</text>
+        <text x="105" y="30" class="card-title">KV-Cache Optimization</text>
+        <line x1="15" y1="45" x2="180" y2="45" stroke="#22c55e" stroke-width="1" opacity="0.4" />
+        <text x="97" y="68" class="card-desc">Reuse cached attention</text>
+        <text x="97" y="83" class="card-desc">computations across requests</text>
+        <text x="97" y="98" class="card-desc">Place stable content first</text>
+        <rect x="25" y="110" width="145" height="28" class="metric-box" stroke="#22c55e" stroke-width="1" />
+        <text x="97" y="129" class="metric">70%+ cache hit rate</text>
+    </g>
+
+    <!-- Technique 4: Partitioning -->
+    <g transform="translate(675, 90)">
+        <rect x="0" y="0" width="195" height="150" class="card" fill="#3f3d1e" stroke="#eab308" stroke-width="2" />
+        <circle cx="25" cy="25" r="15" fill="#eab308" />
+        <text x="25" y="30" class="number" text-anchor="middle">4</text>
+        <text x="105" y="30" class="card-title">Context Partitioning</text>
+        <line x1="15" y1="45" x2="180" y2="45" stroke="#eab308" stroke-width="1" opacity="0.4" />
+        <text x="97" y="68" class="card-desc">Split work across</text>
+        <text x="97" y="83" class="card-desc">sub-agents with isolated</text>
+        <text x="97" y="98" class="card-desc">clean context windows</text>
+        <rect x="25" y="110" width="145" height="28" class="metric-box" stroke="#eab308" stroke-width="1" />
+        <text x="97" y="129" class="metric">Most aggressive</text>
+    </g>
+
+    <!-- When to apply section -->
+    <text x="50" y="295" class="section-label">WHEN TO APPLY:</text>
+    
+    <g transform="translate(30, 310)">
+        <rect x="0" y="0" width="195" height="55" rx="8" ry="8" fill="#0f172a" stroke="#3b82f6" stroke-width="1" />
+        <text x="97" y="22" class="card-desc" style="fill: #3b82f6;">Use for:</text>
+        <text x="97" y="40" class="card-desc">Message history grows large</text>
+    </g>
+
+    <g transform="translate(245, 310)">
+        <rect x="0" y="0" width="195" height="55" rx="8" ry="8" fill="#0f172a" stroke="#a855f7" stroke-width="1" />
+        <text x="97" y="22" class="card-desc" style="fill: #a855f7;">Use for:</text>
+        <text x="97" y="40" class="card-desc">Tool outputs dominate context</text>
+    </g>
+
+    <g transform="translate(460, 310)">
+        <rect x="0" y="0" width="195" height="55" rx="8" ry="8" fill="#0f172a" stroke="#22c55e" stroke-width="1" />
+        <text x="97" y="22" class="card-desc" style="fill: #22c55e;">Use for:</text>
+        <text x="97" y="40" class="card-desc">Stable prompts / templates</text>
+    </g>
+
+    <g transform="translate(675, 310)">
+        <rect x="0" y="0" width="195" height="55" rx="8" ry="8" fill="#0f172a" stroke="#eab308" stroke-width="1" />
+        <text x="97" y="22" class="card-desc" style="fill: #eab308;">Use for:</text>
+        <text x="97" y="40" class="card-desc">Very long multi-phase tasks</text>
+    </g>
+
+    <!-- Result box -->
+    <g transform="translate(250, 395)">
+        <rect x="0" y="0" width="400" height="55" class="result-box" />
+        <text x="200" y="25" class="result-text">Combined Effect: 2-3x Effective Capacity</text>
+        <text x="200" y="45" class="card-desc" style="fill: #86efac;">Without upgrading to larger or more expensive models</text>
+    </g>
+
+    <!-- Target metrics at bottom -->
+    <text x="50" y="480" class="section-label">TARGET METRICS:</text>
+    <text x="170" y="480" class="card-desc">Compaction: 50-70% reduction, &lt;5% quality loss</text>
+    <text x="420" y="480" class="card-desc">Masking: 60-80% reduction on tool outputs</text>
+    <text x="670" y="480" class="card-desc">Cache: 70%+ hit rate for stable workloads</text>
+
+</svg>

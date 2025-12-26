@@ -29,19 +29,19 @@
       <polygon points="0 0, 10 3.5, 0 7" fill="#6366f1"/>
     </marker>
   </defs>
-  
+
   <!-- Background -->
   <rect width="900" height="600" fill="#0f172a"/>
-  
+
   <!-- Title -->
   <text x="450" y="35" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="bold" fill="#f8fafc" text-anchor="middle">xgrammar: Where Masking Happens in the Inference Pipeline</text>
-  
+
   <!-- Step labels -->
   <text x="450" y="65" font-family="system-ui, sans-serif" font-size="13" fill="#64748b" text-anchor="middle">The mask is applied AFTER the forward pass, BEFORE sampling</text>
-  
+
   <!-- Pipeline flow - horizontal -->
   <g transform="translate(30, 100)">
-    
+
     <!-- Step 1: Input Tokens -->
     <g transform="translate(0, 0)">
       <rect x="0" y="0" width="120" height="70" rx="10" fill="#1e293b" stroke="#475569" stroke-width="2" filter="url(#shadow)"/>
@@ -49,10 +49,10 @@
       <text x="60" y="45" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#f8fafc" text-anchor="middle">Input Tokens</text>
       <text x="60" y="60" font-family="monospace" font-size="10" fill="#64748b" text-anchor="middle">[1, 234, 56, ...]</text>
     </g>
-    
+
     <!-- Arrow 1 -->
     <path d="M125,35 L155,35" stroke="#10b981" stroke-width="2" fill="none" marker-end="url(#arrowGreen)"/>
-    
+
     <!-- Step 2: GPU Forward Pass -->
     <g transform="translate(160, 0)">
       <rect x="0" y="0" width="180" height="70" rx="10" fill="url(#gpuGrad)" filter="url(#shadow)"/>
@@ -60,10 +60,10 @@
       <text x="90" y="40" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="white" text-anchor="middle">🖥️ Forward Pass</text>
       <text x="90" y="58" font-family="system-ui, sans-serif" font-size="10" fill="#a7f3d0" text-anchor="middle">Model computes all 128K logits</text>
     </g>
-    
+
     <!-- Arrow 2 -->
     <path d="M345,35 L375,35" stroke="#10b981" stroke-width="2" fill="none" marker-end="url(#arrowGreen)"/>
-    
+
     <!-- Step 3: Raw Logits -->
     <g transform="translate(380, 0)">
       <rect x="0" y="0" width="120" height="70" rx="10" fill="#1e293b" stroke="#475569" stroke-width="2" filter="url(#shadow)"/>
@@ -71,10 +71,10 @@
       <text x="60" y="40" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#f8fafc" text-anchor="middle">Raw Logits</text>
       <text x="60" y="58" font-family="monospace" font-size="9" fill="#64748b" text-anchor="middle">[2.1, -0.5, 3.8...]</text>
     </g>
-    
+
     <!-- Arrow 3 -->
     <path d="M505,35 L535,35" stroke="#f59e0b" stroke-width="3" fill="none" marker-end="url(#arrowOrange)"/>
-    
+
     <!-- Step 4: xgrammar Logits Processor (THE KEY STEP) -->
     <g transform="translate(540, -15)">
       <rect x="0" y="0" width="180" height="100" rx="12" fill="url(#xgrammarGrad)" stroke="#fbbf24" stroke-width="3" filter="url(#shadow)"/>
@@ -83,10 +83,10 @@
       <text x="90" y="60" font-family="system-ui, sans-serif" font-size="11" fill="#fef3c7" text-anchor="middle">Logits Processor</text>
       <text x="90" y="82" font-family="system-ui, sans-serif" font-size="10" fill="#fde68a" text-anchor="middle">Invalid tokens → -∞</text>
     </g>
-    
+
     <!-- Arrow 4 -->
     <path d="M725,35 L755,35" stroke="#6366f1" stroke-width="2" fill="none" marker-end="url(#arrowBlue)"/>
-    
+
     <!-- Step 5: Sampling -->
     <g transform="translate(760, 0)">
       <rect x="0" y="0" width="110" height="70" rx="10" fill="url(#samplingGrad)" filter="url(#shadow)"/>
@@ -95,19 +95,19 @@
       <text x="55" y="58" font-family="system-ui, sans-serif" font-size="10" fill="#a5b4fc" text-anchor="middle">temp, top-p</text>
     </g>
   </g>
-  
+
   <!-- Detail box: What xgrammar does -->
   <g transform="translate(30, 210)">
     <rect x="0" y="0" width="420" height="180" rx="12" fill="#1e293b" stroke="#f59e0b" stroke-width="2" filter="url(#shadow)"/>
     <text x="210" y="28" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#fbbf24" text-anchor="middle">What xgrammar Does (Between Steps 2 → 4)</text>
-    
+
     <line x1="20" y1="45" x2="400" y2="45" stroke="#334155" stroke-width="1"/>
-    
+
     <!-- Before -->
     <text x="20" y="70" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#94a3b8">Raw Logits from GPU:</text>
     <rect x="20" y="80" width="180" height="35" rx="4" fill="#0f172a" stroke="#475569" stroke-width="1"/>
     <text x="30" y="100" font-family="monospace" font-size="10" fill="#94a3b8">"true":3.2  "15":2.8  "hello":4.1</text>
-    
+
     <!-- After -->
     <text x="220" y="70" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#94a3b8">After xgrammar Mask:</text>
     <rect x="220" y="80" width="180" height="35" rx="4" fill="#0f172a" stroke="#475569" stroke-width="1"/>
@@ -115,40 +115,40 @@
     <text x="275" y="100" font-family="monospace" font-size="10" fill="#f87171">-∞</text>
     <text x="295" y="100" font-family="monospace" font-size="10" fill="#6ee7b7">"15":2.8  "hello":</text>
     <text x="381" y="100" font-family="monospace" font-size="10" fill="#f87171">-∞</text>
-    
+
     <!-- Explanation -->
     <text x="20" y="140" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">For a float field, only digits are allowed.</text>
     <text x="20" y="158" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">"hello" and "true" get probability 0 (logit = -∞).</text>
     <text x="20" y="176" font-family="system-ui, sans-serif" font-size="11" fill="#6ee7b7">"15" is selected because it's the highest valid logit.</text>
   </g>
-  
+
   <!-- Detail box: Two-phase process -->
   <g transform="translate(470, 210)">
     <rect x="0" y="0" width="400" height="180" rx="12" fill="#1e293b" stroke="#06b6d4" stroke-width="2" filter="url(#shadow)"/>
     <text x="200" y="28" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#22d3ee" text-anchor="middle">xgrammar Two-Phase Architecture</text>
-    
+
     <line x1="20" y1="45" x2="380" y2="45" stroke="#334155" stroke-width="1"/>
-    
+
     <!-- Phase 1 -->
     <text x="20" y="70" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#67e8f9">Phase 1: Grammar Compilation (one-time)</text>
     <text x="30" y="90" font-family="system-ui, sans-serif" font-size="10" fill="#94a3b8">• JSON Schema → Context-Free Grammar</text>
     <text x="30" y="105" font-family="system-ui, sans-serif" font-size="10" fill="#94a3b8">• Build Pushdown Automaton (handles nesting)</text>
     <text x="30" y="120" font-family="system-ui, sans-serif" font-size="10" fill="#94a3b8">• Pre-compute 99% of token masks → cache</text>
-    
+
     <!-- Phase 2 -->
     <text x="20" y="145" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#67e8f9">Phase 2: Runtime Mask Generation (per token)</text>
     <text x="30" y="165" font-family="system-ui, sans-serif" font-size="10" fill="#94a3b8">• Lookup cached masks + check context-dependent tokens</text>
     <text x="30" y="180" font-family="system-ui, sans-serif" font-size="10" fill="#94a3b8">• Apply bitmask to logits in-place (C++, fast)</text>
   </g>
-  
+
   <!-- Bottom: Key insight -->
   <g transform="translate(30, 420)">
     <rect x="0" y="0" width="840" height="160" rx="16" fill="#172554" stroke="#3b82f6" stroke-width="2" filter="url(#shadow)"/>
-    
+
     <text x="420" y="30" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#93c5fd" text-anchor="middle">💡 Key Insight: Post-Forward, Pre-Sampling</text>
-    
+
     <line x1="40" y1="50" x2="800" y2="50" stroke="#1e40af" stroke-width="1"/>
-    
+
     <!-- Three columns -->
     <g transform="translate(40, 65)">
       <rect x="0" y="0" width="240" height="75" rx="8" fill="#1e3a8a" stroke="#3b82f6" stroke-width="1"/>
@@ -156,14 +156,14 @@
       <text x="120" y="45" font-family="system-ui, sans-serif" font-size="10" fill="#64748b" text-anchor="middle">The GPU forward pass is</text>
       <text x="120" y="60" font-family="system-ui, sans-serif" font-size="10" fill="#64748b" text-anchor="middle">exactly the same as unconstrained</text>
     </g>
-    
+
     <g transform="translate(300, 65)">
       <rect x="0" y="0" width="240" height="75" rx="8" fill="#1e3a8a" stroke="#3b82f6" stroke-width="1"/>
       <text x="120" y="25" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#93c5fd" text-anchor="middle">Parallel Execution</text>
       <text x="120" y="45" font-family="system-ui, sans-serif" font-size="10" fill="#64748b" text-anchor="middle">Mask for token N computed</text>
       <text x="120" y="60" font-family="system-ui, sans-serif" font-size="10" fill="#64748b" text-anchor="middle">while GPU computes token N+1</text>
     </g>
-    
+
     <g transform="translate(560, 65)">
       <rect x="0" y="0" width="240" height="75" rx="8" fill="#1e3a8a" stroke="#3b82f6" stroke-width="1"/>
       <text x="120" y="25" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#93c5fd" text-anchor="middle">Near-Zero Overhead</text>
