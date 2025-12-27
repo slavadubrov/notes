@@ -191,7 +191,7 @@ Your code validates `args` against the tool's schema _before_ calling the API.
 
 - **Entity memories** (names, IDs, preferences) + expiry policies.
 - **Scoped retrieval** from long-term store (vector/kv/graph).
-- **Compression integration**: When short-term memory grows large, apply [Context Compression Strategies](#context-compression-strategies).
+- **Compression integration**: When short-term memory grows large, apply [Context Compression Strategies](#context-compression-strategies) [[7]](#references).
 
 ![Memory Scoping](../assets/2025-10-05-context-engineering/memory_scoping.svg)
 
@@ -298,7 +298,7 @@ Skills can introduce vulnerabilities since they provide new capabilities through
 
 **A Note on MCP (Model Context Protocol)**
 
-MCP is becoming the standard for how agents connect to tools and data. Instead of custom API wrappers for every service, you run an "MCP Server" for each. Your agent automatically discovers available tools and resources.
+MCP is becoming the standard for how agents connect to tools and data [[6]](#references). Instead of custom API wrappers for every service, you run an "MCP Server" for each. Your agent automatically discovers available tools and resources.
 
 ![MCP Architecture](../assets/2025-10-05-context-engineering/mcp_context_architecture.svg)
 
@@ -521,7 +521,7 @@ Context poisoning occurs when hallucinations, errors, or incorrect information e
 
 Context distraction emerges when context grows so long that models over-focus on provided information at the expense of their training knowledge.
 
-Research shows that **even a single irrelevant document** reduces performance on tasks involving relevant documents [[7]](#references). The effect follows a step function—the presence of any distractor triggers degradation.
+Research shows that **even a single irrelevant document** reduces performance on tasks involving relevant documents [[8]](#references). The effect follows a step function—the presence of any distractor triggers degradation.
 
 **Key insight**: Models cannot "skip" irrelevant context. They must attend to everything provided, creating distraction even when irrelevant information is clearly not useful.
 
@@ -555,7 +555,7 @@ Research provides concrete data on when performance degradation begins. Note tha
 | Gemini 1.5 Pro    | 1M tokens   | ~128K tokens      | 99% NIAH recall at 1M, best long-context performance      |
 | Gemini 2.0 Flash  | 1M tokens   | ~32K tokens       | Complex NIAH accuracy drops from 94% to 48% at 32K        |
 
-_Sources: RULER benchmark [[3]](#references), NoLiMa benchmark [[8]](#references), Google technical reports_
+_Sources: RULER benchmark [[3]](#references), NoLiMa benchmark [[9]](#references), Google technical reports_
 
 **Key finding** [[3]](#references): Only 50% of models claiming 32K+ context maintain satisfactory performance at 32K tokens. Near-perfect scores on simple needle-in-haystack tests do not translate to real long-context understanding—complex reasoning tasks show much steeper degradation.
 
@@ -563,7 +563,7 @@ _Sources: RULER benchmark [[3]](#references), NoLiMa benchmark [[8]](#references
 
 ## Context Compression Strategies
 
-> **Terminology note**: Context compression is an umbrella category that includes several techniques: summarization (for conversation history and memory), observation masking (for tool outputs), and selective trimming. The memory summarization referenced in the [Memory](#4-memory) section is one application of these broader compression strategies.
+> **Terminology note**: Context compression is an umbrella category that includes several techniques: summarization (for conversation history and memory), observation masking (for tool outputs), and selective trimming [[5]](#references). The memory summarization referenced in the [Memory](#4-memory) section is one application of these broader compression strategies.
 
 When agent sessions generate millions of tokens of conversation history, compression becomes mandatory. The naive approach is aggressive compression to minimize tokens per request. **The correct optimization target is tokens per task** [[4]](#references): total tokens consumed to complete a task, including re-fetching costs when compression loses critical information.
 
@@ -1007,47 +1007,38 @@ _This article incorporates content from the Agent Skills for Context Engineering
 
 ## References
 
-### Lost-in-Middle and Attention Patterns
-
 1. **Liu, N. F., Lin, K., Hewitt, J., Paranjape, A., Bevilacqua, M., Petroni, F., & Liang, P. (2023).** "Lost in the Middle: How Language Models Use Long Contexts." _arXiv preprint arXiv:2307.03172_. [https://arxiv.org/abs/2307.03172](https://arxiv.org/abs/2307.03172)
 
     - Key finding: 10-40% lower recall accuracy for information in the middle of context vs. beginning/end.
 
 2. **Xiao, G., Tian, Y., Chen, B., Han, S., & Lewis, M. (2023).** "Efficient Streaming Language Models with Attention Sinks." _ICLR 2024_. [https://arxiv.org/abs/2309.17453](https://arxiv.org/abs/2309.17453)
+
     - Introduces the "attention sink" phenomenon where LLMs allocate disproportionate attention to initial tokens.
 
-### Long-Context Evaluation
-
 3. **Hsieh, C. Y., et al. (2024).** "RULER: What's the Real Context Size of Your Long-Context Language Models?" _COLM 2024_. [https://arxiv.org/abs/2404.06654](https://arxiv.org/abs/2404.06654)
-    - Key finding: Only 50% of models claiming 32K+ context maintain satisfactory performance at 32K tokens.
 
-### Context Compression
+    - Key finding: Only 50% of models claiming 32K+ context maintain satisfactory performance at 32K tokens.
 
 4. **Factory.ai Research. (2025).** "Evaluating Context Compression for AI Agents." [https://www.factory.ai/blog/evaluating-context-compression](https://www.factory.ai/blog/evaluating-context-compression)
 
     - Source for compression strategy comparisons, tokens-per-task optimization, and probe-based evaluation methodology.
 
 5. **Li, Y., et al. (2023).** "Compressing Context to Enhance Inference Efficiency of Large Language Models." _EMNLP 2023_.
+
     - Research on selective context pruning using self-information metrics.
 
-### Model Context Protocol
-
 6. **Anthropic. (2024).** "Model Context Protocol (MCP) Specification." [https://modelcontextprotocol.io/](https://modelcontextprotocol.io/)
+
     - Official specification for the MCP standard for AI-tool integration.
 
-### Memory Management
+7. **LangChain/LangGraph. (2024).** "How to add memory to the prebuilt ReAct agent." [https://langchain-ai.github.io/langgraph/how-tos/create-react-agent-memory/](https://langchain-ai.github.io/langgraph/how-tos/create-react-agent-memory/)
+   — Demonstrates that summarization is one technique for managing memory within context limits.
 
-- **LangChain/LangGraph. (2024).** "How to add memory to the prebuilt ReAct agent."
-  [https://langchain-ai.github.io/langgraph/how-tos/create-react-agent-memory/](https://langchain-ai.github.io/langgraph/how-tos/create-react-agent-memory/) — Demonstrates that summarization is one technique for managing memory within context limits.
+8. **Yoran, O., Wolfson, T., Bogin, B., Katz, U., Deutch, D., & Berant, J. (2024).** "Making Retrieval-Augmented Language Models Robust to Irrelevant Context." _ICLR 2024_. [https://arxiv.org/abs/2310.01558](https://arxiv.org/abs/2310.01558)
 
-### RAG Robustness
-
-7. **Yoran, O., Wolfson, T., Bogin, B., Katz, U., Deutch, D., & Berant, J. (2024).** "Making Retrieval-Augmented Language Models Robust to Irrelevant Context." _ICLR 2024_. [https://arxiv.org/abs/2310.01558](https://arxiv.org/abs/2310.01558)
     - Key finding: Even a single irrelevant document can significantly reduce RAG performance, creating a "distracting effect."
 
-### Long-Context Evaluation (Extended)
-
-8. **Maekawa, S., et al. (2025).** "NoLiMa: Long-Context Evaluation Beyond Literal Matching." _ICML 2025_. [https://arxiv.org/abs/2502.05167](https://arxiv.org/abs/2502.05167)
+9. **Maekawa, S., et al. (2025).** "NoLiMa: Long-Context Evaluation Beyond Literal Matching." _ICML 2025_. [https://arxiv.org/abs/2502.05167](https://arxiv.org/abs/2502.05167)
     - Key finding: GPT-4o effective context ~8K tokens, Claude 3.5 Sonnet ~4K tokens when latent reasoning is required (vs. literal matching). At 32K tokens, GPT-4o drops from 99.3% to 69.7% accuracy.
 
 ### Additional Resources
