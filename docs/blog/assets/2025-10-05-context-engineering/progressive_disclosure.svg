@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300">
+    <style>
+        .bg { fill: #1e1e1e; }
+        .title { fill: #f8fafc; font-family: sans-serif; font-size: 18px; font-weight: bold; text-anchor: middle; }
+        .box { rx: 8; ry: 8; }
+        .box-title { fill: #f8fafc; font-family: sans-serif; font-size: 12px; font-weight: bold; text-anchor: middle; }
+        .box-text { fill: #cbd5e1; font-family: sans-serif; font-size: 10px; text-anchor: middle; }
+        .arrow { stroke: #64748b; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+        .flow-text { fill: #94a3b8; font-family: sans-serif; font-size: 10px; text-anchor: middle; }
+    </style>
+    <defs>
+        <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#64748b" />
+        </marker>
+    </defs>
+
+    <rect width="100%" height="100%" class="bg" />
+
+    <text x="400" y="30" class="title">Progressive Disclosure: Load Context Just-in-Time</text>
+
+    <!-- Step 1: Initial Load -->
+    <g transform="translate(50, 70)">
+        <rect x="0" y="0" width="140" height="80" class="box" fill="#1e3a5f" stroke="#3b82f6" stroke-width="2" />
+        <text x="70" y="25" class="box-title">1. Initial Load</text>
+        <text x="70" y="45" class="box-text">System prompt</text>
+        <text x="70" y="58" class="box-text">Tool definitions</text>
+        <text x="70" y="71" class="box-text">~2K tokens</text>
+    </g>
+
+    <!-- Arrow 1 -->
+    <path d="M 190 110 L 240 110" class="arrow" />
+    <text x="215" y="100" class="flow-text">User query</text>
+
+    <!-- Step 2: Route -->
+    <g transform="translate(250, 70)">
+        <rect x="0" y="0" width="140" height="80" class="box" fill="#2e1e3f" stroke="#a855f7" stroke-width="2" />
+        <text x="70" y="25" class="box-title">2. Route</text>
+        <text x="70" y="45" class="box-text">Needs retrieval?</text>
+        <text x="70" y="58" class="box-text">Needs memory?</text>
+        <text x="70" y="71" class="box-text">Which tools?</text>
+    </g>
+
+    <!-- Arrow 2 -->
+    <path d="M 390 110 L 440 110" class="arrow" />
+    <text x="415" y="100" class="flow-text">Selective</text>
+
+    <!-- Step 3: Load -->
+    <g transform="translate(450, 70)">
+        <rect x="0" y="0" width="140" height="80" class="box" fill="#1e3f2e" stroke="#22c55e" stroke-width="2" />
+        <text x="70" y="25" class="box-title">3. Load Only Needed</text>
+        <text x="70" y="45" class="box-text">Relevant docs (3-5)</text>
+        <text x="70" y="58" class="box-text">User memory</text>
+        <text x="70" y="71" class="box-text">~8K tokens</text>
+    </g>
+
+    <!-- Arrow 3 -->
+    <path d="M 590 110 L 640 110" class="arrow" />
+    <text x="615" y="100" class="flow-text">Execute</text>
+
+    <!-- Step 4: Respond -->
+    <g transform="translate(650, 70)">
+        <rect x="0" y="0" width="100" height="80" class="box" fill="#423208" stroke="#eab308" stroke-width="2" />
+        <text x="50" y="25" class="box-title">4. Respond</text>
+        <text x="50" y="50" class="box-text">Generate</text>
+        <text x="50" y="63" class="box-text">with context</text>
+    </g>
+
+    <!-- Contrast: Naive approach -->
+    <g transform="translate(50, 180)">
+        <rect x="0" y="0" width="700" height="60" class="box" fill="#3f1e1e" stroke="#ef4444" stroke-width="2" />
+        <text x="350" y="20" class="box-title" style="fill: #fca5a5;">❌ Naive Approach: Load Everything Upfront</text>
+        <text x="350" y="40" class="box-text">All docs + all memory + all examples = 100K+ tokens = degradation + cost</text>
+    </g>
+
+    <!-- Insight -->
+    <rect x="150" y="255" width="500" height="30" rx="6" ry="6" fill="#1e293b" stroke="#475569" />
+    <text x="400" y="275" class="box-text" style="fill: #86efac;">Key: Maintain lightweight identifiers, load data dynamically when needed</text>
+</svg>

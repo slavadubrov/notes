@@ -17,118 +17,118 @@
       <feDropShadow dx="2" dy="4" stdDeviation="4" flood-opacity="0.15"/>
     </filter>
   </defs>
-  
+
   <!-- Background -->
   <rect width="900" height="550" fill="#0f172a"/>
-  
+
   <!-- Title -->
   <text x="450" y="40" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="bold" fill="#f8fafc" text-anchor="middle">Prompt Engineering vs Chain of Thought vs SGR</text>
-  
+
   <!-- Column 1: Prompt Engineering -->
   <g transform="translate(30, 70)">
     <rect x="0" y="0" width="270" height="460" rx="16" fill="#1e293b" stroke="#ef4444" stroke-width="3" filter="url(#shadow)"/>
-    
+
     <!-- Header -->
     <rect x="0" y="0" width="270" height="50" rx="16" fill="url(#promptGrad)"/>
     <rect x="0" y="35" width="270" height="15" fill="url(#promptGrad)"/>
     <text x="135" y="33" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="white" text-anchor="middle">📝 Prompt Engineering</text>
-    
+
     <!-- Content -->
     <text x="20" y="80" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#fca5a5">Approach:</text>
     <text x="20" y="100" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">"Please output JSON format"</text>
     <text x="20" y="118" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">"Be careful with formatting"</text>
-    
+
     <line x1="20" y1="135" x2="250" y2="135" stroke="#334155" stroke-width="1"/>
-    
+
     <text x="20" y="160" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#fca5a5">Control:</text>
     <text x="20" y="180" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">Semantic persuasion only</text>
     <text x="20" y="198" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">Model's attention mechanism</text>
-    
+
     <line x1="20" y1="215" x2="250" y2="215" stroke="#334155" stroke-width="1"/>
-    
+
     <text x="20" y="240" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#fca5a5">Output:</text>
     <rect x="20" y="250" width="230" height="70" rx="6" fill="#0f172a" stroke="#475569" stroke-width="1"/>
     <text x="30" y="270" font-family="monospace" font-size="10" fill="#fca5a5">"Sure! The discount is 20%</text>
     <text x="30" y="285" font-family="monospace" font-size="10" fill="#fca5a5">Here's the JSON maybe:</text>
     <text x="30" y="300" font-family="monospace" font-size="10" fill="#fca5a5">{discount: '20%'..."</text>
-    
+
     <line x1="20" y1="335" x2="250" y2="335" stroke="#334155" stroke-width="1"/>
-    
+
     <text x="20" y="360" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#fca5a5">Issues:</text>
     <text x="20" y="380" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">❌ Format inconsistency</text>
     <text x="20" y="398" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">❌ Skipped reasoning steps</text>
     <text x="20" y="416" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">❌ Requires retry loops</text>
     <text x="20" y="434" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">❌ Model-dependent results</text>
   </g>
-  
+
   <!-- Column 2: Chain of Thought -->
   <g transform="translate(315, 70)">
     <rect x="0" y="0" width="270" height="460" rx="16" fill="#1e293b" stroke="#f59e0b" stroke-width="3" filter="url(#shadow)"/>
-    
+
     <!-- Header -->
     <rect x="0" y="0" width="270" height="50" rx="16" fill="url(#cotGrad)"/>
     <rect x="0" y="35" width="270" height="15" fill="url(#cotGrad)"/>
     <text x="135" y="33" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="white" text-anchor="middle">🔗 Chain of Thought</text>
-    
+
     <!-- Content -->
     <text x="20" y="80" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#fcd34d">Approach:</text>
     <text x="20" y="100" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">"Let's think step by step"</text>
     <text x="20" y="118" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">Intermediate reasoning traces</text>
-    
+
     <line x1="20" y1="135" x2="250" y2="135" stroke="#334155" stroke-width="1"/>
-    
+
     <text x="20" y="160" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#fcd34d">Control:</text>
     <text x="20" y="180" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">Heuristic prompting</text>
     <text x="20" y="198" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">Model determines structure</text>
-    
+
     <line x1="20" y1="215" x2="250" y2="215" stroke="#334155" stroke-width="1"/>
-    
+
     <text x="20" y="240" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#fcd34d">Output:</text>
     <rect x="20" y="250" width="230" height="70" rx="6" fill="#0f172a" stroke="#475569" stroke-width="1"/>
     <text x="30" y="270" font-family="monospace" font-size="10" fill="#fcd34d">Step 1: Analyze the cart...</text>
     <text x="30" y="285" font-family="monospace" font-size="10" fill="#fcd34d">Step 2: Check margin...</text>
     <text x="30" y="300" font-family="monospace" font-size="10" fill="#fcd34d">Therefore, 15% discount.</text>
-    
+
     <line x1="20" y1="335" x2="250" y2="335" stroke="#334155" stroke-width="1"/>
-    
+
     <text x="20" y="360" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#fcd34d">Issues:</text>
     <text x="20" y="380" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">⚠️ Unstructured prose output</text>
     <text x="20" y="398" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">⚠️ Hard to parse reliably</text>
     <text x="20" y="416" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">⚠️ Variable step count</text>
     <text x="20" y="434" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">⚠️ Verbose token usage</text>
   </g>
-  
+
   <!-- Column 3: Schema-Guided Reasoning -->
   <g transform="translate(600, 70)">
     <rect x="0" y="0" width="270" height="460" rx="16" fill="#1e293b" stroke="#10b981" stroke-width="3" filter="url(#shadow)"/>
-    
+
     <!-- Header -->
     <rect x="0" y="0" width="270" height="50" rx="16" fill="url(#sgrGrad)"/>
     <rect x="0" y="35" width="270" height="15" fill="url(#sgrGrad)"/>
     <text x="135" y="33" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="white" text-anchor="middle">📋 Schema-Guided (SGR)</text>
-    
+
     <!-- Content -->
     <text x="20" y="80" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#6ee7b7">Approach:</text>
     <text x="20" y="100" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">Pydantic schema defines steps</text>
     <text x="20" y="118" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">Constrained decoding enforces</text>
-    
+
     <line x1="20" y1="135" x2="250" y2="135" stroke="#334155" stroke-width="1"/>
-    
+
     <text x="20" y="160" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#6ee7b7">Control:</text>
     <text x="20" y="180" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">Grammar-based enforcement</text>
     <text x="20" y="198" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">Developer defines topology</text>
-    
+
     <line x1="20" y1="215" x2="250" y2="215" stroke="#334155" stroke-width="1"/>
-    
+
     <text x="20" y="240" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#6ee7b7">Output:</text>
     <rect x="20" y="250" width="230" height="70" rx="6" fill="#0f172a" stroke="#475569" stroke-width="1"/>
     <text x="30" y="268" font-family="monospace" font-size="9" fill="#6ee7b7">{"churn_analysis":"High",</text>
     <text x="30" y="282" font-family="monospace" font-size="9" fill="#6ee7b7"> "margin_math":"$200*0.2=$40",</text>
     <text x="30" y="296" font-family="monospace" font-size="9" fill="#6ee7b7"> "max_discount":15.0,</text>
     <text x="30" y="310" font-family="monospace" font-size="9" fill="#6ee7b7"> "offer_code":"SAVE15"}</text>
-    
+
     <line x1="20" y1="335" x2="250" y2="335" stroke="#334155" stroke-width="1"/>
-    
+
     <text x="20" y="360" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#6ee7b7">Benefits:</text>
     <text x="20" y="380" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">✓ 100% valid structured output</text>
     <text x="20" y="398" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8">✓ Auditable field-by-field</text>

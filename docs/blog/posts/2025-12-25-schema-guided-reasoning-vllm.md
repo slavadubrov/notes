@@ -3,8 +3,7 @@ title: "Schema-Guided Reasoning on vLLM — Turning LLMs into Reliable Business 
 date:
     created: 2025-12-25
     updated: 2025-12-25
-tags:
-    [ai-engineering, llm, vllm, structured-output, xgrammar, agents, sgr]
+tags: [ai-engineering, llm, vllm, structured-output, xgrammar, agents, sgr]
 description: A practical guide to Schema-Guided Reasoning (SGR) on vLLM with xgrammar — what it is, how it differs from CoT and prompt engineering, the core patterns (Cascade, Routing, Cycle), and a working implementation example.
 author: Viacheslav Dubrov
 ---
@@ -51,7 +50,7 @@ This translates to:
 - **Auditable outputs** — every reasoning step is explicit and inspectable
 - **Debuggable & testable** — intermediate outputs can be evaluated against test datasets
 - **Works with smaller models** — the schema "holds the hand" of weaker models
-- **5-10% accuracy boost** — common in production deployments
+- **5-10% accuracy boost** — [commonly observed](https://abdullin.com/schema-guided-reasoning/) in production deployments
 
 ---
 
@@ -63,15 +62,15 @@ Let's be precise about what makes SGR different from the approaches you're proba
 
 ### The Comparison
 
-| Feature | Prompt Engineering | Chain of Thought | Schema-Guided Reasoning |
-|---------|-------------------|------------------|------------------------|
-| **Output Structure** | Variable text | Free-form prose | Rigid JSON/Pydantic |
-| **Control Mechanism** | Semantic persuasion ("Please output JSON") | Heuristic prompting ("Let's think step by step") | Constrained decoding (grammar-based) |
-| **Reasoning Flow** | Model determines | Model determines | Developer determines (schema topology) |
-| **Auditability** | Low (requires parsing) | Low (requires reading prose) | High (field-level inspection) |
-| **Integration** | Difficult (regex parsing) | Difficult (variable format) | Trivial (native object deserialization) |
-| **Error Rate** | High (format variability) | Moderate (hallucination of format) | Near-zero (syntax enforced by engine) |
-| **Model Requirement** | Strong instruction following | Strong reasoning capability | Works with smaller models too |
+| Feature               | Prompt Engineering                         | Chain of Thought                                 | Schema-Guided Reasoning                 |
+| --------------------- | ------------------------------------------ | ------------------------------------------------ | --------------------------------------- |
+| **Output Structure**  | Variable text                              | Free-form prose                                  | Rigid JSON/Pydantic                     |
+| **Control Mechanism** | Semantic persuasion ("Please output JSON") | Heuristic prompting ("Let's think step by step") | Constrained decoding (grammar-based)    |
+| **Reasoning Flow**    | Model determines                           | Model determines                                 | Developer determines (schema topology)  |
+| **Auditability**      | Low (requires parsing)                     | Low (requires reading prose)                     | High (field-level inspection)           |
+| **Integration**       | Difficult (regex parsing)                  | Difficult (variable format)                      | Trivial (native object deserialization) |
+| **Error Rate**        | High (format variability)                  | Moderate (hallucination of format)               | Near-zero (syntax enforced by engine)   |
+| **Model Requirement** | Strong instruction following               | Strong reasoning capability                      | Works with smaller models too           |
 
 ### Prompt Engineering: Semantic Persuasion
 
@@ -81,7 +80,7 @@ with the following structure: {"discount": <number>, "reason": <string>}
 Be careful with the formatting!
 ```
 
-**The problem**: You're *hoping* the model's semantic understanding of "output JSON" outweighs its tendency to be conversational. A model update, temperature change, or different few-shot examples can break your parser.
+**The problem**: You're _hoping_ the model's semantic understanding of "output JSON" outweighs its tendency to be conversational. A model update, temperature change, or different few-shot examples can break your parser.
 
 ### Chain of Thought: Better Reasoning, Same Structure Problems
 
@@ -103,13 +102,13 @@ class PricingLogic(BaseModel):
     # 1. Data Analysis (must complete before decision)
     churn_analysis: str = Field(..., description="Analyze churn_probability")
     financial_analysis: str = Field(..., description="Analyze cart_value and margin")
-    
+
     # 2. Math Enforcement (explicit calculation)
     margin_math: str = Field(..., description="Calculate: 'Cart $X * Y% = $Z'")
-    
+
     # 3. Decision Constraint (bounded by prior analysis)
     max_discount_percent: float = Field(..., description="Max allowed discount")
-    
+
     # 4. Final Output
     offer_code: str
     customer_message: str
@@ -136,13 +135,13 @@ from annotated_types import Ge, Le
 
 class CandidateEvaluation(BaseModel):
     """Evaluate a job candidate with enforced reasoning order."""
-    
+
     # Step 1: Summarize (forces context awareness)
     brief_candidate_summary: str
-    
+
     # Step 2: Rate (bounded integer)
     rate_skill_match: Annotated[int, Ge(1), Le(10)]
-    
+
     # Step 3: Decide (constrained choices)
     final_recommendation: Literal["hire", "reject", "hold"]
 ```
@@ -220,26 +219,26 @@ Constrained Decoding works by modifying the token generation process. Instead of
 
 Most modern LLM providers now support Structured Outputs via constrained decoding:
 
-| Provider | Support |
-|----------|---------|
-| **OpenAI** | [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs) (including Azure). GPT-5 uses JSON Schema via llguidance |
-| **Google/Gemini** | [JSON Schema](https://ai.google.dev/gemini-api/docs/structured-output) support since Nov 2025 (Pydantic and Zod) |
-| **Mistral** | [Custom Structured Output](https://docs.mistral.ai/capabilities/structured-output/custom_structured_output/) |
-| **Grok** | [Structured Outputs](https://docs.x.ai/docs/guides/structured-outputs) for multiple models |
-| **Fireworks AI** | [JSON Schema](https://docs.fireworks.ai/structured-responses/structured-response-formatting) |
-| **Cerebras** | [Structured Outputs](https://inference-docs.cerebras.ai/capabilities/structured-outputs) |
-| **OpenRouter** | Depends on downstream provider, maps to JSON Schema |
+| Provider          | Support                                                                                                                                                                                    |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **OpenAI**        | [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs) (including Azure). [GPT-5 uses JSON Schema via llguidance](https://abdullin.com/schema-guided-reasoning/) |
+| **Google/Gemini** | [JSON Schema](https://ai.google.dev/gemini-api/docs/structured-output) support since Nov 2025 (Pydantic and Zod)                                                                           |
+| **Mistral**       | [Custom Structured Output](https://docs.mistral.ai/capabilities/structured-output/custom_structured_output/)                                                                               |
+| **Grok**          | [Structured Outputs](https://docs.x.ai/docs/guides/structured-outputs) for multiple models                                                                                                 |
+| **Fireworks AI**  | [JSON Schema](https://docs.fireworks.ai/structured-responses/structured-response-formatting)                                                                                               |
+| **Cerebras**      | [Structured Outputs](https://inference-docs.cerebras.ai/capabilities/structured-outputs)                                                                                                   |
+| **OpenRouter**    | Depends on downstream provider, maps to JSON Schema                                                                                                                                        |
 
 ### Supported Inference Engines
 
 For self-hosted models, most modern inference engines support constrained decoding:
 
-| Engine | Backend |
-|--------|---------|
-| **vLLM** | [xgrammar](https://github.com/mlc-ai/xgrammar) or [guidance](https://github.com/guidance-ai/llguidance) |
-| **SGLang** | [Outlines](https://github.com/dottxt-ai/outlines), [XGrammar](https://github.com/mlc-ai/xgrammar), or [llguidance](https://github.com/guidance-ai/llguidance) |
-| **TensorRT-LLM** | [GuidedDecoding](https://github.com/NVIDIA/TensorRT-LLM/blob/main/examples/llm-api/llm_guided_decoding.py) |
-| **Ollama** | [Structured Outputs](https://ollama.com/blog/structured-outputs) |
+| Engine           | Backend                                                                                                                                                       |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **vLLM**         | [xgrammar](https://github.com/mlc-ai/xgrammar) or [guidance](https://github.com/guidance-ai/llguidance)                                                       |
+| **SGLang**       | [Outlines](https://github.com/dottxt-ai/outlines), [XGrammar](https://github.com/mlc-ai/xgrammar), or [llguidance](https://github.com/guidance-ai/llguidance) |
+| **TensorRT-LLM** | [GuidedDecoding](https://github.com/NVIDIA/TensorRT-LLM/blob/main/examples/llm-api/llm_guided_decoding.py)                                                    |
+| **Ollama**       | [Structured Outputs](https://ollama.com/blog/structured-outputs)                                                                                              |
 
 ### Why This Article Focuses on vLLM + xgrammar
 
@@ -304,7 +303,7 @@ During compilation, xgrammar:
 4. Categorizes tokens as "context-independent" (can be pre-checked) or "context-dependent" (must be checked at runtime based on stack state)
 
 > [!NOTE]
-> About 99% of tokens are context-independent and can be cached. This is why xgrammar is so fast — most validity checks are just cache lookups.
+> About 99% of tokens are context-independent and can be cached ([XGrammar paper](https://arxiv.org/abs/2411.15100)). This is why xgrammar is so fast — most validity checks are just cache lookups.
 
 #### Phase 2: Runtime Mask Generation (every token)
 
@@ -322,7 +321,7 @@ You might wonder: why not just use regex? The answer is **nesting**.
 A regular expression (which is a Finite State Machine) cannot reliably match structures like:
 
 ```json
-{"user": {"profile": {"settings": {"theme": "dark"}}}}
+{ "user": { "profile": { "settings": { "theme": "dark" } } } }
 ```
 
 The problem is matching the closing braces `}}}` — you need to "remember" how many you opened. A Pushdown Automaton has a **stack** that tracks this context, enabling it to handle arbitrary nesting depth.
@@ -348,7 +347,7 @@ Three factors make xgrammar fast:
 
 3. **C++ implementation**: The hot path is optimized C++, not Python. The mask is applied directly to logits in-place.
 
-In benchmarks, xgrammar often shows **negligible overhead** — and sometimes structured generation is *faster* than unconstrained generation because the constrained vocabulary reduces sampling complexity.
+In benchmarks, xgrammar often shows **negligible overhead** — and sometimes structured generation is _faster_ than unconstrained generation because the constrained vocabulary reduces sampling complexity.
 
 ---
 
@@ -407,17 +406,17 @@ class PricingLogic(BaseModel):
     Fields are ordered to enforce the analysis→decision flow.
     """
     # 1. Data Analysis (Reflection)
-    churn_analysis: str = Field(..., 
+    churn_analysis: str = Field(...,
         description="Analyze churn_probability (High > 0.7).")
-    financial_analysis: str = Field(..., 
+    financial_analysis: str = Field(...,
         description="Analyze cart_value and profit_margin.")
 
     # 2. Hard Math Enforcement
-    margin_math: str = Field(..., 
+    margin_math: str = Field(...,
         description="Calculate absolute profit: 'Cart $200 * 0.20 Margin = $40'.")
 
     # 3. The Decision Constraint
-    max_discount_percent: float = Field(..., 
+    max_discount_percent: float = Field(...,
         description="Max allowed discount %. NEVER exceed margin.")
 
     # 4. Final Output
@@ -439,11 +438,11 @@ T = TypeVar("T", bound=BaseModel)
 
 class LLMClient:
     """Wrapper for vLLM with xgrammar-enforced structured generation."""
-    
+
     def __init__(self, base_url: str = "http://localhost:8000/v1"):
         self.client = OpenAI(base_url=base_url, api_key="EMPTY")
         self.model = self._get_available_model()
-    
+
     def _get_available_model(self) -> str:
         """Auto-detect the model running on vLLM server."""
         try:
@@ -453,15 +452,15 @@ class LLMClient:
         except Exception:
             pass
         return "Qwen/Qwen2.5-7B-Instruct"
-    
+
     def run_sgr(self, messages: list[dict], schema_class: type[T]) -> T:
         """Run inference with Schema-Guided Response constraints.
-        
+
         Uses vLLM's guided_json with xgrammar backend to enforce
         strict schema constraints at the token generation level.
         """
         schema_dict = schema_class.model_json_schema()
-        
+
         # Enhance system message with schema for model guidance
         enhanced_messages = messages.copy()
         if enhanced_messages and enhanced_messages[0]["role"] == "system":
@@ -473,7 +472,7 @@ class LLMClient:
                     + f"\n\nRespond with JSON matching this schema:\n{schema_json}"
                 ),
             }
-        
+
         # The magic: vLLM's guided_json with xgrammar backend
         completion = self.client.chat.completions.create(
             model=self.model,
@@ -484,7 +483,7 @@ class LLMClient:
                 "guided_decoding_backend": "xgrammar",  # Hardware-enforced
             },
         )
-        
+
         raw_response = completion.choices[0].message.content
         return schema_class.model_validate_json(raw_response)
 ```
@@ -505,35 +504,35 @@ from .utils.llm_client import LLMClient
 
 def pricing_agent(user_query: str, user_id: str) -> str:
     """Process a pricing query with three-phase SGR workflow."""
-    
+
     llm = LLMClient()
     feature_store = HybridFeatureStore()
-    
+
     # Build conversation history
     history = [
         {"role": "system", "content": build_routing_prompt(user_id)},
         {"role": "user", "content": user_query},
     ]
-    
+
     # --- Phase 1: Routing (Uses RouterSchema) ---
     print(f"🤖 Processing: '{user_query}' for {user_id}")
     decision = llm.run_sgr(history, RouterSchema)
     print(f"📍 Routing decision: {decision.action.tool_name}")
-    
+
     if decision.action.tool_name == "respond":
         return decision.action.content
-    
+
     # --- Phase 2: Context Retrieval ---
     if decision.action.tool_name == "fetch_user_features":
         print(f"🔍 Fetching features for {user_id}...")
         context = feature_store.get_user_context(user_id)
-        
+
         if not context:
             return "Error: User profile not found."
-        
+
         print(f"   [Data] LTV: ${context.get('user_ltv')} | "
               f"Margin: {context.get('cart_profit_margin', 0) * 100}%")
-        
+
         # Inject context into conversation
         history.append({"role": "assistant", "content": ASSISTANT_FETCH_MESSAGE})
         history.append({
@@ -545,17 +544,17 @@ def pricing_agent(user_query: str, user_id: str) -> str:
                 user_ltv=context.get("user_ltv", 0),
             ),
         })
-        
+
         # --- Phase 3: SGR Logic Execution (Uses PricingLogic) ---
         print("🧠 Calculating Offer (Schema Enforced)...")
         offer = llm.run_sgr(history, PricingLogic)
-        
+
         # Audit log — the SGR benefit: explicit reasoning traces
         print(f"   [Audit] Math: {offer.margin_math}")
         print(f"   [Audit] Max Allowed: {offer.max_discount_percent}%")
-        
+
         return offer.customer_message
-    
+
     return "I'm sorry, I couldn't process your request."
 
 
@@ -587,8 +586,8 @@ uv run python -m sgr.agent
    [Audit] Math: Cart $200 * 0.20 Margin = $40
    [Audit] Max Allowed: 15.0%
 
-💬 Final Reply: We value your loyalty! Here's a special 15% discount 
-   with code SAVE15. This reflects our appreciation for your continued 
+💬 Final Reply: We value your loyalty! Here's a special 15% discount
+   with code SAVE15. This reflects our appreciation for your continued
    business with us.
 ```
 
@@ -636,17 +635,22 @@ The [sgr-discount-manager](https://github.com/slavadubrov/sgr-discount-manager) 
 ## References
 
 ### SGR Framework
+
 - [Schema-Guided Reasoning (SGR)](https://abdullin.com/schema-guided-reasoning/) — Rinat Abdullin's original framework
 - [SGR Patterns](https://abdullin.com/schema-guided-reasoning/patterns) — Cascade, Routing, Cycle patterns
 
 ### xgrammar
+
+- [XGrammar: Flexible and Efficient Structured Generation Engine for Large Language Models](https://arxiv.org/abs/2411.15100) — Yixin Dong et al., arXiv:2411.15100 (technical paper with benchmarks)
 - [xgrammar GitHub](https://github.com/mlc-ai/xgrammar) — Fast, flexible structured generation library
 - [xgrammar Documentation](https://xgrammar.mlc.ai/docs/) — Official docs with quick start guide
 - [xgrammar Quick Start](https://xgrammar.mlc.ai/docs/start/quick_start) — Getting started with xgrammar
 - [Achieving Efficient Structured Generation with XGrammar](https://blog.mlc.ai/2024/11/22/achieving-efficient-flexible-portable-structured-generation-with-xgrammar) — MLC blog post on xgrammar internals
 
 ### vLLM
+
 - [vLLM Structured Outputs](https://docs.vllm.ai/en/latest/features/structured_outputs.html) — Official documentation
 
 ### Demo Project
+
 - [sgr-discount-manager](https://github.com/slavadubrov/sgr-discount-manager) — Working demo with all code examples from this post

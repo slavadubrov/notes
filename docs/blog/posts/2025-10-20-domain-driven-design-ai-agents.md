@@ -20,44 +20,6 @@ author: Viacheslav Dubrov
 
 ---
 
-## Table of contents
-
-- [Domain-driven design for AI agents: a beginner-friendly guide](#domain-driven-design-for-ai-agents-a-beginner-friendly-guide)
-    - [TL;DR](#tldr)
-    - [Table of contents](#table-of-contents)
-    - [Why domain-driven design matters for AI agents](#why-domain-driven-design-matters-for-ai-agents)
-    - [Strategic building blocks](#strategic-building-blocks)
-        - [Ubiquitous language](#ubiquitous-language)
-        - [Bounded contexts](#bounded-contexts)
-        - [Entities and value objects](#entities-and-value-objects)
-        - [Aggregates](#aggregates)
-        - [Repositories](#repositories)
-        - [Domain events](#domain-events)
-    - [Translating DDD to agent architectures](#translating-ddd-to-agent-architectures)
-        - [Bounded contexts become agents or skills](#bounded-contexts-become-agents-or-skills)
-        - [Prompts honor the ubiquitous language](#prompts-honor-the-ubiquitous-language)
-        - [State becomes explicit entities](#state-becomes-explicit-entities)
-        - [Aggregates express agent plans](#aggregates-express-agent-plans)
-        - [Domain events drive orchestration](#domain-events-drive-orchestration)
-        - [Business rules wrap AI actions](#business-rules-wrap-ai-actions)
-    - [Example: a task assistant modeled with DDD](#example-a-task-assistant-modeled-with-ddd)
-        - [1. Map the contexts](#1-map-the-contexts)
-        - [2. Speak the same language](#2-speak-the-same-language)
-        - [3. Capture entities, value objects, and events](#3-capture-entities-value-objects-and-events)
-        - [4. Shape the aggregate](#4-shape-the-aggregate)
-        - [5. Wrap persistence in a repository](#5-wrap-persistence-in-a-repository)
-        - [6. Run the flow](#6-run-the-flow)
-    - [Tooling to bring the model to life](#tooling-to-bring-the-model-to-life)
-        - [FastAPI](#fastapi)
-        - [Pydantic and Pydantic AI](#pydantic-and-pydantic-ai)
-        - [DDD helper libraries](#ddd-helper-libraries)
-        - [Event-driven tooling](#event-driven-tooling)
-        - [Agent frameworks](#agent-frameworks)
-        - [Testing](#testing)
-    - [Getting started checklist](#getting-started-checklist)
-
----
-
 ## Why domain-driven design matters for AI agents
 
 AI agent projects fail for a surprising reason: not because the code is bad, but because developers and domain experts can't understand each other. You've seen it—business teams ask for a "policy check" and get back a `process_data()` method. Nobody knows what it does, so requirements drift and systems calcify.

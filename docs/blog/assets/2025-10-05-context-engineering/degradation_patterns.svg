@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+    <style>
+        .bg { fill: #1e1e1e; }
+        .title { fill: #f8fafc; font-family: sans-serif; font-size: 20px; font-weight: bold; text-anchor: middle; }
+        .card { rx: 10; ry: 10; }
+        .card-title { fill: #f8fafc; font-family: sans-serif; font-size: 14px; font-weight: bold; text-anchor: middle; }
+        .card-text { fill: #cbd5e1; font-family: sans-serif; font-size: 11px; text-anchor: middle; }
+        .icon { fill: #f8fafc; font-family: sans-serif; font-size: 24px; text-anchor: middle; }
+    </style>
+
+    <rect width="100%" height="100%" class="bg" />
+
+    <text x="450" y="40" class="title">Context Degradation Patterns</text>
+
+    <!-- Pattern 1: Lost-in-Middle -->
+    <g transform="translate(50, 80)">
+        <rect x="0" y="0" width="250" height="180" class="card" fill="#1e3a5f" stroke="#3b82f6" stroke-width="2" />
+        <text x="125" y="35" class="icon">📉</text>
+        <text x="125" y="65" class="card-title">Lost-in-Middle</text>
+        <line x1="30" y1="80" x2="220" y2="80" stroke="#3b82f6" stroke-width="1" opacity="0.5" />
+        <text x="125" y="100" class="card-text">Information in the center</text>
+        <text x="125" y="115" class="card-text">receives less attention</text>
+        <text x="125" y="140" class="card-text" style="fill: #86efac; font-weight: bold;">Fix: Place critical info</text>
+        <text x="125" y="155" class="card-text" style="fill: #86efac;">at start or end</text>
+    </g>
+
+    <!-- Pattern 2: Context Poisoning -->
+    <g transform="translate(325, 80)">
+        <rect x="0" y="0" width="250" height="180" class="card" fill="#3f1e1e" stroke="#ef4444" stroke-width="2" />
+        <text x="125" y="35" class="icon">☠️</text>
+        <text x="125" y="65" class="card-title">Context Poisoning</text>
+        <line x1="30" y1="80" x2="220" y2="80" stroke="#ef4444" stroke-width="1" opacity="0.5" />
+        <text x="125" y="100" class="card-text">Errors compound through</text>
+        <text x="125" y="115" class="card-text">repeated reference</text>
+        <text x="125" y="140" class="card-text" style="fill: #86efac; font-weight: bold;">Fix: Validate tool outputs,</text>
+        <text x="125" y="155" class="card-text" style="fill: #86efac;">restart if poisoned</text>
+    </g>
+
+    <!-- Pattern 3: Context Distraction -->
+    <g transform="translate(600, 80)">
+        <rect x="0" y="0" width="250" height="180" class="card" fill="#3f3d1e" stroke="#eab308" stroke-width="2" />
+        <text x="125" y="35" class="icon">🔀</text>
+        <text x="125" y="65" class="card-title">Context Distraction</text>
+        <line x1="30" y1="80" x2="220" y2="80" stroke="#eab308" stroke-width="1" opacity="0.5" />
+        <text x="125" y="100" class="card-text">Irrelevant info competes</text>
+        <text x="125" y="115" class="card-text">for attention budget</text>
+        <text x="125" y="140" class="card-text" style="fill: #86efac; font-weight: bold;">Fix: Filter aggressively,</text>
+        <text x="125" y="155" class="card-text" style="fill: #86efac;">use relevance scoring</text>
+    </g>
+
+    <!-- Pattern 4: Context Confusion -->
+    <g transform="translate(125, 290)">
+        <rect x="0" y="0" width="250" height="180" class="card" fill="#2e1e3f" stroke="#a855f7" stroke-width="2" />
+        <text x="125" y="35" class="icon">🌀</text>
+        <text x="125" y="65" class="card-title">Context Confusion</text>
+        <line x1="30" y1="80" x2="220" y2="80" stroke="#a855f7" stroke-width="1" opacity="0.5" />
+        <text x="125" y="100" class="card-text">Model applies wrong</text>
+        <text x="125" y="115" class="card-text">context to current task</text>
+        <text x="125" y="140" class="card-text" style="fill: #86efac; font-weight: bold;">Fix: Task segmentation,</text>
+        <text x="125" y="155" class="card-text" style="fill: #86efac;">clear transitions</text>
+    </g>
+
+    <!-- Pattern 5: Context Clash -->
+    <g transform="translate(525, 290)">
+        <rect x="0" y="0" width="250" height="180" class="card" fill="#1e3f2e" stroke="#22c55e" stroke-width="2" />
+        <text x="125" y="35" class="icon">⚔️</text>
+        <text x="125" y="65" class="card-title">Context Clash</text>
+        <line x1="30" y1="80" x2="220" y2="80" stroke="#22c55e" stroke-width="1" opacity="0.5" />
+        <text x="125" y="100" class="card-text">Contradictory information</text>
+        <text x="125" y="115" class="card-text">creates conflicting guidance</text>
+        <text x="125" y="140" class="card-text" style="fill: #86efac; font-weight: bold;">Fix: Priority rules,</text>
+        <text x="125" y="155" class="card-text" style="fill: #86efac;">version filtering</text>
+    </g>
+</svg>
