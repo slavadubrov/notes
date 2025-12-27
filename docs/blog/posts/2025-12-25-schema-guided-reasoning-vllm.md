@@ -50,7 +50,7 @@ This translates to:
 - **Auditable outputs** — every reasoning step is explicit and inspectable
 - **Debuggable & testable** — intermediate outputs can be evaluated against test datasets
 - **Works with smaller models** — the schema "holds the hand" of weaker models
-- **5-10% accuracy boost** — common in production deployments
+- **5-10% accuracy boost** — [commonly observed](https://abdullin.com/schema-guided-reasoning/) in production deployments
 
 ---
 
@@ -219,15 +219,15 @@ Constrained Decoding works by modifying the token generation process. Instead of
 
 Most modern LLM providers now support Structured Outputs via constrained decoding:
 
-| Provider          | Support                                                                                                                                   |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| **OpenAI**        | [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs) (including Azure). GPT-5 uses JSON Schema via llguidance |
-| **Google/Gemini** | [JSON Schema](https://ai.google.dev/gemini-api/docs/structured-output) support since Nov 2025 (Pydantic and Zod)                          |
-| **Mistral**       | [Custom Structured Output](https://docs.mistral.ai/capabilities/structured-output/custom_structured_output/)                              |
-| **Grok**          | [Structured Outputs](https://docs.x.ai/docs/guides/structured-outputs) for multiple models                                                |
-| **Fireworks AI**  | [JSON Schema](https://docs.fireworks.ai/structured-responses/structured-response-formatting)                                              |
-| **Cerebras**      | [Structured Outputs](https://inference-docs.cerebras.ai/capabilities/structured-outputs)                                                  |
-| **OpenRouter**    | Depends on downstream provider, maps to JSON Schema                                                                                       |
+| Provider          | Support                                                                                                                                                                                    |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **OpenAI**        | [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs) (including Azure). [GPT-5 uses JSON Schema via llguidance](https://abdullin.com/schema-guided-reasoning/) |
+| **Google/Gemini** | [JSON Schema](https://ai.google.dev/gemini-api/docs/structured-output) support since Nov 2025 (Pydantic and Zod)                                                                           |
+| **Mistral**       | [Custom Structured Output](https://docs.mistral.ai/capabilities/structured-output/custom_structured_output/)                                                                               |
+| **Grok**          | [Structured Outputs](https://docs.x.ai/docs/guides/structured-outputs) for multiple models                                                                                                 |
+| **Fireworks AI**  | [JSON Schema](https://docs.fireworks.ai/structured-responses/structured-response-formatting)                                                                                               |
+| **Cerebras**      | [Structured Outputs](https://inference-docs.cerebras.ai/capabilities/structured-outputs)                                                                                                   |
+| **OpenRouter**    | Depends on downstream provider, maps to JSON Schema                                                                                                                                        |
 
 ### Supported Inference Engines
 
@@ -303,7 +303,7 @@ During compilation, xgrammar:
 4. Categorizes tokens as "context-independent" (can be pre-checked) or "context-dependent" (must be checked at runtime based on stack state)
 
 > [!NOTE]
-> About 99% of tokens are context-independent and can be cached. This is why xgrammar is so fast — most validity checks are just cache lookups.
+> About 99% of tokens are context-independent and can be cached ([XGrammar paper](https://arxiv.org/abs/2411.15100)). This is why xgrammar is so fast — most validity checks are just cache lookups.
 
 #### Phase 2: Runtime Mask Generation (every token)
 
@@ -641,6 +641,7 @@ The [sgr-discount-manager](https://github.com/slavadubrov/sgr-discount-manager) 
 
 ### xgrammar
 
+- [XGrammar: Flexible and Efficient Structured Generation Engine for Large Language Models](https://arxiv.org/abs/2411.15100) — Yixin Dong et al., arXiv:2411.15100 (technical paper with benchmarks)
 - [xgrammar GitHub](https://github.com/mlc-ai/xgrammar) — Fast, flexible structured generation library
 - [xgrammar Documentation](https://xgrammar.mlc.ai/docs/) — Official docs with quick start guide
 - [xgrammar Quick Start](https://xgrammar.mlc.ai/docs/start/quick_start) — Getting started with xgrammar

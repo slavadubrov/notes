@@ -401,7 +401,7 @@ Message history contains the conversation between user and agent, including prev
 
 **Tool Outputs**
 
-Tool outputs are the results of agent actions: file contents, search results, command execution output, API responses. Research shows observations (tool outputs) can reach **83.9% of total context usage** in typical agent trajectories. This creates pressure for strategies like observation masking and compaction.
+Tool outputs are the results of agent actions: file contents, search results, command execution output, API responses. Research shows observations (tool outputs) can reach **over 80% of total context usage** in typical agent trajectories [[4]](#references). This creates pressure for strategies like observation masking and compaction.
 
 ### Context Windows and Attention Mechanics
 
@@ -521,7 +521,7 @@ Context poisoning occurs when hallucinations, errors, or incorrect information e
 
 Context distraction emerges when context grows so long that models over-focus on provided information at the expense of their training knowledge.
 
-Research shows that **even a single irrelevant document** reduces performance on tasks involving relevant documents. The effect follows a step function—the presence of any distractor triggers degradation.
+Research shows that **even a single irrelevant document** reduces performance on tasks involving relevant documents [[7]](#references). The effect follows a step function—the presence of any distractor triggers degradation.
 
 **Key insight**: Models cannot "skip" irrelevant context. They must attend to everything provided, creating distraction even when irrelevant information is clearly not useful.
 
@@ -555,7 +555,7 @@ Research provides concrete data on when performance degradation begins. Note tha
 | Gemini 1.5 Pro    | 1M tokens   | ~128K tokens      | 99% NIAH recall at 1M, best long-context performance      |
 | Gemini 2.0 Flash  | 1M tokens   | ~32K tokens       | Complex NIAH accuracy drops from 94% to 48% at 32K        |
 
-_Sources: RULER benchmark [[3]](#references), Understanding AI research (2024), Google technical reports_
+_Sources: RULER benchmark [[3]](#references), NoLiMa benchmark [[8]](#references), Google technical reports_
 
 **Key finding** [[3]](#references): Only 50% of models claiming 32K+ context maintain satisfactory performance at 32K tokens. Near-perfect scores on simple needle-in-haystack tests do not translate to real long-context understanding—complex reasoning tasks show much steeper degradation.
 
@@ -696,7 +696,7 @@ Compaction summarizes context contents when approaching limits, then reinitializ
 
 ### Observation Masking
 
-Tool outputs can comprise **80%+ of token usage**. Once an agent has used a tool output to make a decision, keeping the full output provides diminishing value.
+Tool outputs can comprise **over 80% of token usage** [[4]](#references). Once an agent has used a tool output to make a decision, keeping the full output provides diminishing value.
 
 **Masking decision matrix**:
 
@@ -925,7 +925,7 @@ If you already have an agent in production and want immediate improvements, star
 
 ### 1. Add output schema validation
 
-**Impact**: Catch 80% of errors before they reach users.
+**Impact**: Catch the majority of errors before they reach users.
 
 ```python
 from jsonschema import validate, ValidationError
@@ -942,7 +942,7 @@ def validate_output(output: dict) -> dict:
 
 ### 2. Instrument basic tracing
 
-**Impact**: Debug 10x faster when things break.
+**Impact**: Debug significantly faster when things break.
 
 ```python
 logger.info(json.dumps({
@@ -957,7 +957,7 @@ logger.info(json.dumps({
 
 ### 3. Split system vs user messages
 
-**Impact**: Reduce token waste by 20–30%. Enable [KV-Cache Optimization](#kv-cache-optimization).
+**Impact**: Reduce token waste significantly by enabling [KV-Cache Optimization](#kv-cache-optimization).
 
 ```python
 messages = [
@@ -1039,6 +1039,16 @@ _This article incorporates content from the Agent Skills for Context Engineering
 
 - **LangChain/LangGraph. (2024).** "How to add memory to the prebuilt ReAct agent."
   [https://langchain-ai.github.io/langgraph/how-tos/create-react-agent-memory/](https://langchain-ai.github.io/langgraph/how-tos/create-react-agent-memory/) — Demonstrates that summarization is one technique for managing memory within context limits.
+
+### RAG Robustness
+
+7. **Yoran, O., Wolfson, T., Bogin, B., Katz, U., Deutch, D., & Berant, J. (2024).** "Making Retrieval-Augmented Language Models Robust to Irrelevant Context." _ICLR 2024_. [https://arxiv.org/abs/2310.01558](https://arxiv.org/abs/2310.01558)
+    - Key finding: Even a single irrelevant document can significantly reduce RAG performance, creating a "distracting effect."
+
+### Long-Context Evaluation (Extended)
+
+8. **Maekawa, S., et al. (2025).** "NoLiMa: Long-Context Evaluation Beyond Literal Matching." _ICML 2025_. [https://arxiv.org/abs/2502.05167](https://arxiv.org/abs/2502.05167)
+    - Key finding: GPT-4o effective context ~8K tokens, Claude 3.5 Sonnet ~4K tokens when latent reasoning is required (vs. literal matching). At 32K tokens, GPT-4o drops from 99.3% to 69.7% accuracy.
 
 ### Additional Resources
 
