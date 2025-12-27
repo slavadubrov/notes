@@ -2,7 +2,7 @@
 title: "Context Engineering in the Agentic‑AI Era — and How to Cook It"
 date:
     created: 2025-10-05
-    updated: 2025-12-26
+    updated: 2025-12-27
 tags:
     [
         ai-engineering,
