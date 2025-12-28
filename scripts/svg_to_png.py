@@ -71,7 +71,7 @@ def convert_svg_to_png(
 <head>
     <style>
         * {{ margin: 0; padding: 0; box-sizing: border-box; }}
-        body {{ 
+        body {{
             background: {background_color};
             width: {width}px;
             height: {height}px;
