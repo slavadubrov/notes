@@ -24,11 +24,22 @@ build: install
 clean:
 	rm -rf site/
 
+# SVG to PNG conversion (requires: brew install librsvg)
 svg-to-png:
-	$(UV) run --with playwright python scripts/svg_to_png.py
+	@command -v rsvg-convert >/dev/null 2>&1 || { echo "Error: rsvg-convert not found. Install with: brew install librsvg"; exit 1; }
+	@for svg in $$(find docs/blog/assets -name "*.svg"); do \
+		png="$${svg%.svg}.png"; \
+		if [ ! -f "$$png" ]; then \
+			rsvg-convert -w 1200 "$$svg" -o "$$png" && echo "✓ $$svg → $$png"; \
+		fi \
+	done
 
 svg-to-png-force:
-	$(UV) run --with playwright python scripts/svg_to_png.py --force
+	@command -v rsvg-convert >/dev/null 2>&1 || { echo "Error: rsvg-convert not found. Install with: brew install librsvg"; exit 1; }
+	@for svg in $$(find docs/blog/assets -name "*.svg"); do \
+		png="$${svg%.svg}.png"; \
+		rsvg-convert -w 1200 "$$svg" -o "$$png" && echo "✓ $$svg → $$png"; \
+	done
 
 test-examples:
 	@if [ -z "$(FILE)" ]; then \
