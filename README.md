@@ -51,6 +51,47 @@ Blog posts are written in Markdown and stored in the `docs/` directory. To creat
 - `make clean` - Remove the built site
 - `make venv` - Create a new virtual environment
 - `make clean-venv` - Remove the virtual environment
+- `make svg-to-png` - Convert SVG diagrams to PNG (incremental)
+- `make svg-to-png-force` - Regenerate all PNG files from SVGs
+- `make test-examples FILE=path/to/post.md` - Test Python code blocks in markdown
+
+## 🖼 Generating PNG Diagrams for Substack
+
+SVG diagrams are stored in `docs/blog/assets/` and need to be converted to PNG for platforms like Substack that don't support SVG. PNG files are **not committed to git** — they must be generated locally.
+
+### First-time setup
+
+Install Playwright's Chromium browser (~160MB download, one-time only):
+
+```bash
+uv run --with playwright playwright install chromium
+```
+
+### Generate PNGs
+
+```bash
+# Convert only new/missing PNGs (fast, incremental)
+make svg-to-png
+
+# Force regenerate all PNGs
+make svg-to-png-force
+```
+
+PNGs are saved next to their source SVG files at 2x resolution for retina quality.
+
+## 🧪 Testing Python Code Examples
+
+Validate that Python code blocks in blog posts actually work. The script extracts every ` ```python ` fenced code block from a markdown file and runs each as an isolated test case.
+
+```bash
+make test-examples FILE=docs/blog/posts/2025-12-25-schema-guided-reasoning-vllm.md
+```
+
+This helps catch:
+
+- Syntax errors in code snippets
+- Broken imports or missing dependencies
+- Examples that no longer work after API changes
 
 ## 📦 Dependencies
 
