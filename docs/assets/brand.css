@@ -1,3 +1,50 @@
 .md-header__button.md-logo img {
   height: 28px;
 }
+
+/* Buttondown Newsletter Form */
+.embeddable-buttondown-form {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1rem 0;
+  max-width: 400px;
+}
+
+.embeddable-buttondown-form input[type="email"] {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--md-default-fg-color--lighter);
+  border-radius: 4px;
+  font-size: 0.9rem;
+  background: var(--md-default-bg-color);
+  color: var(--md-default-fg-color);
+}
+
+.embeddable-buttondown-form input[type="email"]:focus {
+  outline: none;
+  border-color: var(--md-primary-fg-color);
+  box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.2);
+}
+
+.embeddable-buttondown-form button {
+  padding: 0.75rem 1.5rem;
+  background: var(--md-primary-fg-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.embeddable-buttondown-form button:hover {
+  background: var(--md-primary-fg-color--dark);
+}
+
+/* Responsive form for mobile */
+@media (max-width: 480px) {
+  .embeddable-buttondown-form {
+    flex-direction: column;
+  }
+}
