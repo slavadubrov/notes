@@ -36,22 +36,6 @@ In this blog, you'll find:
 
 My goal is to create a valuable resource for fellow practitioners and anyone interested in the real-world application of machine learning.
 
-## Subscribe
-
-Get new posts delivered to your inbox:
-
-<form
-  action="https://buttondown.com/api/emails/embed-subscribe/edgeofcontext"
-  method="post"
-  target="popupwindow"
-  class="embeddable-buttondown-form"
->
-  <input type="email" name="email" placeholder="your@email.com" required />
-  <button type="submit">Subscribe</button>
-</form>
-
-<small>No spam. Unsubscribe anytime.</small>
-
 ## Connect
 
 - [GitHub](https://github.com/slavadubrov)
