@@ -14,21 +14,68 @@ Fine-tuning has become the secret weapon for building specialized AI application
 
 <!-- more -->
 
-## When Should You Fine-Tune?
+## Strategic Decision: Fine-Tuning vs Alternatives
 
 Before investing GPU hours and engineering time, you need to answer a fundamental question: **is fine-tuning the right solution for your problem?**
 
 ![Decision Flowchart](../assets/2026-01-04-finetuning-guide/decision_flowchart.svg)
 
-Here's the decision framework:
+### Fine-Tuning vs RAG
 
-| Challenge             | Best Solution      | Why?                                                                      |
-| --------------------- | ------------------ | ------------------------------------------------------------------------- |
-| **Missing knowledge** | RAG                | Models hallucinate facts. Retrieval provides grounded, up-to-date context |
-| **Wrong format/tone** | Prompt Engineering | Modern models follow style instructions well via few-shot examples        |
-| **Complex behavior**  | Fine-Tuning (SFT)  | When you need consistent "modes" without massive prompts                  |
-| **Safety/preference** | Alignment (DPO)    | When outputs are correct but don't match preferences                      |
-| **Latency/cost**      | Fine-Tuning        | Distill a large model into a smaller, faster one                          |
+Do not fine-tune just to add "knowledge." Here's when to use each approach:
+
+| Feature                | Fine-Tuning                                                                                        | RAG (Retrieval-Augmented Generation)                                                                      |
+| ---------------------- | -------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| **Core Function**      | Alters internal weights to teach skills, styles, or behaviors                                      | Provides external, up-to-date context at inference time                                                   |
+| **Best For**           | • Specific conversational styles<br>• Complex instruction following<br>• Domain-specific reasoning | • Rapidly changing data (news, stock prices)<br>• Reducing hallucinations (grounding)<br>• Citing sources |
+| **Knowledge Handling** | Internalizes patterns, not facts                                                                   | Retrieves facts from external knowledge base                                                              |
+| **Update Frequency**   | Requires retraining for updates                                                                    | Updates immediately with new documents                                                                    |
+
+### Fine-Tuning vs Prompt Engineering
+
+Modern LLMs are remarkably responsive to well-crafted prompts. Before fine-tuning, exhaust prompt engineering options:
+
+| Aspect           | Fine-Tuning                                    | Prompt Engineering                                |
+| ---------------- | ---------------------------------------------- | ------------------------------------------------- |
+| **Setup Cost**   | High (data curation, GPU compute, iteration)   | Low (iterative prompt refinement)                 |
+| **Flexibility**  | Locked after training                          | Change anytime without retraining                 |
+| **Format/Style** | Best for complex, consistent output formats    | Good for simple formatting with few-shot examples |
+| **Latency**      | Lower (no long system prompts)                 | Higher (context tax on every request)             |
+| **Best For**     | Complex behaviors, distillation, cost at scale | Rapid iteration, changing requirements            |
+
+> [!TIP] **Try Prompting First**
+> Start with few-shot examples in your prompt. If you don't get consistent behavior, try SGR before jumping to fine-tuning.
+
+### Fine-Tuning vs Schema-Guided Reasoning (SGR)
+
+Libraries like `xgrammar` and `outlines` constrain model outputs at inference time using Finite State Machines. They work with base models out of the box—**no training required**.
+
+**SGR isn't just about structured outputs.** Its primary value is **consistency and reliability**. When prompting alone produces inconsistent results, SGR enforces deterministic output patterns without the cost and complexity of fine-tuning.
+
+| Aspect          | SGR (No Fine-Tuning)                       | Fine-Tuning                                    |
+| --------------- | ------------------------------------------ | ---------------------------------------------- |
+| **Setup**       | Immediate—define schema, deploy            | Requires data curation, GPU compute, iteration |
+| **Consistency** | Guaranteed structure, reliable patterns    | Learned behavior (may still vary)              |
+| **Flexibility** | Change schema anytime without retraining   | Locked after training                          |
+| **Latency**     | Slight overhead (model may "fight" schema) | Lower (model naturally outputs format)         |
+| **Best For**    | Structured outputs, consistent behavior    | Complex reasoning, deep behavioral changes     |
+
+**Recommendation:**
+
+1.  **Start with prompting** — Simple few-shot examples for basic formatting
+2.  **Add SGR if inconsistent** — Use `xgrammar` or `outlines` to guarantee output structure and reliability
+3.  **Fine-tune as last resort** — Only when you need deep behavioral changes that schema constraints can't achieve
+
+### When Fine-Tuning is the Right Choice
+
+| Challenge                      | Best Solution      | Why?                                                                      |
+| ------------------------------ | ------------------ | ------------------------------------------------------------------------- |
+| **Missing knowledge**          | RAG                | Models hallucinate facts. Retrieval provides grounded, up-to-date context |
+| **Wrong format/tone**          | Prompt Engineering | Modern models follow style instructions well via few-shot examples        |
+| **Inconsistent outputs**       | SGR (xgrammar)     | Guaranteed structure and reliability without training                     |
+| **Complex behavioral changes** | Fine-Tuning (SFT)  | Deep persona, reasoning patterns, or multi-step workflows                 |
+| **Safety/preference**          | Alignment (DPO)    | When outputs are correct but don't match preferences                      |
+| **Latency/cost at scale**      | Fine-Tuning        | Distill a large model into a smaller, faster one                          |
 
 ### The Economic Case
 
@@ -36,12 +83,194 @@ Fine-tuning shines in **high-volume, stable-requirement scenarios**. Consider th
 
 A fine-tuned model can internalize those instructions, reducing your prompt from 2,000 tokens to 50. At scale, this pays for the training compute within weeks.
 
-!!! tip "The Hybrid Approach"
-The industry sweet spot is often a fine-tuned smaller model (8B params) combined with lightweight RAG for facts. This often outperforms prompting a massive model (70B+) in both accuracy and cost.
+> [!TIP] **The Hybrid Approach**
+> The industry sweet spot is often a fine-tuned smaller model (8B params) combined with lightweight RAG for facts. This often outperforms prompting a massive model (70B+) in both accuracy and cost.
 
 ---
 
-## Understanding Fine-Tuning Methods
+## Types of Fine-Tuning
+
+Before diving into the lifecycle, understand the three main approaches to fine-tuning:
+
+![Fine-Tuning Types](../assets/2026-01-04-finetuning-guide/finetuning_types.svg)
+
+### 1. Continued Pre-training (Unsupervised)
+
+Continued pre-training extends the base model's knowledge by training on additional raw text **without labels**. The model simply learns to predict the next token, just like during original pre-training.
+
+**When to use:**
+
+- Your domain has specialized vocabulary the base model doesn't know (medical, legal, financial)
+- You have large amounts of domain text but no labeled examples
+- The base model struggles with domain-specific terminology
+
+**Example:** Training on millions of clinical notes so the model understands medical abbreviations, drug names, and clinical workflows.
+
+### 2. Supervised Fine-Tuning (SFT)
+
+SFT trains on labeled **(input, output) pairs**. You show the model exactly what output you expect for each input.
+
+**When to use:**
+
+- You have a specific task with clear input/output format
+- Quality labeled data is available (even small amounts)
+- You need consistent, predictable behavior
+
+**Example:** Training on (SQL query description, SQL code) pairs for Text-to-SQL conversion.
+
+```json
+{
+    "input": "Get all users who signed up last month",
+    "output": "SELECT * FROM users WHERE signup_date >= DATE_SUB(NOW(), INTERVAL 1 MONTH)"
+}
+```
+
+### 3. Instruction Tuning
+
+Instruction tuning is a **special case of SFT** designed to make models follow diverse natural language instructions. The training data consists of (instruction, response) pairs across many different tasks.
+
+**When to use:**
+
+- You want a general-purpose assistant (like ChatGPT or Claude)
+- The model needs to handle varied, open-ended requests
+- You're building a chat interface
+
+**Example:** Training on thousands of diverse instructions like "Summarize this article," "Write a poem about X," "Explain Y in simple terms."
+
+### Comparison
+
+| Aspect          | Continued Pre-training     | SFT                             | Instruction Tuning               |
+| --------------- | -------------------------- | ------------------------------- | -------------------------------- |
+| **Data**        | Raw text                   | (input, output) pairs           | (instruction, response) pairs    |
+| **Labels**      | None (unsupervised)        | Task-specific                   | Diverse tasks                    |
+| **Goal**        | Domain knowledge           | Specific task behavior          | Follow any instruction           |
+| **Data Volume** | Large (millions of tokens) | Small-Medium (500-10k examples) | Medium-Large (10k-100k examples) |
+
+> [!NOTE] **Most Common Approach**
+> In practice, most practitioners use **SFT** for specific tasks or **Instruction Tuning** for chat applications. Continued pre-training is rarer because it requires massive amounts of domain text and is computationally expensive.
+
+---
+
+## The 7-Stage Fine-Tuning Lifecycle
+
+Fine-tuning isn't a single action—it's a structured lifecycle. Understanding this pipeline is critical for success.
+
+![7-Stage Pipeline](../assets/2026-01-04-finetuning-guide/pipeline_7_stages.svg)
+
+Each stage builds on the previous one:
+
+1.  **Dataset Preparation** — Clean, deduplicate, and format your data (highest leverage step)
+2.  **Model Initialization** — Select the right base model and load weights
+3.  **Training Setup** — Configure hardware, hyperparameters, and optimization strategy
+4.  **Preference Alignment** — Align model behavior with DPO or ORPO (after SFT)
+5.  **Evaluation** — Benchmark performance and validate quality
+6.  **Deployment** — Export and serve your model
+7.  **Monitoring & Maintenance** — Track performance and iterate
+
+> [!WARNING] **Data is Destiny**
+> Stage 1 (Dataset Preparation) is the highest leverage step. Flaws in your data cannot be fixed by algorithms later. **Quality over quantity** — 500-1,000 carefully curated examples often outperform 50,000 noisy ones.
+
+---
+
+## Stage 1: Data Preparation — "Data is Destiny"
+
+This is where most fine-tuning projects succeed or fail. The industry has moved far beyond simple "clean and format" scripts.
+
+![Data Pipeline](../assets/2026-01-04-finetuning-guide/data_pipeline.svg)
+
+### The 5-Stage Data Pipeline
+
+Modern production pipelines use tools like **DataTrove** (Hugging Face) and **Distilabel** (Argilla) rather than custom scripts:
+
+#### 1. Ingestion & Filtering
+
+- **Action**: Remove "refusals" (e.g., "I cannot answer that"), broken UTF-8, non-target languages
+- **Tools**: Trafilatura (extraction) + FastText (language ID)
+
+#### 2. PII Scrubbing (Enterprise Critical)
+
+- **Action**: Detect and redact emails, IP addresses, phone numbers before training
+- **Tools**: Microsoft Presidio or scrubadub
+- **Why**: Training on customer PII is a critical security failure
+
+#### 3. Deduplication (MinHash LSH)
+
+- **Action**: Remove near-duplicates to prevent memorization
+- **Tools**: DataTrove (industry standard for terabyte-scale processing)
+
+#### 4. Synthetic Augmentation (The 2025 Secret)
+
+- **Action**: Use a stronger "teacher" model (GPT-4o, DeepSeek-V3) to rewrite raw data into high-quality instruction-response pairs
+- **Tools**: Distilabel
+- **Impact**: This step often provides the biggest quality boost
+
+#### 5. Formatting
+
+- **Action**: Convert to standard formats (Alpaca or ShareGPT)
+
+### Data Format Examples
+
+**Alpaca Format** (Instruction-Following):
+
+```json
+{
+    "instruction": "Summarize the following text.",
+    "input": "The text to be summarized...",
+    "output": "This is the summary."
+}
+```
+
+**ShareGPT/ChatML Format** (Conversational):
+
+```json
+{
+    "conversations": [
+        { "from": "user", "value": "Hello, who are you?" },
+        { "from": "assistant", "value": "I am a helpful AI assistant." }
+    ]
+}
+```
+
+### Key Principles
+
+- **Quality over Quantity**: 500-1,000 carefully curated examples often outperform 50,000 noisy ones
+- **Cleanliness**: Remove irrelevant information, normalize text, ensure consistent formatting
+- **Balance**: Ensure representation across different topics to prevent bias
+- **Enterprise Critical**: PII scrubbing (Stage 2) is mandatory for production systems
+
+---
+
+## Stage 2: Model Selection & Hardware Requirements
+
+Choosing the right base model and understanding hardware constraints is critical for project success.
+
+### Hardware Requirements by Model Size
+
+The physics of fine-tuning impose strict memory constraints:
+
+| Tier                     | Hardware Config        | Capability       | Use Case                                                   |
+| ------------------------ | ---------------------- | ---------------- | ---------------------------------------------------------- |
+| **Enterprise Standard**  | 8x NVIDIA H100 (80GB)  | Full Fine-Tuning | Training 70B models with long context (32k+) at max speed  |
+| **Minimum Viable (Pro)** | 4x NVIDIA A100 (80GB)  | QLoRA / LoRA     | Fine-tuning Qwen 72B or Llama 70B in 4-bit                 |
+| **Local R&D**            | 4x RTX 6000 Ada (48GB) | QLoRA            | On-prem workstation for data privacy requirements          |
+| **Hobbyist**             | 2x RTX 3090/4090       | Inference Only   | Cannot effectively train 70B models (extreme quantization) |
+
+> [!NOTE] **Why H100s?**
+> It's not just VRAM—it's **FP8 precision**. H100s support native FP8 training, which effectively doubles memory capacity and throughput compared to A100s. For long-context models (128k tokens), FP8 on H100s is often the only way to fit reasonable batch sizes.
+
+### Memory Calculations
+
+To fine-tune a 72B model, you need to store:
+
+- **Model Weights** (16-bit): ~144 GB
+- **Gradients & Optimizer States**: ~2-3x the model size (depending on optimizer, e.g., AdamW)
+- **Activations**: Scales with context length (e.g., 32k tokens)
+
+This is why QLoRA (4-bit quantization + LoRA adapters) is essential for most teams.
+
+---
+
+## Stage 3: Understanding Fine-Tuning Methods
 
 ### Full Fine-Tuning vs PEFT
 
@@ -71,39 +300,89 @@ With rank `r=16`, this reduces trainable parameters by **~10,000x**, dropping VR
 | **LoRA**  | Low-rank matrices injected into frozen weights | ~10x           | General fine-tuning                |
 | **QLoRA** | LoRA + 4-bit base model quantization           | ~20x           | Consumer GPUs (16-24GB)            |
 | **DoRA**  | LoRA with magnitude/direction decomposition    | ~10x           | When LoRA hits performance ceiling |
+| **HFT**   | Freezes half parameters per training round     | ~2x            | Balance between FFT and PEFT       |
 
 #### When to Use Which?
 
 - **LoRA**: Start here. It's fast, memory-efficient, and widely supported
 - **QLoRA**: When you need to fine-tune 70B models on consumer hardware
 - **DoRA**: When you need to match full fine-tuning quality on complex reasoning tasks
+- **HFT**: When you need better performance than LoRA but can't afford full fine-tuning
+
+### DoRA: Weight-Decomposed LoRA
+
+DoRA (Weight-Decomposed Low-Rank Adaptation) is a novel technique that bridges the performance gap between standard LoRA and full fine-tuning.
+
+![DoRA Architecture](../assets/2026-01-04-finetuning-guide/dora_architecture.svg)
+
+**How it works:**
+
+Instead of treating weights as a single entity, DoRA decomposes pre-trained weights into two components:
+
+1.  **Magnitude** — Trainable scalar per column (controls "strength")
+2.  **Direction** — Updated with LoRA matrices (controls "what")
+
+The update becomes: **W' = m × (V + B × A)**
+
+Where:
+
+- `m` = magnitude (trainable)
+- `V` = direction (W / ||W||)
+- `B × A` = LoRA update to direction
+
+**Why it outperforms standard LoRA:**
+
+- Richer parameter updates while maintaining efficiency
+- Achieves learning outcomes closer to full fine-tuning
+- Same memory efficiency (~10x savings)
+- Particularly effective on complex reasoning tasks
+
+### Half Fine-Tuning (HFT)
+
+HFT offers a unique balance between full fine-tuning and PEFT methods:
+
+- **Methodology**: Freezes half of the model's parameters during each fine-tuning round while updating the other half
+- **Strategy**: The frozen and active halves vary across rounds
+- **Benefit**: Retains foundational knowledge (frozen params) while acquiring new skills (active params)
+- **Use case**: When LoRA is insufficient but full fine-tuning is too expensive
+
+### Adapter Merging for Multi-Task Learning
+
+Instead of fine-tuning a monolithic model for multiple tasks, train separate small adapter modules for each function while keeping the base LLM frozen.
+
+**Merging Methods:**
+
+1.  **Concatenation** — Combines adapter parameters, increasing rank (fast, simple)
+2.  **Linear Combination** — Weighted sum of adapters (more control)
+3.  **SVD** — Matrix decomposition for merging (versatile but slower)
+
+**Example use case:** One adapter for summarization, another for translation, merged into a single multi-task model.
 
 ---
 
-## Training Stages
-
-Fine-tuning isn't a single step—it's a pipeline:
-
-### 1. Supervised Fine-Tuning (SFT)
-
-SFT teaches the model **how to behave**. You provide (prompt, response) pairs, and the model learns to generate responses matching your examples.
-
-```python
-# Example SFT data format
-{
-    "instruction": "Convert this to SQL",
-    "input": "Get all users who signed up last month",
-    "output": "SELECT * FROM users WHERE signup_date >= DATE_SUB(NOW(), INTERVAL 1 MONTH)"
-}
-```
-
-**Data quality matters more than quantity.** 500-1,000 carefully curated examples often outperform 50,000 noisy ones.
-
-### 2. Preference Alignment (DPO/ORPO)
+## Stage 4: Preference Alignment
 
 When SFT isn't enough—the model technically answers correctly but in "wrong" ways (too verbose, unsafe, wrong tone)—you need preference alignment.
 
-**DPO (Direct Preference Optimization)** has replaced complex RLHF pipelines. You provide preference pairs:
+![Alignment Methods](../assets/2026-01-04-finetuning-guide/alignment_methods.svg)
+
+#### Traditional Approach: RLHF with PPO
+
+The old standard was a complex 3-stage pipeline:
+
+1.  **SFT** — Learn the task
+2.  **Reward Model** — Train on human preferences (chosen vs rejected)
+3.  **PPO (Proximal Policy Optimization)** — Reinforcement learning to optimize policy
+
+**Problems:**
+
+- Complex to implement and manage
+- Computationally expensive (training multiple models)
+- Unstable training (hyperparameter sensitive)
+
+#### Modern Streamlined: DPO
+
+**DPO (Direct Preference Optimization)** eliminated the need for a separate reward model and complex RL:
 
 ```python
 {
@@ -113,11 +392,62 @@ When SFT isn't enough—the model technically answers correctly but in "wrong" w
 }
 ```
 
-**ORPO** and **SimPO** are newer methods that simplify this further—ORPO combines SFT and alignment into one stage, while SimPO removes the need for a reference model entirely.
+**Benefits:**
+
+- Simpler implementation (no reward model)
+- More stable training
+- Less compute required
+
+**The PPO vs DPO Debate:**
+
+Recent research suggests the debate isn't settled:
+
+- DPO may yield biased solutions in some scenarios
+- Well-tuned PPO can still achieve state-of-the-art results, particularly in complex tasks like code generation
+- PPO's explicit reward signal provides more granular guidance for specialized tasks
+
+#### Newest Single-Stage: ORPO
+
+**ORPO (Odds-Ratio Preference Optimization)** is the 2025 recommendation for most use cases. It combines SFT and preference alignment into a **single training stage**.
+
+**How it works:**
+
+ORPO uses a combined loss function that simultaneously:
+
+1.  **Maximizes likelihood** of the chosen response (learning the task)
+2.  **Penalizes** the rejected response using an odds-ratio term (learning preferences)
+
+**Key Hyperparameters:**
+
+```python
+from trl import ORPOConfig
+
+config = ORPOConfig(
+    learning_rate=8e-6,  # Very low, as recommended by the ORPO paper
+    beta=0.1,            # Controls strength of preference penalty
+    # ... other params
+)
+```
+
+- **Learning Rate**: Use very low values (8e-6) as recommended by the ORPO paper
+- **Beta**: Controls the strength of the preference penalty (typically 0.1)
+
+**Benefits:**
+
+- ✅ Single training stage (no separate SFT needed)
+- ✅ No reward model required
+- ✅ Fastest path to production
+- ✅ Simpler than DPO (fewer hyperparameters)
+
+**When to use what:**
+
+- **ORPO**: Start here for most use cases (fastest, simplest)
+- **DPO**: When you need more control over the alignment process
+- **PPO**: Only for specialized tasks requiring explicit reward signals (e.g., code generation)
 
 ---
 
-## Fine-Tuning Frameworks
+## Stage 5: Fine-Tuning Frameworks
 
 The ecosystem has consolidated around four major tools:
 
@@ -211,8 +541,8 @@ LORA_TARGET_MODULES = [
 ]
 ```
 
-!!! note "The Alpha/Rank Ratio"
-Industry best practice in 2025: set **alpha = 2 × rank** (e.g., rank=16, alpha=32). This provides stronger weight updates without destabilizing training.
+> [!NOTE] **The Alpha/Rank Ratio**
+> Industry best practice in 2025: set **alpha = 2 × rank** (e.g., rank=16, alpha=32). This provides stronger weight updates without destabilizing training.
 
 ### Core Training Code
 
@@ -308,7 +638,7 @@ accelerate launch -m axolotl.cli.train axolotl_config.yaml
 
 ---
 
-## Output Formats: LoRA vs Merged vs GGUF
+## Stage 6: Output Formats & Deployment
 
 After training, you have three export options:
 
@@ -346,7 +676,7 @@ uv run finetune --gguf q4_k_m  # Creates ~2-4GB quantized model
 
 ---
 
-## Serving Your Fine-Tuned Model
+## Stage 7: Serving Your Fine-Tuned Model
 
 ### With vLLM (Production)
 
@@ -393,9 +723,9 @@ ollama run my-function-model
 
 ---
 
-## Evaluation
+## Stage 5 (Continued): Evaluation
 
-Training is easy; knowing if it worked is hard. Here's the evaluation stack:
+Training is easy; knowing if it worked is hard. Evaluation should happen before deployment.
 
 ### Automated Benchmarks
 
@@ -432,22 +762,39 @@ Create a held-out test set of real examples from your use case. This is the most
 
 ## Key Takeaways
 
-1. **Don't default to fine-tuning.** Try RAG and prompting first
-2. **Use QLoRA** to fine-tune 70B models on consumer GPUs
-3. **Quality over quantity** in training data—1K great examples > 50K noisy ones
-4. **Sample packing** is the single biggest training speedup
-5. **Start with Unsloth** for prototyping, **Axolotl** for production
-6. **Export to GGUF** for local/edge deployment
+1. **Follow the 7-stage lifecycle** — Dataset Preparation is the highest leverage step
+2. **Don't default to fine-tuning** — Try RAG and prompting first; use the decision framework
+3. **Data is destiny** — Use modern pipelines (DataTrove, Distilabel) with PII scrubbing for enterprise
+4. **Start with QLoRA** — Fine-tune 70B models on consumer GPUs (4x A100 minimum for production)
+5. **Use ORPO for alignment** — Single-stage training is faster and simpler than DPO or PPO
+6. **Consider DoRA** — When LoRA hits performance ceiling on complex reasoning tasks
+7. **Sample packing** is the single biggest training speedup
+8. **Start with Unsloth** for prototyping, **Axolotl** for production
+9. **Export to GGUF** for local/edge deployment
 
 ---
 
 ## References
 
+### Papers & Research
+
+- [LoRA: Low-Rank Adaptation of Large Language Models](https://arxiv.org/abs/2106.09685)
+- [QLoRA: Efficient Finetuning of Quantized LLMs](https://arxiv.org/abs/2305.14314)
+- [DoRA: Weight-Decomposed Low-Rank Adaptation](https://arxiv.org/abs/2402.09353)
+- [DPO: Direct Preference Optimization](https://arxiv.org/abs/2305.18290)
+- [ORPO: Odds Ratio Preference Optimization](https://arxiv.org/abs/2403.07691)
+
+### Tools & Frameworks
+
 - [Unsloth Documentation](https://docs.unsloth.ai/)
 - [Axolotl GitHub](https://github.com/axolotl-ai-cloud/axolotl)
-- [LoRA Paper](https://arxiv.org/abs/2106.09685)
-- [QLoRA Paper](https://arxiv.org/abs/2305.14314)
-- [DPO Paper](https://arxiv.org/abs/2305.18290)
-- [TRL Documentation](https://huggingface.co/docs/trl)
-- [Demo Repository](https://github.com/slavadubrov/unsloth-finetune-demo)
-- [Research Notebook](https://notebooklm.google.com/notebook/f6bfdb56-8949-4929-87e4-ab6dee31a4a8) - NotebookLM notebook created during article research
+- [TRL (Transformer Reinforcement Learning)](https://huggingface.co/docs/trl)
+- [DataTrove](https://github.com/huggingface/datatrove) — Data processing at scale
+- [Distilabel](https://github.com/argilla-io/distilabel) — Synthetic data generation
+- [xgrammar](https://github.com/mlc-ai/xgrammar) — Schema-guided reasoning
+- [Microsoft Presidio](https://github.com/microsoft/presidio) — PII detection and anonymization
+
+### Guides & Resources
+
+- [Demo Repository](https://github.com/slavadubrov/unsloth-finetune-demo) — Practical fine-tuning example
+- [Mastering the Craft: An Expert's Guide to Fine-Tuning LLMs](https://notebooklm.google.com/notebook/f6bfdb56-8949-4929-87e4-ab6dee31a4a8) — NotebookLM research notebook (CeADAR)
