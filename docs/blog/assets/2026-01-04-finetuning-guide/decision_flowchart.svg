@@ -1,0 +1,98 @@
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="100%" style="stop-color:#8b5cf6"/>
+    </linearGradient>
+    <linearGradient id="promptGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#10b981"/>
+      <stop offset="100%" style="stop-color:#34d399"/>
+    </linearGradient>
+    <linearGradient id="ragGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f59e0b"/>
+      <stop offset="100%" style="stop-color:#fbbf24"/>
+    </linearGradient>
+    <linearGradient id="tuneGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ef4444"/>
+      <stop offset="100%" style="stop-color:#f87171"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="500" fill="#0f172a"/>
+
+  <!-- Title -->
+  <text x="400" y="40" text-anchor="middle" fill="url(#headerGrad)" font-family="system-ui, sans-serif" font-size="22" font-weight="bold">When to Fine-Tune? Decision Flowchart</text>
+
+  <!-- Start node -->
+  <ellipse cx="400" cy="95" rx="100" ry="28" fill="#1e293b" stroke="#6366f1" stroke-width="2" filter="url(#shadow)"/>
+  <text x="400" y="100" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="14" font-weight="600">🎯 What do you need?</text>
+
+  <!-- Arrow down from start -->
+  <path d="M400 123 L400 148" stroke="#475569" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Decision 1: Dynamic facts? -->
+  <rect x="290" y="155" width="220" height="50" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="2" filter="url(#shadow)"/>
+  <text x="400" y="175" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="13">Need real-time or</text>
+  <text x="400" y="193" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="13">changing knowledge?</text>
+
+  <!-- Yes arrow to RAG -->
+  <path d="M510 180 L590 180" stroke="#475569" stroke-width="2"/>
+  <text x="540" y="170" fill="#10b981" font-family="system-ui, sans-serif" font-size="12" font-weight="600">YES</text>
+
+  <!-- RAG box -->
+  <rect x="600" y="155" width="150" height="50" rx="8" fill="url(#ragGrad)" filter="url(#shadow)"/>
+  <text x="675" y="177" text-anchor="middle" fill="#0f172a" font-family="system-ui, sans-serif" font-size="14" font-weight="bold">📚 Use RAG</text>
+  <text x="675" y="193" text-anchor="middle" fill="#0f172a" font-family="system-ui, sans-serif" font-size="11">Retrieval-Augmented Gen</text>
+
+  <!-- No arrow down -->
+  <path d="M400 205 L400 240" stroke="#475569" stroke-width="2"/>
+  <text x="415" y="225" fill="#ef4444" font-family="system-ui, sans-serif" font-size="12" font-weight="600">NO</text>
+
+  <!-- Decision 2: Simple format? -->
+  <rect x="290" y="245" width="220" height="50" rx="8" fill="#1e293b" stroke="#10b981" stroke-width="2" filter="url(#shadow)"/>
+  <text x="400" y="265" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="13">Simple style/format</text>
+  <text x="400" y="283" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="13">adjustments?</text>
+
+  <!-- Yes arrow to Prompt Engineering -->
+  <path d="M510 270 L590 270" stroke="#475569" stroke-width="2"/>
+  <text x="540" y="260" fill="#10b981" font-family="system-ui, sans-serif" font-size="12" font-weight="600">YES</text>
+
+  <!-- Prompt Engineering box -->
+  <rect x="600" y="245" width="150" height="50" rx="8" fill="url(#promptGrad)" filter="url(#shadow)"/>
+  <text x="675" y="267" text-anchor="middle" fill="#0f172a" font-family="system-ui, sans-serif" font-size="14" font-weight="bold">✏️ Prompting</text>
+  <text x="675" y="283" text-anchor="middle" fill="#0f172a" font-family="system-ui, sans-serif" font-size="11">Few-shot examples</text>
+
+  <!-- No arrow down -->
+  <path d="M400 295 L400 330" stroke="#475569" stroke-width="2"/>
+  <text x="415" y="315" fill="#ef4444" font-family="system-ui, sans-serif" font-size="12" font-weight="600">NO</text>
+
+  <!-- Decision 3: High volume? -->
+  <rect x="275" y="335" width="250" height="50" rx="8" fill="#1e293b" stroke="#ef4444" stroke-width="2" filter="url(#shadow)"/>
+  <text x="400" y="355" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="13">Need complex behavior,</text>
+  <text x="400" y="373" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="13">consistent style, or lower latency?</text>
+
+  <!-- Yes arrow to Fine-Tuning -->
+  <path d="M400 385 L400 420" stroke="#475569" stroke-width="2"/>
+  <text x="415" y="405" fill="#10b981" font-family="system-ui, sans-serif" font-size="12" font-weight="600">YES</text>
+
+  <!-- Fine-Tuning box -->
+  <rect x="300" y="425" width="200" height="55" rx="8" fill="url(#tuneGrad)" filter="url(#shadow)"/>
+  <text x="400" y="450" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="16" font-weight="bold">🔧 Fine-Tune</text>
+  <text x="400" y="468" text-anchor="middle" fill="#fef2f2" font-family="system-ui, sans-serif" font-size="12">PEFT (LoRA/QLoRA)</text>
+
+  <!-- Left side examples -->
+  <rect x="40" y="155" width="180" height="170" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1" filter="url(#shadow)"/>
+  <text x="130" y="178" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="12" font-weight="600">USE CASES</text>
+  <text x="55" y="205" fill="#f59e0b" font-family="system-ui, sans-serif" font-size="11">📚 RAG:</text>
+  <text x="55" y="220" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">• Company docs</text>
+  <text x="55" y="235" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">• Current prices</text>
+  <text x="55" y="255" fill="#10b981" font-family="system-ui, sans-serif" font-size="11">✏️ Prompting:</text>
+  <text x="55" y="270" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">• JSON output</text>
+  <text x="55" y="285" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">• Basic style</text>
+  <text x="55" y="305" fill="#ef4444" font-family="system-ui, sans-serif" font-size="11">🔧 Fine-Tune:</text>
+  <text x="55" y="320" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">• Brand voice</text>
+</svg>
