@@ -66,7 +66,7 @@ Libraries like `xgrammar` and `outlines` constrain model outputs at inference ti
 2.  **Add SGR if inconsistent** — Use `xgrammar` or `outlines` to guarantee output structure and reliability
 3.  **Fine-tune as last resort** — Only when you need deep behavioral changes that schema constraints can't achieve
 
-### When Fine-Tuning is the Right Choice
+### Quick Reference: Matching Problems to Solutions
 
 | Challenge                      | Best Solution      | Why?                                                                      |
 | ------------------------------ | ------------------ | ------------------------------------------------------------------------- |
@@ -75,7 +75,8 @@ Libraries like `xgrammar` and `outlines` constrain model outputs at inference ti
 | **Inconsistent outputs**       | SGR (xgrammar)     | Guaranteed structure and reliability without training                     |
 | **Complex behavioral changes** | Fine-Tuning (SFT)  | Deep persona, reasoning patterns, or multi-step workflows                 |
 | **Safety/preference**          | Alignment (DPO)    | When outputs are correct but don't match preferences                      |
-| **Latency/cost at scale**      | Fine-Tuning        | Distill a large model into a smaller, faster one                          |
+| **Latency/cost at scale**      | Distillation (SFT) | Train smaller student model on larger teacher's outputs                   |
+| **Reduce model size**          | Quantization       | No training—compress weights (FP16→INT4) for faster inference             |
 
 ### The Economic Case
 
@@ -159,13 +160,13 @@ Fine-tuning isn't a single action—it's a structured lifecycle. Understanding t
 
 Each stage builds on the previous one:
 
-1.  **Dataset Preparation** — Clean, deduplicate, and format your data (highest leverage step)
-2.  **Model Initialization** — Select the right base model and load weights
+1.  **Data Preparation** — Clean, deduplicate, and format your data (highest leverage step)
+2.  **Model Selection** — Choose the right base model and load weights
 3.  **Training Setup** — Configure hardware, hyperparameters, and optimization strategy
-4.  **Preference Alignment** — Align model behavior with DPO or ORPO (after SFT)
+4.  **Fine-Tuning** — Run SFT, DPO, or ORPO training
 5.  **Evaluation** — Benchmark performance and validate quality
 6.  **Deployment** — Export and serve your model
-7.  **Monitoring & Maintenance** — Track performance and iterate
+7.  **Monitoring** — Track performance, maintain, and iterate
 
 > [!WARNING] **Data is Destiny**
 > Stage 1 (Dataset Preparation) is the highest leverage step. Flaws in your data cannot be fixed by algorithms later. **Quality over quantity** — 500-1,000 carefully curated examples often outperform 50,000 noisy ones.
@@ -270,7 +271,7 @@ This is why QLoRA (4-bit quantization + LoRA adapters) is essential for most tea
 
 ---
 
-## Stage 3: Understanding Fine-Tuning Methods
+## Stage 3: Training Methods (PEFT & LoRA)
 
 ### Full Fine-Tuning vs PEFT
 
@@ -360,7 +361,7 @@ Instead of fine-tuning a monolithic model for multiple tasks, train separate sma
 
 ---
 
-## Stage 4: Preference Alignment
+## Stage 4: Fine-Tuning & Preference Alignment
 
 When SFT isn't enough—the model technically answers correctly but in "wrong" ways (too verbose, unsafe, wrong tone)—you need preference alignment.
 
@@ -447,7 +448,7 @@ config = ORPOConfig(
 
 ---
 
-## Stage 5: Fine-Tuning Frameworks
+## Fine-Tuning Frameworks
 
 The ecosystem has consolidated around four major tools:
 
@@ -638,7 +639,44 @@ accelerate launch -m axolotl.cli.train axolotl_config.yaml
 
 ---
 
-## Stage 6: Output Formats & Deployment
+## Stage 5: Evaluation
+
+Training is easy; knowing if it worked is hard. Evaluation should happen before deployment.
+
+### Automated Benchmarks
+
+Use `lm-evaluation-harness` for standardized testing:
+
+```bash
+lm_eval --model hf \
+    --model_args pretrained=./outputs/merged-model \
+    --tasks hellaswag,arc_easy,mmlu \
+    --batch_size 8
+```
+
+### LLM-as-Judge
+
+For subjective quality, use a larger model to evaluate:
+
+```python
+judge_prompt = """
+Rate this response from 1-5 on:
+- Relevance
+- Accuracy
+- Formatting
+
+Response: {model_output}
+Expected: {ground_truth}
+"""
+```
+
+### Domain-Specific Eval
+
+Create a held-out test set of real examples from your use case. This is the most important evaluation—generic benchmarks won't tell you if your function-calling model actually works.
+
+---
+
+## Stage 6: Deployment & Output Formats
 
 After training, you have three export options:
 
@@ -676,7 +714,7 @@ uv run finetune --gguf q4_k_m  # Creates ~2-4GB quantized model
 
 ---
 
-## Stage 7: Serving Your Fine-Tuned Model
+## Stage 7: Serving & Monitoring
 
 ### With vLLM (Production)
 
@@ -723,46 +761,9 @@ ollama run my-function-model
 
 ---
 
-## Stage 5 (Continued): Evaluation
-
-Training is easy; knowing if it worked is hard. Evaluation should happen before deployment.
-
-### Automated Benchmarks
-
-Use `lm-evaluation-harness` for standardized testing:
-
-```bash
-lm_eval --model hf \
-    --model_args pretrained=./outputs/merged-model \
-    --tasks hellaswag,arc_easy,mmlu \
-    --batch_size 8
-```
-
-### LLM-as-Judge
-
-For subjective quality, use a larger model to evaluate:
-
-```python
-judge_prompt = """
-Rate this response from 1-5 on:
-- Relevance
-- Accuracy
-- Formatting
-
-Response: {model_output}
-Expected: {ground_truth}
-"""
-```
-
-### Domain-Specific Eval
-
-Create a held-out test set of real examples from your use case. This is the most important evaluation—generic benchmarks won't tell you if your function-calling model actually works.
-
----
-
 ## Key Takeaways
 
-1. **Follow the 7-stage lifecycle** — Dataset Preparation is the highest leverage step
+1. **Follow the 7-stage lifecycle** — Data Preparation is the highest leverage step
 2. **Don't default to fine-tuning** — Try RAG and prompting first; use the decision framework
 3. **Data is destiny** — Use modern pipelines (DataTrove, Distilabel) with PII scrubbing for enterprise
 4. **Start with QLoRA** — Fine-tune 70B models on consumer GPUs (4x A100 minimum for production)
