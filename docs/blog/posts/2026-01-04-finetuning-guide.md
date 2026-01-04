@@ -784,18 +784,41 @@ ollama run my-function-model
 - [DoRA: Weight-Decomposed Low-Rank Adaptation](https://arxiv.org/abs/2402.09353)
 - [DPO: Direct Preference Optimization](https://arxiv.org/abs/2305.18290)
 - [ORPO: Odds Ratio Preference Optimization](https://arxiv.org/abs/2403.07691)
+- [PPO: Proximal Policy Optimization Algorithms](https://arxiv.org/abs/1707.06347) — OpenAI, 2017
+- [HFT: Half Fine-Tuning for Large Language Models](https://arxiv.org/abs/2404.18466) — Mitigating catastrophic forgetting
 
-### Tools & Frameworks
+### Data Processing Tools
 
-- [Unsloth Documentation](https://docs.unsloth.ai/)
-- [Axolotl GitHub](https://github.com/axolotl-ai-cloud/axolotl)
-- [TRL (Transformer Reinforcement Learning)](https://huggingface.co/docs/trl)
-- [DataTrove](https://github.com/huggingface/datatrove) — Data processing at scale
-- [Distilabel](https://github.com/argilla-io/distilabel) — Synthetic data generation
-- [xgrammar](https://github.com/mlc-ai/xgrammar) — Schema-guided reasoning
+- [DataTrove](https://github.com/huggingface/datatrove) — Hugging Face data processing at scale
+- [Distilabel](https://github.com/argilla-io/distilabel) — Synthetic data generation (Argilla)
+- [Trafilatura](https://github.com/adbar/trafilatura) — Web text extraction and crawling
+- [FastText](https://fasttext.cc/) — Facebook AI language identification (supports 217 languages)
 - [Microsoft Presidio](https://github.com/microsoft/presidio) — PII detection and anonymization
+- [scrubadub](https://github.com/LeapBeyond/scrubadub) — Python library for PII removal
+
+### Schema-Guided Reasoning (SGR)
+
+- [xgrammar](https://github.com/mlc-ai/xgrammar) — Constrained decoding with FSMs
+- [outlines](https://github.com/dottxt-ai/outlines) — Structured generation for LLMs
+
+### Training Frameworks
+
+- [Unsloth](https://docs.unsloth.ai/) — Speed & efficiency champion (2-5x faster)
+- [Axolotl](https://github.com/axolotl-ai-cloud/axolotl) — Config-driven multi-GPU training
+- [TRL (Transformer Reinforcement Learning)](https://huggingface.co/docs/trl) — Hugging Face RL training
+- [Torchtune](https://github.com/pytorch/torchtune) — PyTorch-native fine-tuning library
+
+### Inference & Deployment
+
+- [vLLM](https://docs.vllm.ai/) — High-throughput LLM serving engine
+- [Ollama](https://ollama.ai/) — Local LLM runner for Mac/Windows/Linux
+- [llama.cpp](https://github.com/ggerganov/llama.cpp) — CPU/GPU inference with GGUF format
+
+### Evaluation
+
+- [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness) — EleutherAI standardized LLM benchmarking
 
 ### Guides & Resources
 
 - [Demo Repository](https://github.com/slavadubrov/unsloth-finetune-demo) — Practical fine-tuning example
-- [Mastering the Craft: An Expert's Guide to Fine-Tuning LLMs](https://notebooklm.google.com/notebook/f6bfdb56-8949-4929-87e4-ab6dee31a4a8) — NotebookLM research notebook (CeADAR)
+- [LLM Fine-Tuning. Theoretical Intuition and Practical Implementation](https://notebooklm.google.com/notebook/f6bfdb56-8949-4929-87e4-ab6dee31a4a8) — NotebookLM research notebook
