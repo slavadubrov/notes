@@ -1,0 +1,95 @@
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="100%" style="stop-color:#8b5cf6"/>
+    </linearGradient>
+    <linearGradient id="unsupervisedGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f59e0b"/>
+      <stop offset="100%" style="stop-color:#fbbf24"/>
+    </linearGradient>
+    <linearGradient id="sftGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#10b981"/>
+      <stop offset="100%" style="stop-color:#34d399"/>
+    </linearGradient>
+    <linearGradient id="instructGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#06b6d4"/>
+      <stop offset="100%" style="stop-color:#22d3ee"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="500" fill="#0f172a"/>
+
+  <!-- Title -->
+  <text x="400" y="40" text-anchor="middle" fill="url(#headerGrad)" font-family="system-ui, sans-serif" font-size="22" font-weight="bold">Types of Fine-Tuning</text>
+
+  <!-- Base Model (center top) -->
+  <rect x="300" y="70" width="200" height="45" rx="8" fill="#1e293b" stroke="#6366f1" stroke-width="2" filter="url(#shadow)"/>
+  <text x="400" y="98" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="14" font-weight="600">🧠 Pre-trained Base Model</text>
+
+  <!-- Arrows from base model -->
+  <path d="M400 115 L400 140 L150 140 L150 160" stroke="#475569" stroke-width="2" fill="none"/>
+  <path d="M400 115 L400 160" stroke="#475569" stroke-width="2" fill="none"/>
+  <path d="M400 115 L400 140 L650 140 L650 160" stroke="#475569" stroke-width="2" fill="none"/>
+
+  <!-- Unsupervised / Continued Pre-training (left) -->
+  <rect x="50" y="165" width="200" height="55" rx="8" fill="url(#unsupervisedGrad)" filter="url(#shadow)"/>
+  <text x="150" y="190" text-anchor="middle" fill="#0f172a" font-family="system-ui, sans-serif" font-size="14" font-weight="bold">📚 Continued Pre-training</text>
+  <text x="150" y="208" text-anchor="middle" fill="#0f172a" font-family="system-ui, sans-serif" font-size="11">(Unsupervised)</text>
+
+  <!-- SFT (center) -->
+  <rect x="300" y="165" width="200" height="55" rx="8" fill="url(#sftGrad)" filter="url(#shadow)"/>
+  <text x="400" y="190" text-anchor="middle" fill="#0f172a" font-family="system-ui, sans-serif" font-size="14" font-weight="bold">🎯 Supervised Fine-Tuning</text>
+  <text x="400" y="208" text-anchor="middle" fill="#0f172a" font-family="system-ui, sans-serif" font-size="11">(SFT)</text>
+
+  <!-- Instruction Tuning (right) -->
+  <rect x="550" y="165" width="200" height="55" rx="8" fill="url(#instructGrad)" filter="url(#shadow)"/>
+  <text x="650" y="190" text-anchor="middle" fill="#0f172a" font-family="system-ui, sans-serif" font-size="14" font-weight="bold">💬 Instruction Tuning</text>
+  <text x="650" y="208" text-anchor="middle" fill="#0f172a" font-family="system-ui, sans-serif" font-size="11">(Special case of SFT)</text>
+
+  <!-- Descriptions boxes -->
+
+  <!-- Unsupervised description -->
+  <rect x="50" y="240" width="200" height="130" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="1" filter="url(#shadow)"/>
+  <text x="65" y="265" fill="#f59e0b" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Data:</text>
+  <text x="65" y="283" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">Raw text (no labels)</text>
+  <text x="65" y="305" fill="#f59e0b" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Goal:</text>
+  <text x="65" y="323" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">Domain knowledge</text>
+  <text x="65" y="345" fill="#f59e0b" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Example:</text>
+  <text x="65" y="363" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">Medical papers, legal docs</text>
+
+  <!-- SFT description -->
+  <rect x="300" y="240" width="200" height="130" rx="8" fill="#1e293b" stroke="#10b981" stroke-width="1" filter="url(#shadow)"/>
+  <text x="315" y="265" fill="#10b981" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Data:</text>
+  <text x="315" y="283" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">(input, output) pairs</text>
+  <text x="315" y="305" fill="#10b981" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Goal:</text>
+  <text x="315" y="323" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">Task-specific behavior</text>
+  <text x="315" y="345" fill="#10b981" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Example:</text>
+  <text x="315" y="363" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">Text → SQL, Summarization</text>
+
+  <!-- Instruction Tuning description -->
+  <rect x="550" y="240" width="200" height="130" rx="8" fill="#1e293b" stroke="#06b6d4" stroke-width="1" filter="url(#shadow)"/>
+  <text x="565" y="265" fill="#06b6d4" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Data:</text>
+  <text x="565" y="283" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">(instruction, response) pairs</text>
+  <text x="565" y="305" fill="#06b6d4" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Goal:</text>
+  <text x="565" y="323" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">Follow diverse instructions</text>
+  <text x="565" y="345" fill="#06b6d4" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Example:</text>
+  <text x="565" y="363" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">ChatGPT, Claude, Llama-Chat</text>
+
+  <!-- When to use section -->
+  <rect x="50" y="390" width="700" height="110" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1" filter="url(#shadow)"/>
+  <text x="400" y="415" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="13" font-weight="600">WHEN TO USE EACH</text>
+
+  <text x="80" y="445" fill="#f59e0b" font-family="system-ui, sans-serif" font-size="11" font-weight="600">📚 Continued Pre-training:</text>
+  <text x="230" y="445" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">Model lacks domain vocabulary (e.g., medical, legal, code)</text>
+
+  <text x="80" y="465" fill="#10b981" font-family="system-ui, sans-serif" font-size="11" font-weight="600">🎯 SFT:</text>
+  <text x="130" y="465" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">Specific task with known input/output format (e.g., Text-to-SQL)</text>
+
+  <text x="80" y="485" fill="#06b6d4" font-family="system-ui, sans-serif" font-size="11" font-weight="600">💬 Instruction:</text>
+  <text x="180" y="485" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">General chat assistant behavior</text>
+</svg>
