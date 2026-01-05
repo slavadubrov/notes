@@ -249,12 +249,15 @@ Choosing the right base model and understanding hardware constraints is critical
 
 The physics of fine-tuning impose strict memory constraints:
 
-| Tier                     | Hardware Config        | Capability       | Use Case                                                   |
-| ------------------------ | ---------------------- | ---------------- | ---------------------------------------------------------- |
-| **Enterprise Standard**  | 8x NVIDIA H100 (80GB)  | Full Fine-Tuning | Training 70B models with long context (32k+) at max speed  |
-| **Minimum Viable (Pro)** | 4x NVIDIA A100 (80GB)  | QLoRA / LoRA     | Fine-tuning Qwen 72B or Llama 70B in 4-bit                 |
-| **Local R&D**            | 4x RTX 6000 Ada (48GB) | QLoRA            | On-prem workstation for data privacy requirements          |
-| **Hobbyist**             | 2x RTX 3090/4090       | Inference Only   | Cannot effectively train 70B models (extreme quantization) |
+| Tier                     | Hardware Config           | Capability       | Use Case                                                  |
+| ------------------------ | ------------------------- | ---------------- | --------------------------------------------------------- |
+| **Enterprise Standard**  | 8x NVIDIA H100 (80GB)     | Full Fine-Tuning | Training 70B models with long context (32k+) at max speed |
+| **Minimum Viable (Pro)** | 4x NVIDIA A100 (80GB)     | QLoRA / LoRA     | Fine-tuning Qwen 72B or Llama 70B in 4-bit                |
+| **Local R&D**            | 4x RTX 6000 Ada (48GB)    | QLoRA            | On-prem workstation for data privacy requirements         |
+| **Hobbyist/Indie**       | 1-2x RTX 3090/4090 (24GB) | QLoRA            | Fine-tune 7B-32B models with parameter-efficient methods  |
+
+> [!TIP] **Consumer GPUs Are More Capable Than You Think**
+> With QLoRA and optimized frameworks like Unsloth, a single RTX 4090 (24GB) can fine-tune models up to 32B parameters. RTX 3090s remain excellent value for 7B-13B model training. The 24GB VRAM sweet spot makes these cards highly capable for serious fine-tuning work.
 
 > [!NOTE] **Why H100s?**
 > It's not just VRAM—it's **FP8 precision**. H100s support native FP8 training, which effectively doubles memory capacity and throughput compared to A100s. For long-context models (128k tokens), FP8 on H100s is often the only way to fit reasonable batch sizes.
@@ -383,7 +386,7 @@ The old standard was a complex 3-stage pipeline:
 
 #### Modern Streamlined: DPO
 
-**DPO (Direct Preference Optimization)** eliminated the need for a separate reward model and complex RL:
+**DPO (Direct Preference Optimization)** simplifies preference alignment by eliminating the explicit reward model and RL training loop. While DPO optimizes the same objective as RLHF (reward maximization with KL-divergence constraint), it achieves this through a reparameterized supervised learning objective rather than explicit reinforcement learning:
 
 ```python
 {
@@ -395,8 +398,8 @@ The old standard was a complex 3-stage pipeline:
 
 **Benefits:**
 
-- Simpler implementation (no reward model)
-- More stable training
+- Simpler implementation (no explicit reward model or RL training loop)
+- More stable training (supervised learning approach)
 - Less compute required
 
 **The PPO vs DPO Debate:**
