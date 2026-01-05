@@ -454,15 +454,25 @@ The ecosystem has consolidated around four major tools:
 
 ### Unsloth — Speed & Efficiency Champion
 
-```python
-from unsloth import FastLanguageModel
+Unsloth uses HuggingFace packages (`trl` and `transformers`) under the hood but adds additional optimizations:
 
-# 2x faster training, 60% less VRAM
-model, tokenizer = FastLanguageModel.from_pretrained(
-    model_name="unsloth/llama-3-8b-bnb-4bit",
-    max_seq_length=4096,
-    load_in_4bit=True,
-)
+- **Custom Triton kernels** — Hand-written GPU kernels for attention, RoPE, and cross-entropy that bypass PyTorch overhead
+- **Memory-efficient backpropagation** — Recomputes activations during backward pass instead of storing them
+- **Fused operations** — Combines multiple operations (layer norm + linear, etc.) into single GPU calls
+- **4-bit quantization integration** — Seamless QLoRA with optimized dequantization
+
+> [!IMPORTANT] **Import Order Matters**
+> Because Unsloth patches HuggingFace packages, you **must** import and initialize Unsloth's `FastLanguageModel` **before** importing `trl` or `transformers`. Incorrect import order will cause failures.
+
+```python
+# ✅ Correct order
+from unsloth import FastLanguageModel  # Must be first!
+from trl import SFTTrainer
+from transformers import TrainingArguments
+
+# ❌ Wrong order - will fail
+from trl import SFTTrainer
+from unsloth import FastLanguageModel  # Too late!
 ```
 
 **Best for:** Single-GPU training, prototyping, Colab notebooks, anyone paying for GPU hours.
@@ -590,6 +600,9 @@ trainer.train()
 ---
 
 ## Fine-Tuning with Axolotl
+
+> [!NOTE] **Demo Coming Soon**
+> I'm currently working on a hands-on Axolotl demo—stay tuned! In the meantime, check out the [Accelerate n-D Parallelism Guide](https://huggingface.co/blog/accelerate-nd-parallel) from Hugging Face for multi-GPU training strategies.
 
 For production and multi-GPU setups, Axolotl's config-first approach excels:
 
@@ -822,3 +835,4 @@ ollama run my-function-model
 
 - [Demo Repository](https://github.com/slavadubrov/unsloth-finetune-demo) — Practical fine-tuning example
 - [LLM Fine-Tuning. Theoretical Intuition and Practical Implementation](https://notebooklm.google.com/notebook/f6bfdb56-8949-4929-87e4-ab6dee31a4a8) — NotebookLM research notebook
+- [Accelerate n-D Parallelism Guide](https://huggingface.co/blog/accelerate-nd-parallel) — Hugging Face multi-GPU training strategies
