@@ -168,12 +168,12 @@ Each stage builds on the previous one:
 6.  **Deployment** — Export and serve your model
 7.  **Monitoring** — Track performance, maintain, and iterate
 
-> [!WARNING] **Data is Destiny**
+> [!WARNING] **Data is the Foundation**
 > Stage 1 (Dataset Preparation) is the highest leverage step. Flaws in your data cannot be fixed by algorithms later. **Quality over quantity** — 500-1,000 carefully curated examples often outperform 50,000 noisy ones.
 
 ---
 
-## Stage 1: Data Preparation — "Data is Destiny"
+## Stage 1: Data Preparation — "Data is the Foundation"
 
 This is where most fine-tuning projects succeed or fail. The industry has moved far beyond simple "clean and format" scripts.
 
@@ -781,7 +781,7 @@ ollama run my-function-model
 
 1. **Follow the 7-stage lifecycle** — Data Preparation is the highest leverage step
 2. **Don't default to fine-tuning** — Try RAG and prompting first; use the decision framework
-3. **Data is destiny** — Use modern pipelines (DataTrove, Distilabel) with PII scrubbing for enterprise
+3. **Data is the foundation** — Use modern pipelines (DataTrove, Distilabel) with PII scrubbing for enterprise
 4. **Start with QLoRA** — Fine-tune 70B models on consumer GPUs (4x A100 minimum for production)
 5. **Use ORPO for alignment** — Single-stage training is faster and simpler than DPO or PPO
 6. **Consider DoRA** — When LoRA hits performance ceiling on complex reasoning tasks
