@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 360">
+  <defs>
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="securityGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ef4444;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#dc2626;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="contextGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d97706;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="execGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4f46e5;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="linkGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow2" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <marker id="arrow2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="360" fill="url(#bgGrad2)" rx="16"/>
+
+  <!-- Title -->
+  <text x="450" y="40" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="600">Multi-Agent Sequential Pipeline</text>
+
+  <!-- Step 1: Security Gate -->
+  <rect x="40" y="100" width="180" height="140" rx="12" fill="url(#securityGrad)" filter="url(#glow2)"/>
+  <text x="130" y="130" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Security Gate</text>
+  <line x1="60" y1="145" x2="200" y2="145" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+  <text x="130" y="168" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-family="system-ui, sans-serif" font-size="11">✓ Validate permissions</text>
+  <text x="130" y="186" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-family="system-ui, sans-serif" font-size="11">✓ Check wiki rules</text>
+  <text x="130" y="204" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-family="system-ui, sans-serif" font-size="11">✗ Block spoofed requests</text>
+  <text x="130" y="225" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-family="system-ui, sans-serif" font-size="10" font-style="italic">Pre-execution check</text>
+
+  <!-- Step 2: Context Extraction -->
+  <rect x="260" y="100" width="180" height="140" rx="12" fill="url(#contextGrad)" filter="url(#glow2)"/>
+  <text x="350" y="130" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Context Extraction</text>
+  <line x1="280" y1="145" x2="420" y2="145" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+  <text x="350" y="168" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-family="system-ui, sans-serif" font-size="11">Surface critical rules</text>
+  <text x="350" y="186" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-family="system-ui, sans-serif" font-size="11">Preload user profiles</text>
+  <text x="350" y="204" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-family="system-ui, sans-serif" font-size="11">Enrich project data</text>
+  <text x="350" y="225" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-family="system-ui, sans-serif" font-size="10" font-style="italic">Aggressive preloading</text>
+
+  <!-- Step 3: Execution Agent -->
+  <rect x="480" y="100" width="180" height="140" rx="12" fill="url(#execGrad)" filter="url(#glow2)"/>
+  <text x="570" y="130" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Execution Agent</text>
+  <line x1="500" y1="145" x2="640" y2="145" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+  <text x="570" y="168" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-family="system-ui, sans-serif" font-size="11">ReAct planning loop</text>
+  <text x="570" y="186" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-family="system-ui, sans-serif" font-size="11">5 internal phases</text>
+  <text x="570" y="204" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-family="system-ui, sans-serif" font-size="11">Tool calling &amp; reasoning</text>
+  <text x="570" y="225" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-family="system-ui, sans-serif" font-size="10" font-style="italic">Core task execution</text>
+
+  <!-- Step 4: Link Generator -->
+  <rect x="700" y="100" width="160" height="140" rx="12" fill="url(#linkGrad)" filter="url(#glow2)"/>
+  <text x="780" y="130" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Link Generator</text>
+  <line x1="720" y1="145" x2="840" y2="145" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+  <text x="780" y="168" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-family="system-ui, sans-serif" font-size="11">Parse context</text>
+  <text x="780" y="186" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-family="system-ui, sans-serif" font-size="11">Extract entity IDs</text>
+  <text x="780" y="204" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-family="system-ui, sans-serif" font-size="11">Add required links</text>
+  <text x="780" y="225" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-family="system-ui, sans-serif" font-size="10" font-style="italic">Embedded in response</text>
+
+  <!-- Arrows between stages -->
+  <line x1="220" y1="170" x2="255" y2="170" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow2)"/>
+  <line x1="440" y1="170" x2="475" y2="170" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow2)"/>
+  <line x1="660" y1="170" x2="695" y2="170" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow2)"/>
+
+  <!-- Stage Labels -->
+  <text x="130" y="265" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="12" font-weight="500">Stage 1</text>
+  <text x="350" y="265" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="12" font-weight="500">Stage 2</text>
+  <text x="570" y="265" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="12" font-weight="500">Stage 3</text>
+  <text x="780" y="265" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="12" font-weight="500">Stage 4</text>
+
+  <!-- Bottom note -->
+  <rect x="250" y="290" width="400" height="40" rx="8" fill="rgba(99, 102, 241, 0.15)" stroke="#6366f1" stroke-width="1"/>
+  <text x="450" y="315" text-anchor="middle" fill="#a5b4fc" font-family="system-ui, sans-serif" font-size="12">Separation of concerns → Each agent optimized for single task</text>
+</svg>
