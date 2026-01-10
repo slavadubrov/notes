@@ -4,6 +4,7 @@ date:
     created: 2025-05-06
     updated: 2025-05-06
 tags: [mlops, llmops, infrastructure]
+categories: [Infrastructure]
 description: An exploration of how ML infrastructure and MLOps practices have evolved in response to the rise of large-scale foundation models, contrasting classic MLOps with modern paradigms and highlighting key changes, patterns, and tools.
 author: Viacheslav Dubrov
 ---

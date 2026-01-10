@@ -4,6 +4,7 @@ date:
     created: 2025-05-11
     updated: 2025-11-27
 tags: [guide, llm]
+categories: [AI Engineering]
 description: A practical guide to navigating open-source LLM variants and file formats, covering model types (Base, Instruct, Distill, QAT, MoE), quantization formats (GGUF, GPTQ, AWQ), and hardware-specific recommendations for optimal performance.
 author: Viacheslav Dubrov
 ---

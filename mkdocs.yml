@@ -4,6 +4,7 @@ site_description: "ML & engineering notes"
 
 theme:
   name: material
+  custom_dir: overrides
   logo: assets/logo-eoc.svg
   favicon: assets/favicon-eoc.svg
   features:
@@ -49,6 +50,15 @@ extra_javascript:
 
 extra:
   social:
+    - icon: fontawesome/brands/linkedin
+      name: LinkedIn
+      link: https://www.linkedin.com/in/slavadubrov
+    - icon: simple/substack
+      name: Substack
+      link: https://slavadubrov.substack.com/
+    - icon: fontawesome/brands/github
+      name: GitHub
+      link: https://github.com/slavadubrov
     - icon: material/rss
       name: RSS
       link: /feed_rss_created.xml
@@ -89,6 +99,12 @@ plugins: # Configures MkDocs plugins for extended functionality
       post_readtime: false # don't show reading‑time badges
       post_excerpt_max_authors: 0 # hide author chips in the list
       post_excerpt_max_categories: 0 # hide category chips in the list
+      categories_name: Topics
+      categories_allowed:
+        - AI Engineering
+        - Infrastructure
+        - Tooling
+        - Python
   - tags # Adds support for tagging content
   - macros # Allows using variables and macros in Markdown
   - mermaid-to-svg:
@@ -113,7 +129,8 @@ plugins: # Configures MkDocs plugins for extended functionality
       feed_title: "Edge of Context: Tips and Tricks in Machine Learning" # Override feed title to avoid XML escaping issues with &
       image: https://slavadubrov.github.io/assets/logo-eoc.svg # RSS feed image URL
 
-nav: # Defines the navigation structure of the site
-  - Home: index.md # Links the Home navigation item to index.md
-  - Topics: topics.md # Links the Topics navigation item to topics.md
-  - Blog: blog/index.md # Links the Blog navigation item to blog/index.md
+nav:
+  - Home: index.md
+  - Blog:
+      - blog/index.md
+  - About: about.md

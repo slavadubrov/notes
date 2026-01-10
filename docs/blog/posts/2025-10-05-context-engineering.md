@@ -15,6 +15,7 @@ tags:
         context-compression,
         context-optimization,
     ]
+categories: [AI Engineering]
 description: A comprehensive guide to designing, evaluating, and shipping the context layer for agentic AI systems — with deep dives into degradation patterns, compression strategies, optimization techniques, and agent skills.
 author: Viacheslav Dubrov
 ---

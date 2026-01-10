@@ -3,7 +3,8 @@ title: "The Complete Guide to LLM Fine-Tuning in 2025: From Theory to Production
 date:
     created: 2026-01-04
     updated: 2026-01-04
-tags: [ai-engineering, llm, fine-tuning, lora, qlora, peft, unsloth, axolotl]
+categories: [AI Engineering]
+tags: [llm, fine-tuning, lora, qlora, peft, unsloth, axolotl]
 description: A comprehensive, beginner-friendly guide to LLM fine-tuning covering PEFT methods (LoRA, QLoRA, DoRA), frameworks (Unsloth, Axolotl), practical code examples, output formats, and deployment strategies.
 author: Viacheslav Dubrov
 ---

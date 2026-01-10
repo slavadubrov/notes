@@ -4,6 +4,7 @@ date:
     created: 2025-04-17
     updated: 2025-11-23
 tags: [tooling, python, guide]
+categories: [Tooling]
 description: Lightning-fast Python installs with Rust-powered uv.
 author: Viacheslav Dubrov
 ---
