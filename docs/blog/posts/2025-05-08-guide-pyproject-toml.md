@@ -3,7 +3,6 @@ title: "The Ultimate Guide to `pyproject.toml`"
 date:
     created: 2025-05-08
     updated: 2025-05-08
-tags: [python, guide, best-practices]
 categories: [Python]
 description: A practical, modern guide to using pyproject.toml for Python projects—covering packaging, dependencies, tool configuration, and workflows in one file.
 author: Viacheslav Dubrov

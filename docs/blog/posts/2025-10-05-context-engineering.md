@@ -3,19 +3,7 @@ title: "Context Engineering in the Agentic‑AI Era — and How to Cook It"
 date:
     created: 2025-10-05
     updated: 2025-12-27
-tags:
-    [
-        ai-engineering,
-        agents,
-        context-layer,
-        rag,
-        retrieval,
-        memory,
-        guardrails,
-        context-compression,
-        context-optimization,
-    ]
-categories: [AI Engineering]
+categories: [Agentic AI]
 description: A comprehensive guide to designing, evaluating, and shipping the context layer for agentic AI systems — with deep dives into degradation patterns, compression strategies, optimization techniques, and agent skills.
 author: Viacheslav Dubrov
 ---

@@ -106,10 +106,11 @@ plugins: # Configures MkDocs plugins for extended functionality
       categories_name: Topics
       categories_allowed:
         - AI Engineering
+        - Agentic AI
         - Infrastructure
         - Tooling
         - Python
-  - tags # Adds support for tagging content
+
   - macros # Allows using variables and macros in Markdown
   - mermaid-to-svg:
       enabled_if_env: "MKDOCS_SSR_MERMAID"
@@ -129,7 +130,6 @@ plugins: # Configures MkDocs plugins for extended functionality
         as_update: date.updated # Uses the 'date.updated' metadata field as update date
       categories: # Configures RSS feed categories
         - categories # Uses 'categories' metadata field
-        - tags # Uses 'tags' metadata field as categories
       feed_title: "Edge of Context: Tips and Tricks in Machine Learning" # Override feed title to avoid XML escaping issues with &
       image: https://slavadubrov.github.io/assets/logo-eoc.svg # RSS feed image URL
 

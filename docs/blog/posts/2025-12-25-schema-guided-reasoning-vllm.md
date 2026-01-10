@@ -3,8 +3,7 @@ title: "Schema-Guided Reasoning on vLLM — Turning LLMs into Reliable Business 
 date:
     created: 2025-12-28
     updated: 2025-12-28
-tags: [ai-engineering, llm, vllm, structured-output, xgrammar, agents, sgr]
-categories: [AI Engineering]
+categories: [Agentic AI]
 description: A practical guide to Schema-Guided Reasoning (SGR) on vLLM with xgrammar — what it is, how it differs from CoT and prompt engineering, the core patterns (Cascade, Routing, Cycle), and a working implementation example.
 author: Viacheslav Dubrov
 ---

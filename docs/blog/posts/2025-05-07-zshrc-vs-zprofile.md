@@ -3,7 +3,6 @@ title: "Mastering Zsh Startup: ~/.zprofile vs ~/.zshrc 🚀"
 date:
     created: 2025-05-07
     updated: 2025-05-07
-tags: [tooling, macos, guide, zsh]
 categories: [Tooling]
 description: A definitive guide to Zsh startup files. Learn exactly when zprofile and zshrc load, where to put your config, and how to optimize your shell startup speed.
 author: Viacheslav Dubrov
