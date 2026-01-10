@@ -1,6 +1,6 @@
 # Edge of Context
 
-Tips & Tricks in Machine Learning by Slava Dubrov.
+Practical AI Engineering by Slava Dubrov.
 
 **[→ View all articles](blog/index.md)**
 
