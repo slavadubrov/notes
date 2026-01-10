@@ -1,6 +1,6 @@
-site_name: "Edge of Context: Tips & Tricks in Machine Learning"
+site_name: "Edge of Context: Practical AI Engineering"
 site_url: https://slavadubrov.github.io/
-site_description: "ML & engineering notes"
+site_description: "Practical notes on AI Engineering"
 
 hooks:
   - hooks/blog_posts_hook.py
