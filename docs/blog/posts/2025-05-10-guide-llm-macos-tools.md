@@ -3,7 +3,7 @@ title: "Quick-guide on Running LLMs Locally on macOS"
 date:
     created: 2025-05-10
     updated: 2025-11-26
-tags: [macos, guide, llm, tools]
+categories: [AI Engineering]
 description: A comprehensive guide to the top local LLM tools for macOS. Compare Ollama, LM Studio, llama.cpp, and more to find your perfect match.
 author: Viacheslav Dubrov
 ---

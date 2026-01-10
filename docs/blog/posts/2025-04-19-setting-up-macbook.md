@@ -3,7 +3,7 @@ title: "Quick-Guide on setting up a MacBook for AI Engineering"
 date:
     created: 2025-04-19
     updated: 2025-11-04
-tags: [macos, tooling, guide]
+categories: [Tooling]
 description: A 10-step guide to configuring a new MacBook for AI development, covering essential tools and terminal setup.
 author: Viacheslav Dubrov
 ---

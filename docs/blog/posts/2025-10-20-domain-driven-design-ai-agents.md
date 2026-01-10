@@ -3,7 +3,7 @@ title: "Domain-driven design for AI agents: a beginner-friendly guide"
 date:
     created: 2025-10-20
     updated: 2025-10-20
-tags: [ai-engineering, agents, architecture, domain-driven-design]
+categories: [Agentic AI]
 description: Learn how domain-driven design (DDD) keeps AI agents aligned with the business domain, with practical patterns, code snippets, and tooling tips.
 author: Viacheslav Dubrov
 ---

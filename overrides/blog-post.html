@@ -1,0 +1,93 @@
+{#- Override blog-post.html to replace metadata sidebar with category
+navigation. Based on Material for MkDocs blog-post.html template. -#} {% extends
+"main.html" %} {% import "partials/nav-item.html" as item with context %} {%
+block container %}
+<div class="md-content md-content--post" data-md-component="content">
+  <div
+    class="md-sidebar md-sidebar--post"
+    data-md-component="sidebar"
+    data-md-type="navigation"
+  >
+    <div class="md-sidebar__scrollwrap">
+      <div class="md-sidebar__inner md-post">
+        <nav class="md-nav md-nav--primary">
+          <div class="md-post__back">
+            <div class="md-nav__title md-nav__container">
+              <a href="{{ page.parent.url | url }}" class="md-nav__link">
+                {% include ".icons/material/arrow-left.svg" %}
+                <span class="md-ellipsis"> {{ lang.t("blog.index") }} </span>
+              </a>
+            </div>
+          </div>
+
+          {# Category Navigation with clickable article links #}
+          <ul class="md-post__meta md-nav__list">
+            <li class="md-nav__item md-nav__item--section">
+              <div class="md-post__title">
+                <span class="md-ellipsis">Topics</span>
+              </div>
+              <nav class="md-nav">
+                {% set category_icons = { 'AI Engineering': '🤖', 'Agentic AI':
+                '🦾', 'Infrastructure': '🔧', 'Tooling': '🛠️', 'Python': '🐍' }
+                %} {% set all_categories = ['AI Engineering', 'Agentic AI',
+                'Infrastructure', 'Tooling', 'Python'] %} {# Get the current
+                page's categories #} {% set current_categories = [] %} {% if
+                page.categories %} {% for cat in page.categories %} {% set _ =
+                current_categories.append(cat.title) %} {% endfor %} {% endif %}
+                {% for category_name in all_categories %} {% set is_active =
+                category_name in current_categories %}
+                <div
+                  class="blog-category-section{% if is_active %} blog-category-section--active{% endif %}"
+                >
+                  <div class="blog-category-header">
+                    <span class="blog-category-icon"
+                      >{{ category_icons[category_name] }}</span
+                    >
+                    <span class="blog-category-name">{{ category_name }}</span>
+                  </div>
+                  <ul class="blog-category-posts">
+                    {# Use posts injected by hooks/blog_posts_hook.py #} {% if
+                    all_blog_posts %} {% for post in all_blog_posts if
+                    category_name in post.categories %}
+                    <li
+                      class="blog-category-post{% if post.is_current %} blog-category-post--active{% endif %}"
+                    >
+                      <a href="{{ post.url | url }}">{{ post.title }}</a>
+                    </li>
+                    {% endfor %} {% endif %}
+                  </ul>
+                </div>
+                {% endfor %}
+              </nav>
+            </li>
+          </ul>
+
+          {% if page.config.links %}
+          <ul class="md-post__meta md-nav__list">
+            <li class="md-nav__item md-nav__item--section">
+              <div class="md-post__title">
+                <span class="md-ellipsis">
+                  {{ lang.t("blog.references") }}
+                </span>
+              </div>
+              <nav class="md-nav">
+                <ul class="md-nav__list">
+                  {% for nav_item in page.config.links %} {% set path = "__ref_"
+                  ~ loop.index %} {{ item.render(nav_item, path, 1) }} {% endfor
+                  %}
+                </ul>
+              </nav>
+            </li>
+          </ul>
+          {% endif %}
+        </nav>
+        {% if "toc.integrate" in features %} {% include "partials/toc.html" %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <article class="md-content__inner md-typeset">
+    {% block content %} {% include "partials/content.html" %} {% endblock %}
+  </article>
+</div>
+{% endblock %}

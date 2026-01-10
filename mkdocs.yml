@@ -1,9 +1,13 @@
-site_name: "Edge of Context: Tips & Tricks in Machine Learning"
+site_name: "Edge of Context: Practical AI Engineering"
 site_url: https://slavadubrov.github.io/
-site_description: "ML & engineering notes"
+site_description: "Practical notes on AI Engineering"
+
+hooks:
+  - hooks/blog_posts_hook.py
 
 theme:
   name: material
+  custom_dir: overrides
   logo: assets/logo-eoc.svg
   favicon: assets/favicon-eoc.svg
   features:
@@ -42,6 +46,7 @@ theme:
 
 extra_css:
   - assets/brand.css
+  - assets/blog-sidebar.css
 
 extra_javascript:
   - https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js
@@ -49,6 +54,15 @@ extra_javascript:
 
 extra:
   social:
+    - icon: fontawesome/brands/linkedin
+      name: LinkedIn
+      link: https://www.linkedin.com/in/slavadubrov
+    - icon: simple/substack
+      name: Substack
+      link: https://slavadubrov.substack.com/
+    - icon: fontawesome/brands/github
+      name: GitHub
+      link: https://github.com/slavadubrov
     - icon: material/rss
       name: RSS
       link: /feed_rss_created.xml
@@ -89,7 +103,14 @@ plugins: # Configures MkDocs plugins for extended functionality
       post_readtime: false # don't show reading‑time badges
       post_excerpt_max_authors: 0 # hide author chips in the list
       post_excerpt_max_categories: 0 # hide category chips in the list
-  - tags # Adds support for tagging content
+      categories_name: Topics
+      categories_allowed:
+        - AI Engineering
+        - Agentic AI
+        - Infrastructure
+        - Tooling
+        - Python
+
   - macros # Allows using variables and macros in Markdown
   - mermaid-to-svg:
       enabled_if_env: "MKDOCS_SSR_MERMAID"
@@ -109,11 +130,11 @@ plugins: # Configures MkDocs plugins for extended functionality
         as_update: date.updated # Uses the 'date.updated' metadata field as update date
       categories: # Configures RSS feed categories
         - categories # Uses 'categories' metadata field
-        - tags # Uses 'tags' metadata field as categories
       feed_title: "Edge of Context: Tips and Tricks in Machine Learning" # Override feed title to avoid XML escaping issues with &
       image: https://slavadubrov.github.io/assets/logo-eoc.svg # RSS feed image URL
 
-nav: # Defines the navigation structure of the site
-  - Home: index.md # Links the Home navigation item to index.md
-  - Topics: topics.md # Links the Topics navigation item to topics.md
-  - Blog: blog/index.md # Links the Blog navigation item to blog/index.md
+nav:
+  - Home: index.md
+  - Blog:
+      - blog/index.md
+  - About: about.md
