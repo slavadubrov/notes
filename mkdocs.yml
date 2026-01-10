@@ -2,6 +2,9 @@ site_name: "Edge of Context: Tips & Tricks in Machine Learning"
 site_url: https://slavadubrov.github.io/
 site_description: "ML & engineering notes"
 
+hooks:
+  - hooks/blog_posts_hook.py
+
 theme:
   name: material
   custom_dir: overrides
@@ -43,6 +46,7 @@ theme:
 
 extra_css:
   - assets/brand.css
+  - assets/blog-sidebar.css
 
 extra_javascript:
   - https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js

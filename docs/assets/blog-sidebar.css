@@ -1,0 +1,110 @@
+/* Blog Category Navigation Sidebar */
+.blog-categories-nav {
+  padding: 0.6rem 0;
+}
+
+.blog-categories-nav__title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--md-default-fg-color--light);
+  margin: 0 0.6rem 0.6rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--md-default-fg-color--lightest);
+}
+
+/* Category section */
+.blog-category-section {
+  margin-bottom: 0.4rem;
+}
+
+.blog-category-section--active .blog-category-header {
+  background: var(--md-accent-fg-color--transparent);
+}
+
+/* Category header */
+.blog-category-header {
+  display: flex;
+  align-items: center;
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+  border-radius: 0.2rem;
+  transition: background-color 0.15s;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--md-default-fg-color);
+}
+
+.blog-category-header:hover {
+  background: var(--md-default-fg-color--lightest);
+}
+
+.blog-category-icon {
+  margin-right: 0.4rem;
+  font-size: 0.8rem;
+}
+
+.blog-category-name {
+  flex: 1;
+}
+
+.blog-category-toggle {
+  font-size: 0.6rem;
+  color: var(--md-default-fg-color--light);
+  transition: transform 0.2s;
+}
+
+/* Post list */
+.blog-category-posts {
+  list-style: none;
+  margin: 0;
+  padding: 0.2rem 0 0.2rem 1.6rem;
+  font-size: 0.68rem;
+}
+
+.blog-category-post {
+  margin: 0;
+  padding: 0;
+}
+
+.blog-category-post a {
+  display: block;
+  padding: 0.25rem 0.4rem;
+  color: var(--md-default-fg-color--light);
+  text-decoration: none;
+  border-radius: 0.2rem;
+  transition:
+    color 0.15s,
+    background-color 0.15s;
+  line-height: 1.4;
+  /* Truncate long titles */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.blog-category-post a:hover {
+  color: var(--md-accent-fg-color);
+  background: var(--md-default-fg-color--lightest);
+}
+
+/* Active post styling */
+.blog-category-post--active a {
+  color: var(--md-accent-fg-color);
+  font-weight: 600;
+  background: var(--md-accent-fg-color--transparent);
+}
+
+.blog-category-post--active a:hover {
+  background: var(--md-accent-fg-color--transparent);
+}
+
+/* Dark mode adjustments */
+[data-md-color-scheme="slate"] .blog-category-header:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+[data-md-color-scheme="slate"] .blog-category-post a:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
