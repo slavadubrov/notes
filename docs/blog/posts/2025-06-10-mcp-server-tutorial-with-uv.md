@@ -3,7 +3,7 @@ title: "Building a Custom FeatureStoreLite MCP Server Using uv"
 date:
     created: 2025-06-10
     updated: 2025-06-10
-tags: [guide, mcp, python, uv]
+categories: [Tooling]
 description: A comprehensive guide to building a custom Model Context Protocol (MCP) server for ML feature storage. Learn how to use FastMCP and uv to create, test, and integrate your server with Claude Desktop.
 author: Viacheslav Dubrov
 ---

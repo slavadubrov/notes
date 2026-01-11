@@ -3,7 +3,7 @@ title: "LoRAX Playbook - Orchestrating Thousands of LoRA Adapters on Kubernetes"
 date:
     created: 2025-10-22
     updated: 2025-10-22
-tags: [LLM, Deployment, LoRA, Kubernetes, Inference]
+categories: [AI Engineering]
 description: A hands-on guide for serving many fine-tuned adapters on one GPU with LoRAX, from architecture insights to Kubernetes deployments and API usage.
 author: Viacheslav Dubrov
 ---
