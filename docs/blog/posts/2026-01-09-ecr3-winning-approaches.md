@@ -1,9 +1,9 @@
 ---
 title: "Enterprise RAG Challenge 3: Winning Approaches for Autonomous AI Agents"
 date:
-    created: 2026-01-09
-    updated: 2026-01-09
-tags: [ai-engineering, agents, rag, enterprise-ai, llm, multi-agent]
+    created: 2026-01-11
+    updated: 2026-01-11
+categories: [Agentic AI]
 description: A deep analysis of the winning architectures from the Enterprise RAG Challenge 3 (ECR3), covering evolutionary prompt engineering, multi-agent pipelines, guardrail design, and context management strategies.
 author: Viacheslav Dubrov
 ---
