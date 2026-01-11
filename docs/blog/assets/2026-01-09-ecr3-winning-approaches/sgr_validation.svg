@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380">
+  <defs>
+    <linearGradient id="bgGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="planGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#a78bfa;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="validateGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fbbf24;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="executeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#34d399;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="observeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#60a5fa;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow3" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <marker id="arrow3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#34d399"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f87171"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="380" fill="url(#bgGrad3)" rx="16"/>
+
+  <!-- Title -->
+  <text x="400" y="40" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="600">Schema-Guided Reasoning with Step Validation</text>
+
+  <!-- Main horizontal flow -->
+  <!-- Box 1: Plan -->
+  <rect x="50" y="100" width="130" height="90" rx="12" fill="url(#planGrad)" filter="url(#glow3)"/>
+  <text x="115" y="140" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="16" font-weight="600">Plan</text>
+  <text x="115" y="165" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="system-ui, sans-serif" font-size="11">JSON schema step</text>
+
+  <!-- Box 2: Validate -->
+  <rect x="240" y="100" width="130" height="90" rx="12" fill="url(#validateGrad)" filter="url(#glow3)"/>
+  <text x="305" y="140" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="16" font-weight="600">Validate</text>
+  <text x="305" y="165" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="system-ui, sans-serif" font-size="11">StepValidator</text>
+
+  <!-- Box 3: Execute -->
+  <rect x="430" y="100" width="130" height="90" rx="12" fill="url(#executeGrad)" filter="url(#glow3)"/>
+  <text x="495" y="140" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="16" font-weight="600">Execute</text>
+  <text x="495" y="165" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="system-ui, sans-serif" font-size="11">API call</text>
+
+  <!-- Box 4: Observe -->
+  <rect x="620" y="100" width="130" height="90" rx="12" fill="url(#observeGrad)" filter="url(#glow3)"/>
+  <text x="685" y="140" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="16" font-weight="600">Observe</text>
+  <text x="685" y="165" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="system-ui, sans-serif" font-size="11">Analyze result</text>
+
+  <!-- Main flow arrows -->
+  <line x1="180" y1="145" x2="235" y2="145" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow3)"/>
+
+  <!-- Validate to Execute (green valid path) -->
+  <line x1="370" y1="145" x2="425" y2="145" stroke="#34d399" stroke-width="2" marker-end="url(#arrowGreen)"/>
+  <text x="398" y="135" text-anchor="middle" fill="#34d399" font-family="system-ui, sans-serif" font-size="11" font-weight="500">✓ Valid</text>
+
+  <line x1="560" y1="145" x2="615" y2="145" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow3)"/>
+
+  <!-- Loop back from Observe to Plan -->
+  <path d="M 685 190 L 685 220 Q 685 235, 670 235 L 130 235 Q 115 235, 115 220 L 115 195"
+        fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrow3)"/>
+  <text x="400" y="255" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="12">Next step →</text>
+
+  <!-- Rework path (invalid) -->
+  <path d="M 305 190 L 305 295 Q 305 310, 290 310 L 130 310 Q 115 310, 115 295 L 115 195"
+        fill="none" stroke="#f87171" stroke-width="2" marker-end="url(#arrowRed)"/>
+
+  <!-- Rework label box -->
+  <rect x="195" y="280" width="100" height="26" rx="6" fill="rgba(239, 68, 68, 0.2)" stroke="#ef4444" stroke-width="1"/>
+  <text x="245" y="298" text-anchor="middle" fill="#fca5a5" font-family="system-ui, sans-serif" font-size="11" font-weight="500">✗ Rework</text>
+
+  <!-- Speed indicator -->
+  <rect x="550" y="300" width="200" height="50" rx="10" fill="rgba(16, 185, 129, 0.12)" stroke="#10b981" stroke-width="1"/>
+  <text x="650" y="322" text-anchor="middle" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="14" font-weight="600">~3,000 tokens/sec</text>
+  <text x="650" y="340" text-anchor="middle" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="11">Cerebras high-speed inference</text>
+</svg>

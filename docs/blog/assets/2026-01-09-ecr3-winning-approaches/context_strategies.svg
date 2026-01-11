@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 500">
+  <defs>
+    <linearGradient id="bgGrad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="distillGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ec4899;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#be185d;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="preloadGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d97706;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="hybridGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="compressGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4f46e5;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow4" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="850" height="500" fill="url(#bgGrad4)" rx="16"/>
+
+  <!-- Title -->
+  <text x="425" y="40" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="600">Context Management Strategies</text>
+  <text x="425" y="62" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="13">Maximize signal-to-noise ratio in the context window</text>
+
+  <!-- Strategy 1: Rule Distillation -->
+  <rect x="40" y="100" width="180" height="170" rx="12" fill="url(#distillGrad)" filter="url(#glow4)"/>
+  <text x="130" y="130" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="15" font-weight="600">Rule Distillation</text>
+  <line x1="55" y1="145" x2="205" y2="145" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+  <text x="130" y="168" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-family="system-ui, sans-serif" font-size="11">Pre-process wiki via LLM</text>
+  <text x="130" y="188" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-family="system-ui, sans-serif" font-size="11">Compress to actionable rules</text>
+  <text x="130" y="208" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-family="system-ui, sans-serif" font-size="11">~320 token system prompt</text>
+  <rect x="60" y="225" width="140" height="30" rx="6" fill="rgba(255,255,255,0.15)"/>
+  <text x="130" y="245" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="10" font-weight="500">Teams: Kc7F2N, f1Uixf</text>
+
+  <!-- Strategy 2: Aggressive Preloading -->
+  <rect x="245" y="100" width="180" height="170" rx="12" fill="url(#preloadGrad)" filter="url(#glow4)"/>
+  <text x="335" y="130" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="15" font-weight="600">Aggressive Preloading</text>
+  <line x1="260" y1="145" x2="410" y2="145" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+  <text x="335" y="168" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-family="system-ui, sans-serif" font-size="11">Load user profile upfront</text>
+  <text x="335" y="188" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-family="system-ui, sans-serif" font-size="11">Pull projects &amp; customers</text>
+  <text x="335" y="208" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-family="system-ui, sans-serif" font-size="11">Enrich before execution</text>
+  <rect x="265" y="225" width="140" height="30" rx="6" fill="rgba(255,255,255,0.15)"/>
+  <text x="335" y="245" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="10" font-weight="500">Team: Lcnxuy</text>
+
+  <!-- Strategy 3: Hybrid RAG -->
+  <rect x="450" y="100" width="180" height="170" rx="12" fill="url(#hybridGrad)" filter="url(#glow4)"/>
+  <text x="540" y="130" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="15" font-weight="600">Hybrid RAG</text>
+  <line x1="465" y1="145" x2="615" y2="145" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+  <text x="540" y="168" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-family="system-ui, sans-serif" font-size="11">Three-stream search:</text>
+  <text x="540" y="188" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-family="system-ui, sans-serif" font-size="11">• Regex (patterns)</text>
+  <text x="540" y="206" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-family="system-ui, sans-serif" font-size="11">• Semantic (concepts)</text>
+  <text x="540" y="224" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-family="system-ui, sans-serif" font-size="11">• Keyword (fallback)</text>
+  <rect x="470" y="235" width="140" height="26" rx="6" fill="rgba(255,255,255,0.15)"/>
+  <text x="540" y="253" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="10" font-weight="500">Team: J8Gvbi</text>
+
+  <!-- Strategy 4: History Compression -->
+  <rect x="655" y="100" width="160" height="170" rx="12" fill="url(#compressGrad)" filter="url(#glow4)"/>
+  <text x="735" y="130" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="15" font-weight="600">History Compress</text>
+  <line x1="670" y1="145" x2="800" y2="145" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+  <text x="735" y="168" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-family="system-ui, sans-serif" font-size="11">Keep recent turns full</text>
+  <text x="735" y="188" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-family="system-ui, sans-serif" font-size="11">Compress older history</text>
+  <text x="735" y="208" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-family="system-ui, sans-serif" font-size="11">Preserve context space</text>
+  <rect x="665" y="225" width="140" height="30" rx="6" fill="rgba(255,255,255,0.15)"/>
+  <text x="735" y="245" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="10" font-weight="500">Team: NLN7Dw</text>
+
+  <!-- Bottom: Trade-offs spectrum -->
+  <rect x="80" y="320" width="690" height="140" rx="12" fill="rgba(148, 163, 184, 0.08)" stroke="#475569" stroke-width="1"/>
+  <text x="425" y="350" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Trade-offs Spectrum</text>
+
+  <!-- Spectrum line -->
+  <line x1="120" y1="400" x2="730" y2="400" stroke="#475569" stroke-width="2"/>
+  <circle cx="120" cy="400" r="6" fill="#ec4899"/>
+  <circle cx="320" cy="400" r="6" fill="#f59e0b"/>
+  <circle cx="530" cy="400" r="6" fill="#10b981"/>
+  <circle cx="730" cy="400" r="6" fill="#6366f1"/>
+
+  <!-- Labels -->
+  <text x="120" y="425" text-anchor="middle" fill="#f9a8d4" font-family="system-ui, sans-serif" font-size="10">Lean prompt</text>
+  <text x="120" y="440" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="9">Fast startup</text>
+
+  <text x="320" y="425" text-anchor="middle" fill="#fcd34d" font-family="system-ui, sans-serif" font-size="10">Front-loaded data</text>
+  <text x="320" y="440" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="9">Fewer tool calls</text>
+
+  <text x="530" y="425" text-anchor="middle" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="10">Multi-modal search</text>
+  <text x="530" y="440" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="9">Best retrieval</text>
+
+  <text x="730" y="425" text-anchor="middle" fill="#a5b4fc" font-family="system-ui, sans-serif" font-size="10">Long conversations</text>
+  <text x="730" y="440" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="9">Memory preserved</text>
+</svg>
