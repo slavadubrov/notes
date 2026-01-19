@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 450">
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e8e8e8" stroke-width="0.5"/>
+    </pattern>
+    <marker id="arrowRed" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 L2,4 Z" fill="#dc2626"/>
+    </marker>
+    <marker id="arrowOrange" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 L2,4 Z" fill="#f97316"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 L2,4 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="450" fill="#fafafa"/>
+  <rect width="900" height="450" fill="url(#grid)"/>
+
+  <!-- Title -->
+  <text x="450" y="38" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="26" font-weight="700">The Complication: Instability at Scale</text>
+  <text x="450" y="65" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="14">When DeepSeek scaled the architecture, the "Identity" broke.</text>
+
+  <!-- Plot area -->
+  <!-- Y-axis -->
+  <line x1="100" y1="100" x2="100" y2="340" stroke="#1a365d" stroke-width="2"/>
+  <!-- X-axis -->
+  <line x1="100" y1="340" x2="500" y2="340" stroke="#1a365d" stroke-width="2"/>
+
+  <!-- Y-axis label -->
+  <text x="40" y="220" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="12" font-weight="500" transform="rotate(-90, 40, 220)">Signal Magnitude (Log Scale)</text>
+
+  <!-- Y-axis ticks -->
+  <text x="90" y="115" text-anchor="end" fill="#64748b" font-family="system-ui" font-size="11">1000</text>
+  <line x1="95" y1="112" x2="100" y2="112" stroke="#1a365d" stroke-width="1"/>
+  
+  <text x="90" y="168" text-anchor="end" fill="#64748b" font-family="system-ui" font-size="11">100</text>
+  <line x1="95" y1="165" x2="100" y2="165" stroke="#1a365d" stroke-width="1"/>
+  
+  <text x="90" y="223" text-anchor="end" fill="#64748b" font-family="system-ui" font-size="11">10</text>
+  <line x1="95" y1="220" x2="100" y2="220" stroke="#1a365d" stroke-width="1"/>
+  
+  <text x="90" y="278" text-anchor="end" fill="#64748b" font-family="system-ui" font-size="11">1</text>
+  <line x1="95" y1="275" x2="100" y2="275" stroke="#1a365d" stroke-width="1"/>
+  
+  <text x="90" y="343" text-anchor="end" fill="#64748b" font-family="system-ui" font-size="11">0.1</text>
+
+  <!-- X-axis label -->
+  <text x="300" y="383" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="12" font-weight="500">Layer Depth (0 to 100)</text>
+
+  <!-- X-axis ticks -->
+  <text x="100" y="360" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="11">0</text>
+  <text x="200" y="360" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="11">25</text>
+  <text x="300" y="360" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="11">50</text>
+  <text x="400" y="360" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="11">75</text>
+  <text x="500" y="360" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="11">100</text>
+
+  <!-- Standard ResNet line (stable at 1) -->
+  <line x1="100" y1="275" x2="500" y2="275" stroke="#64748b" stroke-width="2" stroke-dasharray="8,4"/>
+  <!-- Arrow pointing to ResNet line -->
+  <line x1="435" y1="254" x2="435" y2="268" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <rect x="370" y="230" width="130" height="24" rx="12" fill="#64748b"/>
+  <text x="435" y="247" text-anchor="middle" fill="white" font-family="system-ui" font-size="11" font-weight="500">Standard ResNet</text>
+
+  <!-- Exploding gradients curve -->
+  <path d="M 100 275 Q 180 270 250 245 Q 320 200 390 145 Q 450 105 500 100" 
+        fill="none" stroke="#dc2626" stroke-width="3"/>
+  <!-- Arrow pointing to exploding curve -->
+  <line x1="470" y1="130" x2="485" y2="108" stroke="#dc2626" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+  <rect x="380" y="130" width="90" height="24" rx="12" fill="#dc2626"/>
+  <text x="425" y="147" text-anchor="middle" fill="white" font-family="system-ui" font-size="11" font-weight="600">Exploding</text>
+
+  <!-- Vanishing gradients curve -->
+  <path d="M 100 275 Q 180 285 250 305 Q 320 325 390 335 Q 450 340 500 342" 
+        fill="none" stroke="#f97316" stroke-width="3"/>
+  <!-- Arrow pointing to vanishing curve -->
+  <line x1="210" y1="293" x2="230" y2="305" stroke="#f97316" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+  <rect x="150" y="268" width="90" height="24" rx="12" fill="#f97316"/>
+  <text x="195" y="285" text-anchor="middle" fill="white" font-family="system-ui" font-size="11" font-weight="600">Vanishing</text>
+
+  <!-- Right side explanation -->
+  <rect x="540" y="95" width="340" height="340" rx="8" fill="white" stroke="#1a365d" stroke-width="2"/>
+  
+  <text x="710" y="125" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="18" font-weight="700">The 1.1 vs 0.9 Problem</text>
+  
+  <line x1="560" y1="140" x2="860" y2="140" stroke="#e2e8f0" stroke-width="1"/>
+  
+  <text x="560" y="168" text-anchor="start" fill="#64748b" font-family="system-ui" font-size="13">• Standard ResNet: 1.0 × x</text>
+  <rect x="780" y="153" width="45" height="22" rx="11" fill="#10b981"/>
+  <text x="802" y="169" text-anchor="middle" fill="white" font-family="system-ui" font-size="11" font-weight="600">Safe</text>
+  
+  <text x="560" y="198" text-anchor="start" fill="#64748b" font-family="system-ui" font-size="13">• Hyper-Connection: Matrix Mapping</text>
+
+  <line x1="560" y1="215" x2="860" y2="215" stroke="#e2e8f0" stroke-width="1"/>
+
+  <text x="560" y="245" text-anchor="start" fill="#dc2626" font-family="system-ui" font-size="13" font-weight="500">If mixing scalar &gt; 1.0 → Explodes</text>
+  <text x="560" y="272" text-anchor="start" fill="#f97316" font-family="system-ui" font-size="13" font-weight="500">If mixing scalar &lt; 1.0 → Vanishes</text>
+  <text x="560" y="299" text-anchor="start" fill="#64748b" font-family="system-ui" font-size="13" font-weight="500">If mixing scalar &lt; 0 → Oscillates</text>
+
+  <line x1="560" y1="315" x2="860" y2="315" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- Math example -->
+  <text x="710" y="340" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="12" font-weight="600">After L = 100 layers:</text>
+  
+  <g transform="translate(570, 350)">
+    <text x="0" y="18" text-anchor="start" fill="#dc2626" font-family="monospace" font-size="12">1.01¹⁰⁰ ≈ 2.7</text>
+    <text x="115" y="18" text-anchor="start" fill="#64748b" font-family="system-ui" font-size="11">(grows)</text>
+  </g>
+  <g transform="translate(570, 375)">
+    <text x="0" y="18" text-anchor="start" fill="#f97316" font-family="monospace" font-size="12">0.99¹⁰⁰ ≈ 0.37</text>
+    <text x="115" y="18" text-anchor="start" fill="#64748b" font-family="system-ui" font-size="11">(shrinks)</text>
+  </g>
+
+  <!-- HC explosion measurement -->
+  <rect x="560" y="405" width="300" height="26" rx="6" fill="#dc2626"/>
+  <text x="710" y="423" text-anchor="middle" fill="white" font-family="system-ui" font-size="12" font-weight="600">HC: ~3000× explosion measured!</text>
+</svg>

@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 520">
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e8e8e8" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1000" height="520" fill="#fafafa"/>
+  <rect width="1000" height="520" fill="url(#grid)"/>
+
+  <!-- Title -->
+  <text x="475" y="38" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="26" font-weight="700">mHC: Complete Architecture</text>
+  <text x="475" y="65" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="14">Hyper-Connections with Birkhoff Polytope constraints</text>
+
+  <!-- Input streams -->
+  <g transform="translate(40, 90)">
+    <text x="40" y="0" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="12" font-weight="500">n Streams</text>
+    
+    <rect x="0" y="15" width="80" height="35" rx="6" fill="white" stroke="#1a365d" stroke-width="2"/>
+    <text x="40" y="38" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="14" font-weight="500">x₁</text>
+    
+    <rect x="0" y="60" width="80" height="35" rx="6" fill="white" stroke="#1a365d" stroke-width="2"/>
+    <text x="40" y="83" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="14" font-weight="500">x₂</text>
+    
+    <text x="40" y="115" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="16">⋮</text>
+    
+    <rect x="0" y="130" width="80" height="35" rx="6" fill="white" stroke="#1a365d" stroke-width="2"/>
+    <text x="40" y="153" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="14" font-weight="500">xₙ</text>
+  </g>
+
+  <!-- Lines to aggregation -->
+  <line x1="120" y1="122" x2="155" y2="155" stroke="#1a365d" stroke-width="2"/>
+  <line x1="120" y1="167" x2="155" y2="175" stroke="#1a365d" stroke-width="2"/>
+  <line x1="120" y1="237" x2="155" y2="195" stroke="#1a365d" stroke-width="2"/>
+
+  <!-- Aggregation funnel -->
+  <polygon points="160,110 160,260 220,185" fill="white" stroke="#1a365d" stroke-width="2"/>
+  <text x="185" y="190" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="20" font-weight="600">Σ</text>
+
+  <!-- Arrow to Sinkhorn -->
+  <line x1="225" y1="185" x2="265" y2="185" stroke="#1a365d" stroke-width="2"/>
+  <polygon points="270,185 260,180 260,190" fill="#1a365d"/>
+
+  <!-- Sinkhorn box -->
+  <rect x="275" y="140" width="130" height="90" rx="8" fill="white" stroke="#f97316" stroke-width="3"/>
+  <text x="340" y="175" text-anchor="middle" fill="#f97316" font-family="system-ui" font-size="16" font-weight="700">Sinkhorn</text>
+  <text x="340" y="195" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="12">Projection</text>
+  <text x="340" y="215" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="11">t=20 iterations</text>
+
+  <!-- Arrow to H^res -->
+  <line x1="405" y1="185" x2="445" y2="185" stroke="#1a365d" stroke-width="2"/>
+  <polygon points="450,185 440,180 440,190" fill="#1a365d"/>
+
+  <!-- H^res box -->
+  <rect x="455" y="145" width="100" height="80" rx="8" fill="white" stroke="#10b981" stroke-width="3"/>
+  <text x="505" y="178" text-anchor="middle" fill="#10b981" font-family="system-ui" font-size="16" font-weight="700">H^res</text>
+  <text x="505" y="200" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="11">Doubly</text>
+  <text x="505" y="215" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="11">Stochastic</text>
+
+  <!-- Arrow to Transformer -->
+  <line x1="555" y1="185" x2="595" y2="185" stroke="#1a365d" stroke-width="2"/>
+  <polygon points="600,185 590,180 590,190" fill="#1a365d"/>
+
+  <!-- Transformer block -->
+  <rect x="605" y="140" width="130" height="90" rx="8" fill="white" stroke="#1a365d" stroke-width="2"/>
+  <text x="670" y="175" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="16" font-weight="600">Transformer</text>
+  <text x="670" y="200" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="13">Block</text>
+
+  <!-- Arrow to Expansion -->
+  <line x1="735" y1="185" x2="775" y2="185" stroke="#1a365d" stroke-width="2"/>
+  <polygon points="780,185 770,180 770,190" fill="#1a365d"/>
+
+  <!-- Expansion funnel -->
+  <polygon points="785,185 845,110 845,260" fill="white" stroke="#1a365d" stroke-width="2"/>
+  <text x="820" y="190" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="16" font-weight="600">↗</text>
+
+  <!-- Lines to outputs -->
+  <line x1="850" y1="135" x2="880" y2="122" stroke="#1a365d" stroke-width="2"/>
+  <line x1="850" y1="175" x2="880" y2="167" stroke="#1a365d" stroke-width="2"/>
+  <line x1="850" y1="225" x2="880" y2="237" stroke="#1a365d" stroke-width="2"/>
+
+  <!-- Output streams -->
+  <g transform="translate(830, 90)">
+    <text x="60" y="0" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="12" font-weight="500">n Streams</text>
+    
+    <rect x="50" y="15" width="80" height="35" rx="6" fill="white" stroke="#1a365d" stroke-width="2"/>
+    <text x="90" y="38" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="14" font-weight="500">y₁</text>
+    
+    <rect x="50" y="60" width="80" height="35" rx="6" fill="white" stroke="#1a365d" stroke-width="2"/>
+    <text x="90" y="83" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="14" font-weight="500">y₂</text>
+    
+    <text x="90" y="115" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="16">⋮</text>
+    
+    <rect x="50" y="130" width="80" height="35" rx="6" fill="white" stroke="#1a365d" stroke-width="2"/>
+    <text x="90" y="153" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="14" font-weight="500">yₙ</text>
+  </g>
+
+  <!-- Residual path (dashed) -->
+  <path d="M 80 270 Q 80 295 120 295 L 880 295 Q 920 295 920 265" 
+        fill="none" stroke="#64748b" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="500" y="318" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="12" font-weight="500">Multi-Stream Residual Connection</text>
+
+  <!-- Bottom: Benefits boxes -->
+  <!-- Identity Preserved -->
+  <rect x="60" y="350" width="260" height="100" rx="8" fill="white" stroke="#10b981" stroke-width="2"/>
+  <text x="190" y="385" text-anchor="middle" fill="#10b981" font-family="system-ui" font-size="16" font-weight="700">Identity Preserved</text>
+  <text x="190" y="410" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="13">Amax Gain: ~1.6</text>
+  <text x="190" y="432" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="13">vs ~3000 in standard HC</text>
+
+  <!-- Optimized Inference -->
+  <rect x="345" y="350" width="260" height="100" rx="8" fill="white" stroke="#1a365d" stroke-width="2"/>
+  <text x="475" y="385" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="16" font-weight="700">Optimized Inference</text>
+  <text x="475" y="410" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="13">Fused CUDA kernels</text>
+  <text x="475" y="432" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="13">Selective recomputation</text>
+
+  <!-- Results -->
+  <rect x="630" y="350" width="260" height="100" rx="8" fill="white" stroke="#f97316" stroke-width="2"/>
+  <text x="760" y="385" text-anchor="middle" fill="#f97316" font-family="system-ui" font-size="16" font-weight="700">Results</text>
+  <text x="760" y="410" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="13">Only +6.7% overhead (n=4)</text>
+  <text x="760" y="432" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="13">Better GSM8K/MATH scores</text>
+
+  <!-- Key constraint badge -->
+  <rect x="330" y="465" width="340" height="44" rx="22" fill="#1a365d"/>
+  <text x="500" y="494" text-anchor="middle" fill="white" font-family="system-ui" font-size="15" font-weight="600">H^res ∈ Birkhoff Polytope → ||H^res|| ≤ 1</text>
+</svg>

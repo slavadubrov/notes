@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 500">
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e8e8e8" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="420" height="500" fill="#fafafa"/>
+  <rect width="420" height="500" fill="url(#grid)"/>
+
+  <!-- Title -->
+  <text x="210" y="35" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="20" font-weight="700">Standard Residual Connection</text>
+
+  <!-- Input x -->
+  <text x="210" y="70" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="22" font-weight="600">x</text>
+  
+  <!-- Arrow from x to split -->
+  <line x1="210" y1="78" x2="210" y2="95" stroke="#1a365d" stroke-width="2"/>
+  <polygon points="210,100 205,90 215,90" fill="#1a365d"/>
+
+  <!-- Split circle -->
+  <circle cx="210" cy="115" r="12" fill="white" stroke="#1a365d" stroke-width="2"/>
+
+  <!-- Arrow to Weight Layer 1 -->
+  <line x1="210" y1="127" x2="210" y2="150" stroke="#1a365d" stroke-width="2"/>
+  <polygon points="210,155 205,145 215,145" fill="#1a365d"/>
+
+  <!-- Weight Layer 1 -->
+  <rect x="125" y="160" width="170" height="50" rx="6" fill="white" stroke="#1a365d" stroke-width="2"/>
+  <text x="210" y="192" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="16" font-weight="500">Weight Layer</text>
+
+  <!-- Arrow to ReLU -->
+  <line x1="210" y1="210" x2="210" y2="230" stroke="#1a365d" stroke-width="2"/>
+  <polygon points="210,235 205,225 215,225" fill="#1a365d"/>
+
+  <!-- ReLU -->
+  <rect x="125" y="240" width="170" height="50" rx="6" fill="white" stroke="#1a365d" stroke-width="2"/>
+  <text x="210" y="272" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="16" font-weight="500">ReLU</text>
+
+  <!-- F(x) brace label - spans Weight Layer 1, ReLU, and Weight Layer 2 -->
+  <path d="M 115 160 Q 105 160 105 185 L 105 220 Q 105 225 95 225 Q 105 225 105 230 L 105 365 Q 105 370 115 370" 
+        fill="none" stroke="#1a365d" stroke-width="2"/>
+  <text x="60" y="270" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="18" font-weight="600">F(x)</text>
+
+  <!-- Arrow to Weight Layer 2 -->
+  <line x1="210" y1="290" x2="210" y2="310" stroke="#1a365d" stroke-width="2"/>
+  <polygon points="210,315 205,305 215,305" fill="#1a365d"/>
+
+  <!-- Weight Layer 2 -->
+  <rect x="125" y="320" width="170" height="50" rx="6" fill="white" stroke="#1a365d" stroke-width="2"/>
+  <text x="210" y="352" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="16" font-weight="500">Weight Layer</text>
+
+  <!-- Arrow to Add -->
+  <line x1="210" y1="370" x2="210" y2="392" stroke="#1a365d" stroke-width="2"/>
+  <polygon points="210,397 205,387 215,387" fill="#1a365d"/>
+
+  <!-- Identity shortcut (orange curved path) -->
+  <path d="M 222 115 Q 355 115 355 260 Q 355 405 232 405" 
+        fill="none" stroke="#f97316" stroke-width="3"/>
+  <polygon points="232,405 247,399 247,411" fill="#f97316"/>
+
+  <!-- Identity label with box -->
+  <rect x="335" y="245" width="75" height="30" rx="15" fill="#f97316"/>
+  <text x="372" y="266" text-anchor="middle" fill="white" font-family="system-ui" font-size="14" font-weight="600">Identity</text>
+
+  <!-- Add circle -->
+  <circle cx="210" cy="415" r="18" fill="white" stroke="#1a365d" stroke-width="2"/>
+  <text x="210" y="422" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="24" font-weight="600">+</text>
+
+  <!-- Arrow to output -->
+  <line x1="210" y1="433" x2="210" y2="450" stroke="#1a365d" stroke-width="2"/>
+  <polygon points="210,455 205,445 215,445" fill="#1a365d"/>
+
+  <!-- Output -->
+  <rect x="145" y="458" width="130" height="32" rx="16" fill="#f97316"/>
+  <text x="210" y="480" text-anchor="middle" fill="white" font-family="system-ui" font-size="16" font-weight="600">F(x) + x</text>
+</svg>

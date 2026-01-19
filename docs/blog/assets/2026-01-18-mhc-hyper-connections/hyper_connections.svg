@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420">
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e8e8e8" stroke-width="0.5"/>
+    </pattern>
+    <marker id="orangeArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M 0 0 L 8 4 L 0 8 z" fill="#f97316"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="420" fill="#fafafa"/>
+  <rect width="900" height="420" fill="url(#grid)"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="26" font-weight="700">The Innovation: Hyper-Connections (HC)</text>
+  <text x="450" y="62" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="13">Expand the network width, creating parallel streams that exchange information dynamically.</text>
+
+  <!-- Input -->
+  <g transform="translate(50, 195)">
+    <circle cx="0" cy="0" r="28" fill="white" stroke="#1a365d" stroke-width="2"/>
+    <text x="0" y="8" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="22" font-weight="600">x</text>
+    <text x="0" y="-42" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="13">Input</text>
+  </g>
+
+  <!-- Arrow to Expansion -->
+  <line x1="80" y1="195" x2="115" y2="195" stroke="#1a365d" stroke-width="2"/>
+  <polygon points="120,195 110,190 110,200" fill="#1a365d"/>
+
+  <!-- Expansion block -->
+  <rect x="125" y="150" width="100" height="90" rx="6" fill="white" stroke="#1a365d" stroke-width="2"/>
+  <text x="175" y="190" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="15" font-weight="600">Expansion</text>
+  <text x="175" y="215" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="13">(N=4)</text>
+
+  <!-- 4 parallel lines from Expansion -->
+  <line x1="225" y1="165" x2="305" y2="130" stroke="#1a365d" stroke-width="2"/>
+  <line x1="225" y1="185" x2="305" y2="175" stroke="#1a365d" stroke-width="2"/>
+  <line x1="225" y1="205" x2="305" y2="215" stroke="#1a365d" stroke-width="2"/>
+  <line x1="225" y1="225" x2="305" y2="260" stroke="#1a365d" stroke-width="2"/>
+
+  <!-- Stream dots at left of mixing -->
+  <circle cx="310" cy="130" r="6" fill="#1a365d"/>
+  <circle cx="310" cy="175" r="6" fill="#1a365d"/>
+  <circle cx="310" cy="215" r="6" fill="#1a365d"/>
+  <circle cx="310" cy="260" r="6" fill="#1a365d"/>
+
+  <!-- Mixing Matrix box -->
+  <rect x="320" y="110" width="260" height="180" rx="8" fill="white" stroke="#1a365d" stroke-width="2"/>
+  
+  <!-- Cross connections -->
+  <g stroke="#e2e8f0" stroke-width="1">
+    <line x1="320" y1="130" x2="570" y2="130"/>
+    <line x1="320" y1="130" x2="570" y2="175"/>
+    <line x1="320" y1="130" x2="570" y2="215"/>
+    <line x1="320" y1="130" x2="570" y2="260"/>
+    
+    <line x1="320" y1="175" x2="570" y2="130"/>
+    <line x1="320" y1="175" x2="570" y2="175"/>
+    <line x1="320" y1="175" x2="570" y2="215"/>
+    <line x1="320" y1="175" x2="570" y2="260"/>
+    
+    <line x1="320" y1="215" x2="570" y2="130"/>
+    <line x1="320" y1="215" x2="570" y2="175"/>
+    <line x1="320" y1="215" x2="570" y2="215"/>
+    <line x1="320" y1="215" x2="570" y2="260"/>
+    
+    <line x1="320" y1="260" x2="570" y2="130"/>
+    <line x1="320" y1="260" x2="570" y2="175"/>
+    <line x1="320" y1="260" x2="570" y2="215"/>
+    <line x1="320" y1="260" x2="570" y2="260"/>
+  </g>
+
+  <!-- Central label -->
+  <rect x="390" y="175" width="120" height="50" rx="8" fill="#f97316"/>
+  <text x="450" y="197" text-anchor="middle" fill="white" font-family="system-ui" font-size="12" font-weight="600">Aggregation &amp;</text>
+  <text x="450" y="214" text-anchor="middle" fill="white" font-family="system-ui" font-size="12" font-weight="600">Mixing (N×N)</text>
+
+  <!-- Stream dots at right of mixing -->
+  <circle cx="580" cy="130" r="6" fill="#1a365d"/>
+  <circle cx="580" cy="175" r="6" fill="#1a365d"/>
+  <circle cx="580" cy="215" r="6" fill="#1a365d"/>
+  <circle cx="580" cy="260" r="6" fill="#1a365d"/>
+
+  <!-- 4 parallel lines to Compression -->
+  <line x1="590" y1="130" x2="660" y2="165" stroke="#1a365d" stroke-width="2"/>
+  <line x1="590" y1="175" x2="660" y2="185" stroke="#1a365d" stroke-width="2"/>
+  <line x1="590" y1="215" x2="660" y2="205" stroke="#1a365d" stroke-width="2"/>
+  <line x1="590" y1="260" x2="660" y2="225" stroke="#1a365d" stroke-width="2"/>
+
+  <!-- Compression block -->
+  <rect x="665" y="150" width="110" height="90" rx="6" fill="white" stroke="#1a365d" stroke-width="2"/>
+  <text x="720" y="200" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="15" font-weight="600">Compression</text>
+
+  <!-- Arrow to output -->
+  <line x1="775" y1="195" x2="810" y2="195" stroke="#1a365d" stroke-width="2"/>
+  <polygon points="815,195 805,190 805,200" fill="#1a365d"/>
+
+  <!-- Output -->
+  <g transform="translate(845, 195)">
+    <circle cx="0" cy="0" r="28" fill="white" stroke="#1a365d" stroke-width="2"/>
+    <text x="0" y="8" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="22" font-weight="600">y</text>
+    <text x="0" y="-42" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="13">Output</text>
+  </g>
+
+  <!-- Labels -->
+  <g transform="translate(450, 330)">
+    <rect x="-75" y="0" width="150" height="30" rx="15" fill="#f97316"/>
+    <text x="0" y="20" text-anchor="middle" fill="white" font-family="system-ui" font-size="13" font-weight="600">Dynamic Routing</text>
+  </g>
+
+  <!-- Learnable Weights label -->
+  <g transform="translate(600, 85)">
+    <text x="0" y="0" text-anchor="start" fill="#f97316" font-family="system-ui" font-size="13" font-weight="600">Learnable Weights</text>
+    <path d="M 50 8 C 30 30, -80 30, -130 55" fill="none" stroke="#f97316" stroke-width="2" marker-end="url(#orangeArrow)"/>
+  </g>
+
+  <!-- Benefits bar at bottom -->
+  <rect x="100" y="375" width="700" height="35" rx="6" fill="white" stroke="#10b981" stroke-width="2"/>
+  <text x="450" y="399" text-anchor="middle" fill="#10b981" font-family="system-ui" font-size="14" font-weight="600">~1.8× Faster Convergence compared to standard residuals</text>
+</svg>

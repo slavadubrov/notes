@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480">
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e8e8e8" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="480" fill="#fafafa"/>
+  <rect width="900" height="480" fill="url(#grid)"/>
+
+  <!-- Title -->
+  <text x="450" y="38" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="26" font-weight="700">Post-LN vs Pre-LN Trade-offs</text>
+  <text x="450" y="65" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="14">Where to place Layer Normalization creates a fundamental trade-off.</text>
+
+  <!-- Center divider -->
+  <line x1="450" y1="90" x2="450" y2="400" stroke="#e2e8f0" stroke-width="2" stroke-dasharray="8,4"/>
+  <circle cx="450" cy="245" r="22" fill="white" stroke="#1a365d" stroke-width="2"/>
+  <text x="450" y="251" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="13" font-weight="600">vs</text>
+
+  <!-- LEFT: Post-LN -->
+  <g transform="translate(225, 0)">
+    <text x="0" y="100" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="20" font-weight="700">Post-LN</text>
+    <text x="0" y="120" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="12">(Original Transformer)</text>
+
+    <!-- Input -->
+    <text x="0" y="150" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="16" font-weight="500">x</text>
+    <line x1="0" y1="158" x2="0" y2="175" stroke="#1a365d" stroke-width="2"/>
+    <polygon points="0,180 -5,170 5,170" fill="#1a365d"/>
+
+    <!-- Split -->
+    <circle cx="0" cy="192" r="10" fill="white" stroke="#1a365d" stroke-width="2"/>
+    
+    <!-- Arrow down -->
+    <line x1="0" y1="202" x2="0" y2="215" stroke="#1a365d" stroke-width="2"/>
+    <polygon points="0,220 -5,210 5,210" fill="#1a365d"/>
+
+    <!-- F(x) block -->
+    <rect x="-65" y="225" width="130" height="45" rx="6" fill="white" stroke="#1a365d" stroke-width="2"/>
+    <text x="0" y="253" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="15" font-weight="500">F(x)</text>
+
+    <!-- Arrow to Add -->
+    <line x1="0" y1="270" x2="0" y2="285" stroke="#1a365d" stroke-width="2"/>
+    <polygon points="0,290 -5,280 5,280" fill="#1a365d"/>
+
+    <!-- Add circle -->
+    <circle cx="0" cy="305" r="16" fill="white" stroke="#1a365d" stroke-width="2"/>
+    <text x="0" y="312" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="20" font-weight="600">+</text>
+
+    <!-- Residual path -->
+    <path d="M 10 192 Q 90 192 90 250 Q 90 305 20 305" 
+          fill="none" stroke="#f97316" stroke-width="2"/>
+    <polygon points="20,305 32,300 32,310" fill="#f97316"/>
+
+    <!-- Arrow to LN -->
+    <line x1="0" y1="321" x2="0" y2="335" stroke="#1a365d" stroke-width="2"/>
+    <polygon points="0,340 -5,330 5,330" fill="#1a365d"/>
+
+    <!-- LayerNorm (AFTER add - Post-LN) -->
+    <rect x="-65" y="345" width="130" height="45" rx="6" fill="#dc2626"/>
+    <text x="0" y="373" text-anchor="middle" fill="white" font-family="system-ui" font-size="15" font-weight="600">LayerNorm</text>
+
+    <!-- Output arrow -->
+    <line x1="0" y1="390" x2="0" y2="405" stroke="#1a365d" stroke-width="2"/>
+    <polygon points="0,410 -5,400 5,400" fill="#1a365d"/>
+  </g>
+
+  <!-- Post-LN properties -->
+  <rect x="65" y="420" width="320" height="40" rx="8" fill="white" stroke="#dc2626" stroke-width="2"/>
+  <text x="85" y="445" text-anchor="start" fill="#10b981" font-family="system-ui" font-size="12" font-weight="600">✓ High model capacity</text>
+  <text x="245" y="445" text-anchor="start" fill="#dc2626" font-family="system-ui" font-size="12" font-weight="600">✗ Gradient vanishing</text>
+
+  <!-- RIGHT: Pre-LN -->
+  <g transform="translate(675, 0)">
+    <text x="0" y="100" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="20" font-weight="700">Pre-LN</text>
+    <text x="0" y="120" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="12">(Modern Transformer)</text>
+
+    <!-- Input -->
+    <text x="0" y="150" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="16" font-weight="500">x</text>
+    <line x1="0" y1="158" x2="0" y2="175" stroke="#1a365d" stroke-width="2"/>
+    <polygon points="0,180 -5,170 5,170" fill="#1a365d"/>
+
+    <!-- Split -->
+    <circle cx="0" cy="192" r="10" fill="white" stroke="#1a365d" stroke-width="2"/>
+    
+    <!-- Arrow down -->
+    <line x1="0" y1="202" x2="0" y2="215" stroke="#1a365d" stroke-width="2"/>
+    <polygon points="0,220 -5,210 5,210" fill="#1a365d"/>
+
+    <!-- LayerNorm (BEFORE F - Pre-LN) -->
+    <rect x="-65" y="225" width="130" height="45" rx="6" fill="#10b981"/>
+    <text x="0" y="253" text-anchor="middle" fill="white" font-family="system-ui" font-size="15" font-weight="600">LayerNorm</text>
+
+    <!-- Arrow to F -->
+    <line x1="0" y1="270" x2="0" y2="285" stroke="#1a365d" stroke-width="2"/>
+    <polygon points="0,290 -5,280 5,280" fill="#1a365d"/>
+
+    <!-- F(x) block -->
+    <rect x="-65" y="295" width="130" height="45" rx="6" fill="white" stroke="#1a365d" stroke-width="2"/>
+    <text x="0" y="323" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="15" font-weight="500">F(x)</text>
+
+    <!-- Arrow to Add -->
+    <line x1="0" y1="340" x2="0" y2="355" stroke="#1a365d" stroke-width="2"/>
+    <polygon points="0,360 -5,350 5,350" fill="#1a365d"/>
+
+    <!-- Add circle -->
+    <circle cx="0" cy="375" r="16" fill="white" stroke="#1a365d" stroke-width="2"/>
+    <text x="0" y="382" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="20" font-weight="600">+</text>
+
+    <!-- Residual path (clean identity) -->
+    <path d="M 10 192 Q 100 192 100 285 Q 100 375 20 375" 
+          fill="none" stroke="#f97316" stroke-width="2"/>
+    <polygon points="20,375 32,370 32,380" fill="#f97316"/>
+    
+    <!-- Identity label -->
+    <rect x="80" y="270" width="65" height="24" rx="12" fill="#f97316"/>
+    <text x="112" y="287" text-anchor="middle" fill="white" font-family="system-ui" font-size="11" font-weight="600">Identity</text>
+
+    <!-- Output arrow -->
+    <line x1="0" y1="391" x2="0" y2="405" stroke="#1a365d" stroke-width="2"/>
+    <polygon points="0,410 -5,400 5,400" fill="#1a365d"/>
+  </g>
+
+  <!-- Pre-LN properties -->
+  <rect x="545" y="420" width="260" height="40" rx="8" fill="white" stroke="#10b981" stroke-width="2"/>
+  <text x="560" y="445" text-anchor="start" fill="#10b981" font-family="system-ui" font-size="12" font-weight="600">✓ Excellent stability</text>
+  <text x="690" y="445" text-anchor="start" fill="#dc2626" font-family="system-ui" font-size="12" font-weight="600">✗ Rep. collapse</text>
+</svg>
