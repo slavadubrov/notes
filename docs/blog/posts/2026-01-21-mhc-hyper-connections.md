@@ -96,23 +96,17 @@ The flexibility that makes HC powerful also destroys the property that makes res
 
 In standard residuals, we have:
 
-```
-x_{l+1} = x_l + F(x_l)
-```
+$$x_{l+1} = x_l + F(x_l)$$
 
-When F(x) → 0, this becomes identity: `x_{l+1} = x_l`. The signal passes through unchanged.
+When $F(x) \rightarrow 0$, this becomes identity: $x_{l+1} = x_l$. The signal passes through unchanged.
 
 In Hyper-Connections, the residual path includes matrix multiplication:
 
-```
-x_{l+1} = H^res_l · x_l + ...
-```
+$$x_{l+1} = \mathbf{H}^{res}_l \cdot x_l + \dots$$
 
 Over L layers, the signal becomes:
 
-```
-x_L = H^res_L × H^res_{L-1} × ... × H^res_1 × x_0
-```
+$$x_L = \mathbf{H}^{res}_L \times \mathbf{H}^{res}_{L-1} \times \dots \times \mathbf{H}^{res}_1 \times x_0$$
 
 If the values in H deviate even slightly from 1.0, this product either:
 
