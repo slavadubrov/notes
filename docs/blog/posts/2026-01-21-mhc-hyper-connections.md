@@ -32,7 +32,7 @@ Stacking more layers should increase a model's capacity to learn complex functio
 
 The [ResNet paper](https://arxiv.org/abs/1512.03385) introduced a elegant fix: instead of learning a direct mapping, learn the _residual_—the difference from identity:
 
-![Standard Residual Connection](../assets/2026-01-18-mhc-hyper-connections/residual_connection.svg)
+![Standard Residual Connection](../assets/2026-01-21-mhc-hyper-connections/residual_connection.svg)
 
 The key insight is the **identity shortcut**. When the residual function F(x) outputs zero, the layer becomes a perfect pass-through. This provides:
 
@@ -47,7 +47,7 @@ This single architectural change enabled training networks with hundreds of laye
 
 Transformers added a new variable: where to put Layer Normalization (LN). This seemingly minor decision creates a fundamental trade-off.
 
-![Post-LN vs Pre-LN Trade-offs](../assets/2026-01-18-mhc-hyper-connections/ln_placement.svg)
+![Post-LN vs Pre-LN Trade-offs](../assets/2026-01-21-mhc-hyper-connections/ln_placement.svg)
 
 | Variant     | LN Placement          | Advantage           | Key Limitation                                                       |
 | ----------- | --------------------- | ------------------- | -------------------------------------------------------------------- |
@@ -62,7 +62,7 @@ The [**ResiDual**](https://arxiv.org/abs/2304.14802) architecture attempted to s
 
 [Hyper-Connections (HC)](https://arxiv.org/abs/2409.19606) took a fundamentally different approach: instead of just adding depth, expand the residual stream _width_.
 
-![Hyper-Connections Architecture](../assets/2026-01-18-mhc-hyper-connections/hyper_connections.svg)
+![Hyper-Connections Architecture](../assets/2026-01-21-mhc-hyper-connections/hyper_connections.svg)
 
 ### Core Mechanisms
 
@@ -76,7 +76,7 @@ The mixing matrix H acts as a traffic controller, dynamically routing features b
 
 ### The Results
 
-![HC Performance](../assets/2026-01-18-mhc-hyper-connections/hc_performance.svg)
+![HC Performance](../assets/2026-01-21-mhc-hyper-connections/hc_performance.svg)
 
 HC achieves **~1.8× faster convergence** compared to standard residuals. The parallel streams provide more pathways for gradient flow and allow the network to maintain more diverse representations.
 
@@ -90,7 +90,7 @@ But there's a critical issue: **HC is unstable at scale**.
 
 The flexibility that makes HC powerful also destroys the property that makes residuals trainable.
 
-![HC Instability Problem](../assets/2026-01-18-mhc-hyper-connections/hc_instability.svg)
+![HC Instability Problem](../assets/2026-01-21-mhc-hyper-connections/hc_instability.svg)
 
 ### The Math of Instability
 
@@ -121,7 +121,7 @@ If the values in H deviate even slightly from 1.0, this product either:
 
 The DeepSeek team measured this with "Amax Gain Magnitude"—a metric tracking the maximum ratio of output to input signal magnitude across all layers. In standard HC, this metric hits **~3000** in deep networks. Training becomes impossible.
 
-![The Root Cause: Loss of Identity](../assets/2026-01-18-mhc-hyper-connections/loss_of_identity.svg)
+![The Root Cause: Loss of Identity](../assets/2026-01-21-mhc-hyper-connections/loss_of_identity.svg)
 
 The core problem: unconstrained matrices can have arbitrary values—negative numbers, large magnitudes, anything. We need a way to constrain them to "well-behaved" matrices that preserve signal energy like the identity matrix does.
 
@@ -131,7 +131,7 @@ The core problem: unconstrained matrices can have arbitrary values—negative nu
 
 The insight behind mHC is that we can have flexible routing _and_ stability—if we constrain the mixing matrices to a specific mathematical structure: the **Birkhoff Polytope** (the set of all doubly stochastic matrices—matrices where every row and column sums to 1, with all elements non-negative).
 
-![The mHC Solution](../assets/2026-01-18-mhc-hyper-connections/mhc_solution.svg)
+![The mHC Solution](../assets/2026-01-21-mhc-hyper-connections/mhc_solution.svg)
 
 ### The Three Constraints
 
@@ -155,7 +155,7 @@ This constraint has powerful mathematical implications:
 
 The challenge: how do we _force_ a learnable matrix to be doubly stochastic while keeping it differentiable? The answer is the **Sinkhorn-Knopp algorithm**—an iterative projection that converges to doubly stochastic form in just a few steps.
 
-![Sinkhorn Algorithm Detailed](../assets/2026-01-18-mhc-hyper-connections/sinkhorn_detailed.svg)
+![Sinkhorn Algorithm Detailed](../assets/2026-01-21-mhc-hyper-connections/sinkhorn_detailed.svg)
 
 Here's how it works with a concrete example:
 
@@ -207,7 +207,7 @@ To ensure training starts stable:
 
 Putting it all together:
 
-![mHC Complete Architecture](../assets/2026-01-18-mhc-hyper-connections/mhc_architecture.svg)
+![mHC Complete Architecture](../assets/2026-01-21-mhc-hyper-connections/mhc_architecture.svg)
 
 The flow is:
 
