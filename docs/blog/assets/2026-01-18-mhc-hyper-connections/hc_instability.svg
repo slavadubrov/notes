@@ -34,16 +34,16 @@
   <!-- Y-axis ticks -->
   <text x="90" y="115" text-anchor="end" fill="#64748b" font-family="system-ui" font-size="11">1000</text>
   <line x1="95" y1="112" x2="100" y2="112" stroke="#1a365d" stroke-width="1"/>
-  
+
   <text x="90" y="168" text-anchor="end" fill="#64748b" font-family="system-ui" font-size="11">100</text>
   <line x1="95" y1="165" x2="100" y2="165" stroke="#1a365d" stroke-width="1"/>
-  
+
   <text x="90" y="223" text-anchor="end" fill="#64748b" font-family="system-ui" font-size="11">10</text>
   <line x1="95" y1="220" x2="100" y2="220" stroke="#1a365d" stroke-width="1"/>
-  
+
   <text x="90" y="278" text-anchor="end" fill="#64748b" font-family="system-ui" font-size="11">1</text>
   <line x1="95" y1="275" x2="100" y2="275" stroke="#1a365d" stroke-width="1"/>
-  
+
   <text x="90" y="343" text-anchor="end" fill="#64748b" font-family="system-ui" font-size="11">0.1</text>
 
   <!-- X-axis label -->
@@ -64,7 +64,7 @@
   <text x="435" y="247" text-anchor="middle" fill="white" font-family="system-ui" font-size="11" font-weight="500">Standard ResNet</text>
 
   <!-- Exploding gradients curve -->
-  <path d="M 100 275 Q 180 270 250 245 Q 320 200 390 145 Q 450 105 500 100" 
+  <path d="M 100 275 Q 180 270 250 245 Q 320 200 390 145 Q 450 105 500 100"
         fill="none" stroke="#dc2626" stroke-width="3"/>
   <!-- Arrow pointing to exploding curve -->
   <line x1="470" y1="130" x2="485" y2="108" stroke="#dc2626" stroke-width="1.5" marker-end="url(#arrowRed)"/>
@@ -72,7 +72,7 @@
   <text x="425" y="147" text-anchor="middle" fill="white" font-family="system-ui" font-size="11" font-weight="600">Exploding</text>
 
   <!-- Vanishing gradients curve -->
-  <path d="M 100 275 Q 180 285 250 305 Q 320 325 390 335 Q 450 340 500 342" 
+  <path d="M 100 275 Q 180 285 250 305 Q 320 325 390 335 Q 450 340 500 342"
         fill="none" stroke="#f97316" stroke-width="3"/>
   <!-- Arrow pointing to vanishing curve -->
   <line x1="210" y1="293" x2="230" y2="305" stroke="#f97316" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
@@ -81,15 +81,15 @@
 
   <!-- Right side explanation -->
   <rect x="540" y="95" width="340" height="340" rx="8" fill="white" stroke="#1a365d" stroke-width="2"/>
-  
+
   <text x="710" y="125" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="18" font-weight="700">The 1.1 vs 0.9 Problem</text>
-  
+
   <line x1="560" y1="140" x2="860" y2="140" stroke="#e2e8f0" stroke-width="1"/>
-  
+
   <text x="560" y="168" text-anchor="start" fill="#64748b" font-family="system-ui" font-size="13">• Standard ResNet: 1.0 × x</text>
   <rect x="780" y="153" width="45" height="22" rx="11" fill="#10b981"/>
   <text x="802" y="169" text-anchor="middle" fill="white" font-family="system-ui" font-size="11" font-weight="600">Safe</text>
-  
+
   <text x="560" y="198" text-anchor="start" fill="#64748b" font-family="system-ui" font-size="13">• Hyper-Connection: Matrix Mapping</text>
 
   <line x1="560" y1="215" x2="860" y2="215" stroke="#e2e8f0" stroke-width="1"/>
@@ -102,7 +102,7 @@
 
   <!-- Math example -->
   <text x="710" y="340" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="12" font-weight="600">After L = 100 layers:</text>
-  
+
   <g transform="translate(570, 350)">
     <text x="0" y="18" text-anchor="start" fill="#dc2626" font-family="monospace" font-size="12">1.01¹⁰⁰ ≈ 2.7</text>
     <text x="115" y="18" text-anchor="start" fill="#64748b" font-family="system-ui" font-size="11">(grows)</text>

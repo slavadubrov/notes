@@ -14,7 +14,7 @@
 
   <!-- Input x -->
   <text x="210" y="70" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="22" font-weight="600">x</text>
-  
+
   <!-- Arrow from x to split -->
   <line x1="210" y1="78" x2="210" y2="95" stroke="#1a365d" stroke-width="2"/>
   <polygon points="210,100 205,90 215,90" fill="#1a365d"/>
@@ -39,7 +39,7 @@
   <text x="210" y="272" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="16" font-weight="500">ReLU</text>
 
   <!-- F(x) brace label - spans Weight Layer 1, ReLU, and Weight Layer 2 -->
-  <path d="M 115 160 Q 105 160 105 185 L 105 220 Q 105 225 95 225 Q 105 225 105 230 L 105 365 Q 105 370 115 370" 
+  <path d="M 115 160 Q 105 160 105 185 L 105 220 Q 105 225 95 225 Q 105 225 105 230 L 105 365 Q 105 370 115 370"
         fill="none" stroke="#1a365d" stroke-width="2"/>
   <text x="60" y="270" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="18" font-weight="600">F(x)</text>
 
@@ -56,7 +56,7 @@
   <polygon points="210,397 205,387 215,387" fill="#1a365d"/>
 
   <!-- Identity shortcut (orange curved path) -->
-  <path d="M 222 115 Q 355 115 355 260 Q 355 405 232 405" 
+  <path d="M 222 115 Q 355 115 355 260 Q 355 405 232 405"
         fill="none" stroke="#f97316" stroke-width="3"/>
   <polygon points="232,405 247,399 247,411" fill="#f97316"/>
 

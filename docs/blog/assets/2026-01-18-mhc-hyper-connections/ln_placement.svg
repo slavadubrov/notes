@@ -30,7 +30,7 @@
 
     <!-- Split -->
     <circle cx="0" cy="192" r="10" fill="white" stroke="#1a365d" stroke-width="2"/>
-    
+
     <!-- Arrow down -->
     <line x1="0" y1="202" x2="0" y2="215" stroke="#1a365d" stroke-width="2"/>
     <polygon points="0,220 -5,210 5,210" fill="#1a365d"/>
@@ -48,7 +48,7 @@
     <text x="0" y="312" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="20" font-weight="600">+</text>
 
     <!-- Residual path -->
-    <path d="M 10 192 Q 90 192 90 250 Q 90 305 20 305" 
+    <path d="M 10 192 Q 90 192 90 250 Q 90 305 20 305"
           fill="none" stroke="#f97316" stroke-width="2"/>
     <polygon points="20,305 32,300 32,310" fill="#f97316"/>
 
@@ -82,7 +82,7 @@
 
     <!-- Split -->
     <circle cx="0" cy="192" r="10" fill="white" stroke="#1a365d" stroke-width="2"/>
-    
+
     <!-- Arrow down -->
     <line x1="0" y1="202" x2="0" y2="215" stroke="#1a365d" stroke-width="2"/>
     <polygon points="0,220 -5,210 5,210" fill="#1a365d"/>
@@ -108,10 +108,10 @@
     <text x="0" y="382" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="20" font-weight="600">+</text>
 
     <!-- Residual path (clean identity) -->
-    <path d="M 10 192 Q 100 192 100 285 Q 100 375 20 375" 
+    <path d="M 10 192 Q 100 192 100 285 Q 100 375 20 375"
           fill="none" stroke="#f97316" stroke-width="2"/>
     <polygon points="20,375 32,370 32,380" fill="#f97316"/>
-    
+
     <!-- Identity label -->
     <rect x="80" y="270" width="65" height="24" rx="12" fill="#f97316"/>
     <text x="112" y="287" text-anchor="middle" fill="white" font-family="system-ui" font-size="11" font-weight="600">Identity</text>

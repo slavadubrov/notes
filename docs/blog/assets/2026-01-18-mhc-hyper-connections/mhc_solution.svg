@@ -16,7 +16,7 @@
 
   <!-- Matrix container with shadow effect -->
   <rect x="250" y="135" width="400" height="230" rx="8" fill="white" stroke="#1a365d" stroke-width="2"/>
-  
+
   <!-- Matrix grid -->
   <line x1="350" y1="135" x2="350" y2="365" stroke="#e2e8f0" stroke-width="1"/>
   <line x1="450" y1="135" x2="450" y2="365" stroke="#e2e8f0" stroke-width="1"/>
@@ -30,17 +30,17 @@
   <text x="400" y="172" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="18" font-weight="500">W₁₂</text>
   <text x="500" y="172" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="18" font-weight="500">W₁₃</text>
   <text x="600" y="172" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="18" font-weight="500">W₁₄</text>
-  
+
   <text x="300" y="229" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="18" font-weight="500">W₂₁</text>
   <text x="400" y="229" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="18" font-weight="500">W₂₂</text>
   <text x="500" y="229" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="18" font-weight="500">W₂₃</text>
   <text x="600" y="229" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="18" font-weight="500">W₂₄</text>
-  
+
   <text x="300" y="287" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="18" font-weight="500">W₃₁</text>
   <text x="400" y="287" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="18" font-weight="500">W₃₂</text>
   <text x="500" y="287" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="18" font-weight="500">W₃₃</text>
   <text x="600" y="287" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="18" font-weight="500">W₃₄</text>
-  
+
   <text x="300" y="345" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="18" font-weight="500">W₄₁</text>
   <text x="400" y="345" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="18" font-weight="500">W₄₂</text>
   <text x="500" y="345" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="18" font-weight="500">W₄₃</text>
@@ -76,15 +76,15 @@
     <line x1="655" y1="163" x2="673" y2="163"/>
     <polygon points="678,163 668,158 668,168"/>
     <text x="688" y="168" text-anchor="start" fill="#1a365d" font-family="system-ui" font-size="14" font-weight="200">Σ = 1</text>
-    
+
     <line x1="655" y1="220" x2="673" y2="220"/>
     <polygon points="678,220 668,215 668,225"/>
     <text x="688" y="225" text-anchor="start" fill="#1a365d" font-family="system-ui" font-size="14" font-weight="200">Σ = 1</text>
-    
+
     <line x1="655" y1="278" x2="673" y2="278"/>
     <polygon points="678,278 668,273 668,283"/>
     <text x="688" y="283" text-anchor="start" fill="#1a365d" font-family="system-ui" font-size="14" font-weight="200">Σ = 1</text>
-    
+
     <line x1="655" y1="336" x2="673" y2="336"/>
     <polygon points="678,336 668,331 668,341"/>
     <text x="688" y="341" text-anchor="start" fill="#1a365d" font-family="system-ui" font-size="14" font-weight="200">Σ = 1</text>
@@ -95,15 +95,15 @@
     <line x1="300" y1="370" x2="300" y2="388"/>
     <polygon points="300,393 295,383 305,383"/>
     <text x="300" y="415" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="14" font-weight="200">Σ = 1</text>
-    
+
     <line x1="400" y1="370" x2="400" y2="388"/>
     <polygon points="400,393 395,383 405,383"/>
     <text x="400" y="415" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="14" font-weight="200">Σ = 1</text>
-    
+
     <line x1="500" y1="370" x2="500" y2="388"/>
     <polygon points="500,393 495,383 505,383"/>
     <text x="500" y="415" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="14" font-weight="200">Σ = 1</text>
-    
+
     <line x1="600" y1="370" x2="600" y2="388"/>
     <polygon points="600,393 595,383 605,383"/>
     <text x="600" y="415" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="14" font-weight="200">Σ = 1</text>

@@ -10,7 +10,7 @@ author: Viacheslav Dubrov
 
 # mHC: How DeepSeek Scaled Residual Connections Without Breaking Training
 
-The success of modern deep learning rests on a deceptively simple idea: the residual connection. Yet after a decade of stacking layers deeper and deeper, researchers at DeepSeek asked a different question—what if we could scale *width* instead? Their answer, **Manifold-Constrained Hyper-Connections (mHC)**, solves a fundamental instability problem that has blocked this path for years.
+The success of modern deep learning rests on a deceptively simple idea: the residual connection. Yet after a decade of stacking layers deeper and deeper, researchers at DeepSeek asked a different question—what if we could scale _width_ instead? Their answer, **Manifold-Constrained Hyper-Connections (mHC)**, solves a fundamental instability problem that has blocked this path for years.
 
 This article breaks down the evolution from basic residuals to mHC, explaining why each step was necessary and what makes DeepSeek's solution work at scale.
 
@@ -26,11 +26,11 @@ Before understanding what mHC fixes, we need to understand what it builds on.
 
 ### The Depth Problem
 
-Stacking more layers should increase a model's capacity to learn complex functions. In practice, very deep networks become *harder* to train—not because they lack capacity, but because gradient-based optimization fails to find good parameters. Gradients either vanish (shrinking to near-zero) or explode (growing unboundedly) as they propagate through many layers.
+Stacking more layers should increase a model's capacity to learn complex functions. In practice, very deep networks become _harder_ to train—not because they lack capacity, but because gradient-based optimization fails to find good parameters. Gradients either vanish (shrinking to near-zero) or explode (growing unboundedly) as they propagate through many layers.
 
 ### The Residual Solution
 
-The [ResNet paper](https://arxiv.org/abs/1512.03385) introduced a elegant fix: instead of learning a direct mapping, learn the *residual*—the difference from identity:
+The [ResNet paper](https://arxiv.org/abs/1512.03385) introduced a elegant fix: instead of learning a direct mapping, learn the _residual_—the difference from identity:
 
 ![Standard Residual Connection](../assets/2026-01-18-mhc-hyper-connections/residual_connection.svg)
 
@@ -49,27 +49,27 @@ Transformers added a new variable: where to put Layer Normalization (LN). This s
 
 ![Post-LN vs Pre-LN Trade-offs](../assets/2026-01-18-mhc-hyper-connections/ln_placement.svg)
 
-| Variant | LN Placement | Advantage | Fatal Flaw |
-|---------|--------------|-----------|------------|
-| **Post-LN** | After residual block | High model capacity | Gradient vanishing—LN in main path rescales gradients at every layer |
-| **Pre-LN** | Before residual block | Excellent stability | Representation collapse—features become similar across layers |
+| Variant     | LN Placement          | Advantage           | Key Limitation                                                       |
+| ----------- | --------------------- | ------------------- | -------------------------------------------------------------------- |
+| **Post-LN** | After residual block  | High model capacity | Gradient vanishing—LN in main path rescales gradients at every layer |
+| **Pre-LN**  | Before residual block | Excellent stability | Representation collapse—features become similar across layers        |
 
-The **ResiDual** architecture attempted to solve this by using *dual* residual paths—one Pre-LN for stability, one Post-LN for capacity. But it was still limited to a single residual stream. What if we could have *multiple* parallel streams?
+The [**ResiDual**](https://arxiv.org/abs/2304.14802) architecture attempted to solve this by using _dual_ residual paths—one Pre-LN for stability, one Post-LN for capacity. But it was still limited to a single residual stream. What if we could have _multiple_ parallel streams?
 
 ---
 
 ## Hyper-Connections: The Width Revolution
 
-[Hyper-Connections (HC)](https://arxiv.org/abs/2409.19606) took a fundamentally different approach: instead of just adding depth, expand the residual stream *width*.
+[Hyper-Connections (HC)](https://arxiv.org/abs/2409.19606) took a fundamentally different approach: instead of just adding depth, expand the residual stream _width_.
 
 ![Hyper-Connections Architecture](../assets/2026-01-18-mhc-hyper-connections/hyper_connections.svg)
 
 ### Core Mechanisms
 
-HC introduces three operations controlled by learnable weight matrices:
+HC introduces three operations controlled by learnable weight matrices (typically with n=4 parallel streams):
 
 1. **Aggregation**: Weighted combination of n parallel streams into a single input for the transformer block
-2. **Expansion**: Distributing the block's output back to n streams  
+2. **Expansion**: Distributing the block's output back to n streams
 3. **Mixing**: Inter-stream communication via an n×n "feature router" matrix
 
 The mixing matrix H acts as a traffic controller, dynamically routing features between streams based on learned patterns. This creates a much richer flow of information than a single residual path.
@@ -119,7 +119,7 @@ If the values in H deviate even slightly from 1.0, this product either:
 - **Explodes**: values > 1.0 compound exponentially
 - **Vanishes**: values < 1.0 decay exponentially
 
-The DeepSeek team measured this with "Amax Gain Magnitude"—the maximum signal/gradient expansion. In standard HC, this metric hits **~3000** in deep networks. Training becomes impossible.
+The DeepSeek team measured this with "Amax Gain Magnitude"—a metric tracking the maximum ratio of output to input signal magnitude across all layers. In standard HC, this metric hits **~3000** in deep networks. Training becomes impossible.
 
 ![The Root Cause: Loss of Identity](../assets/2026-01-18-mhc-hyper-connections/loss_of_identity.svg)
 
@@ -129,31 +129,31 @@ The core problem: unconstrained matrices can have arbitrary values—negative nu
 
 ## The mHC Solution: Geometric Constraints
 
-The insight behind mHC is that we can have flexible routing *and* stability—if we constrain the mixing matrices to a specific mathematical structure: the **Birkhoff Polytope**.
+The insight behind mHC is that we can have flexible routing _and_ stability—if we constrain the mixing matrices to a specific mathematical structure: the **Birkhoff Polytope** (the set of all doubly stochastic matrices—matrices where every row and column sums to 1, with all elements non-negative).
 
 ![The mHC Solution](../assets/2026-01-18-mhc-hyper-connections/mhc_solution.svg)
 
 ### The Three Constraints
 
-mHC constrains the mixing matrix H^res to be **doubly stochastic**—enforcing three properties simultaneously:
+mHC constrains the mixing matrix H^res to be **doubly stochastic**—a matrix where all entries are non-negative and every row and column sums to exactly 1. This enforces three properties simultaneously:
 
-| Constraint | Rule | Why It Matters |
-|------------|------|----------------|
-| **Positivity** | All elements > 0 | Prevents sign oscillation that destabilizes gradients |
-| **Row Sum = 1** | Each row sums to 1.0 | Normalizes output contribution—no single stream dominates |
+| Constraint         | Rule                    | Why It Matters                                              |
+| ------------------ | ----------------------- | ----------------------------------------------------------- |
+| **Positivity**     | All elements > 0        | Prevents sign oscillation that destabilizes gradients       |
+| **Row Sum = 1**    | Each row sums to 1.0    | Normalizes output contribution—no single stream dominates   |
 | **Column Sum = 1** | Each column sums to 1.0 | Normalizes input distribution—all streams contribute fairly |
 
 The critical outcome: **Energy In = Energy Out**. Signal magnitude is preserved deep into the network, eliminating the exponential explosion problem.
 
 This constraint has powerful mathematical implications:
 
-1. **Spectral norm ≤ 1**: The matrix cannot amplify signals—it's mathematically *non-expanding*
+1. **Spectral norm ≤ 1**: The spectral norm (largest singular value) bounds signal amplification—doubly stochastic matrices are mathematically _non-expanding_
 2. **Closed under multiplication**: Composing doubly stochastic matrices produces another doubly stochastic matrix
-3. **Weighted averaging**: The operation becomes a convex combination of inputs, preserving total signal magnitude
+3. **Weighted averaging**: The operation becomes a convex combination (weighted average where weights sum to 1) of inputs, preserving total signal magnitude
 
 ### The Sinkhorn-Knopp Algorithm
 
-The challenge: how do we *force* a learnable matrix to be doubly stochastic while keeping it differentiable? The answer is the **Sinkhorn-Knopp algorithm**—an iterative projection that converges to doubly stochastic form in just a few steps.
+The challenge: how do we _force_ a learnable matrix to be doubly stochastic while keeping it differentiable? The answer is the **Sinkhorn-Knopp algorithm**—an iterative projection that converges to doubly stochastic form in just a few steps.
 
 ![Sinkhorn Algorithm Detailed](../assets/2026-01-18-mhc-hyper-connections/sinkhorn_detailed.svg)
 
@@ -191,6 +191,8 @@ Row Normalized       →    Doubly Stochastic
 **Step 4: Iterate** — Repeat steps 2-3 for t_max iterations (typically 20) until convergence.
 
 The entire process is differentiable, allowing gradients to flow through during training. The Sinkhorn-Knopp algorithm is also computationally efficient, adding minimal overhead to the training loop.
+
+Beyond the projection algorithm, proper initialization is critical for training stability.
 
 ### Initialization Refinements
 
@@ -235,7 +237,7 @@ Storing all intermediate Sinkhorn states for backpropagation would explode memor
 - Frees intermediate activations after the forward pass
 - Recomputes them on-the-fly during the backward pass
 
-A modified "DualPipe" schedule overlaps this recomputation with gradient communication, hiding latency.
+A modified [DualPipe](https://arxiv.org/abs/2501.15108) schedule overlaps this recomputation with gradient communication, hiding latency.
 
 ### Results
 
@@ -247,12 +249,12 @@ With these optimizations, **expansion rate n=4 runs with only 6.7% training over
 
 The theoretical guarantees translate to real improvements:
 
-| Metric | Standard HC | mHC |
-|--------|-------------|-----|
-| Amax Gain (deep nets) | ~3000 | ~1.6 |
-| Training stability | Frequent spikes | Stable |
-| GSM8K benchmark | Baseline | Better |
-| MATH benchmark | Baseline | Better |
+| Metric                | Standard HC     | mHC    |
+| --------------------- | --------------- | ------ |
+| Amax Gain (deep nets) | ~3000           | ~1.6   |
+| Training stability    | Frequent spikes | Stable |
+| GSM8K benchmark       | Baseline        | Better |
+| MATH benchmark        | Baseline        | Better |
 
 The mHC-27B model (based on DeepSeek-V3 architecture) outperforms both standard ResNet and unconstrained HC on mathematical reasoning benchmarks—confirming that the gains come from the architecture itself, not noise from training instability.
 
@@ -264,7 +266,7 @@ mHC is not free:
 
 1. **Computational overhead**: 6.7% is excellent, but still more than standard residuals
 2. **Implementation complexity**: Requires custom CUDA kernels for efficiency
-3. **Strong inductive bias**: The doubly stochastic constraint is *conservation*—signal can't be amplified. For tasks genuinely requiring signal amplification, this could be limiting
+3. **Strong inductive bias**: The doubly stochastic constraint is _conservation_—signal can't be amplified. For tasks genuinely requiring signal amplification, this could be limiting
 
 ---
 
@@ -287,3 +289,5 @@ For practitioners: if you're hitting limits with depth scaling and have access t
 - [Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385) - He et al. (ResNet)
 - [Hyper-Connections](https://arxiv.org/abs/2409.19606) - Original HC paper
 - [TileLang](https://arxiv.org/abs/2504.17577) - CUDA kernel optimization framework
+- [DualPipe](https://arxiv.org/abs/2501.15108) - Pipeline parallelism scheduler for DeepSeek-V3
+- [ResiDual](https://arxiv.org/abs/2304.14802) - Dual residual path architecture
