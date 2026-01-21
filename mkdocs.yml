@@ -108,8 +108,9 @@ plugins: # Configures MkDocs plugins for extended functionality
         - AI Engineering
         - Agentic AI
         - Infrastructure
-        - Tooling
+        - Paper Review
         - Python
+        - Tooling
 
   - macros # Allows using variables and macros in Markdown
   - mermaid-to-svg:

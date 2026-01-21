@@ -1,9 +1,9 @@
 ---
 title: "mHC: How DeepSeek Scaled Residual Connections Without Breaking Training"
 date:
-    created: 2026-01-18
-    updated: 2026-01-18
-categories: [AI Engineering]
+    created: 2026-01-21
+    updated: 2026-01-21
+categories: [Paper Review]
 description: A deep dive into Manifold-Constrained Hyper-Connections (mHC), the architecture innovation from DeepSeek that enables scaling residual stream width while preserving training stability.
 author: Viacheslav Dubrov
 ---
