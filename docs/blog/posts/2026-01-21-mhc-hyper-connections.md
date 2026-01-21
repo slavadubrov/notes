@@ -10,7 +10,7 @@ author: Viacheslav Dubrov
 
 # mHC: How DeepSeek Scaled Residual Connections Without Breaking Training
 
-The success of modern deep learning rests on a deceptively simple idea: the residual connection. Yet after a decade of stacking layers deeper and deeper, researchers at DeepSeek asked a different question—what if we could scale _width_ instead? Their answer, **Manifold-Constrained Hyper-Connections (mHC)**, solves a fundamental instability problem that has blocked this path for years.
+The success of modern deep learning rests on a deceptively simple idea: the residual connection. Yet after a decade of stacking layers deeper and deeper, researchers at DeepSeek asked a different question—what if we could scale _width_ instead? Their answer, **[Manifold-Constrained Hyper-Connections (mHC)](https://arxiv.org/abs/2512.24880)**, solves a fundamental instability problem that has blocked this path for years.
 
 This article breaks down the evolution from basic residuals to mHC, explaining why each step was necessary and what makes DeepSeek's solution work at scale.
 
@@ -237,7 +237,7 @@ Storing all intermediate Sinkhorn states for backpropagation would explode memor
 - Frees intermediate activations after the forward pass
 - Recomputes them on-the-fly during the backward pass
 
-A modified [DualPipe](https://arxiv.org/abs/2501.15108) schedule overlaps this recomputation with gradient communication, hiding latency.
+A modified [DualPipe](https://arxiv.org/abs/2412.19437) schedule overlaps this recomputation with gradient communication, hiding latency.
 
 ### Results
 
@@ -289,5 +289,5 @@ For practitioners: if you're hitting limits with depth scaling and have access t
 - [Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385) - He et al. (ResNet)
 - [Hyper-Connections](https://arxiv.org/abs/2409.19606) - Original HC paper
 - [TileLang](https://arxiv.org/abs/2504.17577) - CUDA kernel optimization framework
-- [DualPipe](https://arxiv.org/abs/2501.15108) - Pipeline parallelism scheduler for DeepSeek-V3
+- [DualPipe](https://arxiv.org/abs/2412.19437) - Pipeline parallelism scheduler for DeepSeek-V3
 - [ResiDual](https://arxiv.org/abs/2304.14802) - Dual residual path architecture
