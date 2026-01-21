@@ -28,11 +28,12 @@ block container %}
               </div>
               <nav class="md-nav">
                 {% set category_icons = { 'AI Engineering': '🤖', 'Agentic AI':
-                '🦾', 'Infrastructure': '🔧', 'Tooling': '🛠️', 'Python': '🐍' }
-                %} {% set all_categories = ['AI Engineering', 'Agentic AI',
-                'Infrastructure', 'Tooling', 'Python'] %} {# Get the current
-                page's categories #} {% set current_categories = [] %} {% if
-                page.categories %} {% for cat in page.categories %} {% set _ =
+                '🦾', 'Infrastructure': '🔧', 'Paper Review': '📄', 'Python':
+                '🐍', 'Tooling': '🛠️' } %} {% set all_categories = ['AI
+                Engineering', 'Agentic AI', 'Infrastructure', 'Paper Review',
+                'Python', 'Tooling'] %} {# Get the current page's categories #}
+                {% set current_categories = [] %} {% if page.categories %} {%
+                for cat in page.categories %} {% set _ =
                 current_categories.append(cat.title) %} {% endfor %} {% endif %}
                 {% for category_name in all_categories %} {% set is_active =
                 category_name in current_categories %}

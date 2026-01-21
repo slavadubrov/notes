@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e0e0e0" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+
+  <!-- Background with grid -->
+  <rect width="800" height="400" fill="#f5f5f5"/>
+  <rect width="800" height="400" fill="url(#grid)"/>
+
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="24" font-weight="700">The Performance Promise</text>
+  <text x="400" y="58" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="13">Source: Hyper-Connections (2024)</text>
+
+  <!-- Left side: Convergence plot -->
+  <!-- Axes -->
+  <line x1="80" y1="100" x2="80" y2="320" stroke="#1a365d" stroke-width="2"/>
+  <line x1="80" y1="320" x2="350" y2="320" stroke="#1a365d" stroke-width="2"/>
+
+  <!-- Y-axis label -->
+  <text x="30" y="210" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="12" font-weight="500" transform="rotate(-90, 30, 210)">Validation Accuracy</text>
+
+  <!-- X-axis label -->
+  <text x="215" y="355" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="12" font-weight="500">Training Steps</text>
+
+  <!-- Baseline ResNet curve (lower, slower) - dashed -->
+  <path d="M 80 310 Q 120 280 160 240 Q 200 200 250 175 Q 300 155 350 145"
+        fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6,3"/>
+  <!-- Label near curve -->
+  <text x="280" y="180" text-anchor="start" fill="#94a3b8" font-family="system-ui" font-size="11">Baseline ResNet</text>
+
+  <!-- Hyper-Connections curve (higher, faster) - solid -->
+  <path d="M 80 310 Q 100 250 130 190 Q 160 140 200 115 Q 250 100 350 95"
+        fill="none" stroke="#1a365d" stroke-width="3"/>
+  <!-- Label at end of curve -->
+  <text x="260" y="85" text-anchor="start" fill="#1a365d" font-family="system-ui" font-size="11" font-weight="500">Hyper-Connections</text>
+
+  <!-- 1.8x Faster annotation - arrow showing gap between the two curves -->
+  <!-- At x=220: HC curve ≈ y=110, Baseline curve ≈ y=190 -->
+  <line x1="220" y1="110" x2="220" y2="190" stroke="#f97316" stroke-width="2"/>
+  <!-- Top arrowhead touching HC curve -->
+  <polygon points="220,110 215,122 225,122" fill="#f97316"/>
+  <!-- Bottom arrowhead touching Baseline curve -->
+  <polygon points="220,190 215,178 225,178" fill="#f97316"/>
+
+  <!-- Annotation text to the RIGHT of arrow in clear space -->
+  <text x="230" y="145" text-anchor="start" fill="#f97316" font-family="system-ui" font-size="13" font-weight="700">1.8x Faster</text>
+  <text x="230" y="162" text-anchor="start" fill="#f97316" font-family="system-ui" font-size="13" font-weight="700">Convergence</text>
+
+  <!-- Right side: Static vs Dynamic explanation -->
+  <text x="420" y="100" text-anchor="start" fill="#1a365d" font-family="system-ui" font-size="18" font-weight="700">Static vs. Dynamic Mappings</text>
+
+  <!-- Static explanation -->
+  <text x="420" y="145" text-anchor="start" fill="#1a365d" font-family="system-ui" font-size="14" font-weight="600">Static (Standard):</text>
+  <text x="420" y="168" text-anchor="start" fill="#64748b" font-family="system-ui" font-size="12">Weights are global and independent of input.</text>
+  <text x="420" y="186" text-anchor="start" fill="#64748b" font-family="system-ui" font-size="12">The same path is taken every time.</text>
+
+  <!-- Dynamic explanation -->
+  <text x="420" y="235" text-anchor="start" fill="#f97316" font-family="system-ui" font-size="14" font-weight="600">Dynamic (HC):</text>
+  <text x="420" y="258" text-anchor="start" fill="#64748b" font-family="system-ui" font-size="12">Weights are conditioned on the input. The</text>
+  <text x="420" y="276" text-anchor="start" fill="#64748b" font-family="system-ui" font-size="12">model acts as a router, deciding how to mix</text>
+  <text x="420" y="294" text-anchor="start" fill="#64748b" font-family="system-ui" font-size="12">streams based on the specific features of</text>
+  <text x="420" y="312" text-anchor="start" fill="#64748b" font-family="system-ui" font-size="12">the data.</text>
+</svg>

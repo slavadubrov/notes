@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520">
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e8e8e8" stroke-width="0.5"/>
+    </pattern>
+    <marker id="arrowDark" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M 0 0 L 8 4 L 0 8 z" fill="#1a365d"/>
+    </marker>
+    <marker id="arrowOrange" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M 0 0 L 8 4 L 0 8 z" fill="#f97316"/>
+    </marker>
+    <linearGradient id="streamGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.8"/>
+      <stop offset="100%" style="stop-color:#1d4ed8;stop-opacity:0.8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="520" fill="#fafafa"/>
+  <rect width="800" height="520" fill="url(#grid)"/>
+
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="22" font-weight="700">Hyper-Connections: Inside One Layer</text>
+  <text x="400" y="58" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="12">n=4 parallel streams with learnable aggregation and mixing</text>
+
+  <!-- Input Streams Section -->
+  <text x="80" y="100" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="11">Input Streams</text>
+  <text x="80" y="116" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="13" font-weight="600">H^(k-1)</text>
+
+  <!-- Four input stream boxes -->
+  <g transform="translate(140, 85)">
+    <rect x="0" y="0" width="50" height="40" rx="4" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+    <text x="25" y="26" text-anchor="middle" fill="#0369a1" font-family="system-ui" font-size="14" font-weight="600">h₁</text>
+  </g>
+  <g transform="translate(210, 85)">
+    <rect x="0" y="0" width="50" height="40" rx="4" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+    <text x="25" y="26" text-anchor="middle" fill="#0369a1" font-family="system-ui" font-size="14" font-weight="600">h₂</text>
+  </g>
+  <g transform="translate(280, 85)">
+    <rect x="0" y="0" width="50" height="40" rx="4" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+    <text x="25" y="26" text-anchor="middle" fill="#0369a1" font-family="system-ui" font-size="14" font-weight="600">h₃</text>
+  </g>
+  <g transform="translate(350, 85)">
+    <rect x="0" y="0" width="50" height="40" rx="4" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+    <text x="25" y="26" text-anchor="middle" fill="#0369a1" font-family="system-ui" font-size="14" font-weight="600">h₄</text>
+  </g>
+
+  <!-- Aggregation arrows (converging) -->
+  <g stroke="#f97316" stroke-width="2" fill="none">
+    <path d="M 165 130 L 165 150 Q 165 165 180 175 L 230 200" marker-end="url(#arrowOrange)"/>
+    <path d="M 235 130 L 235 145 Q 235 160 245 170 L 250 195" marker-end="url(#arrowOrange)"/>
+    <path d="M 305 130 L 305 145 Q 305 160 295 170 L 265 195" marker-end="url(#arrowOrange)"/>
+    <path d="M 375 130 L 375 150 Q 375 165 360 175 L 285 200" marker-end="url(#arrowOrange)"/>
+  </g>
+
+  <!-- Aggregation Matrix Label -->
+  <g transform="translate(460, 140)">
+    <rect x="0" y="0" width="140" height="55" rx="6" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/>
+    <text x="70" y="22" text-anchor="middle" fill="#ea580c" font-family="system-ui" font-size="12" font-weight="700">1. Aggregation</text>
+    <text x="70" y="42" text-anchor="middle" fill="#9a3412" font-family="system-ui" font-size="13" font-weight="600">h₀ = Aₘ · H</text>
+  </g>
+  <path d="M 460 167 L 395 190" stroke="#f97316" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- Aggregated single vector -->
+  <g transform="translate(220, 205)">
+    <rect x="0" y="0" width="80" height="38" rx="6" fill="#f97316"/>
+    <text x="40" y="25" text-anchor="middle" fill="white" font-family="system-ui" font-size="15" font-weight="600">h₀</text>
+  </g>
+
+  <!-- Arrow to Transformer -->
+  <line x1="260" y1="248" x2="260" y2="280" stroke="#1a365d" stroke-width="2" marker-end="url(#arrowDark)"/>
+
+  <!-- Transformer Block -->
+  <g transform="translate(160, 290)">
+    <rect x="0" y="0" width="200" height="70" rx="8" fill="white" stroke="#1a365d" stroke-width="2.5"/>
+    <text x="100" y="32" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="15" font-weight="700">Transformer Block</text>
+    <text x="100" y="54" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="13">T(h₀)</text>
+  </g>
+
+  <!-- Step 2 Label -->
+  <g transform="translate(460, 295)">
+    <rect x="0" y="0" width="140" height="55" rx="6" fill="#f0fdf4" stroke="#10b981" stroke-width="1.5"/>
+    <text x="70" y="22" text-anchor="middle" fill="#059669" font-family="system-ui" font-size="12" font-weight="700">2. Transform</text>
+    <text x="70" y="42" text-anchor="middle" fill="#047857" font-family="system-ui" font-size="13" font-weight="600">Apply T(·)</text>
+  </g>
+  <path d="M 460 322 L 370 325" stroke="#10b981" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- Arrow from Transformer to expansion -->
+  <line x1="260" y1="365" x2="260" y2="395" stroke="#1a365d" stroke-width="2" marker-end="url(#arrowDark)"/>
+
+  <!-- Mixing/Expansion operator -->
+  <g transform="translate(205, 400)">
+    <circle cx="55" cy="20" r="20" fill="#7c3aed"/>
+    <text x="55" y="26" text-anchor="middle" fill="white" font-family="system-ui" font-size="12" font-weight="700">+</text>
+  </g>
+
+  <!-- Residual path (bypassing transformer) -->
+  <g stroke="#a855f7" stroke-width="2" fill="none" stroke-dasharray="6,4">
+    <path d="M 420 105 L 620 105 L 620 420 L 290 420"/>
+  </g>
+  <text x="640" y="265" text-anchor="start" fill="#7c3aed" font-family="system-ui" font-size="11" font-weight="600" transform="rotate(90, 640, 265)">Residual Path</text>
+
+  <!-- Mixing arrows (diverging) -->
+  <g stroke="#7c3aed" stroke-width="2" fill="none">
+    <path d="M 235 435 Q 200 450 175 460 L 165 468" marker-end="url(#arrowDark)"/>
+    <path d="M 250 438 Q 240 455 235 468" marker-end="url(#arrowDark)"/>
+    <path d="M 270 438 Q 280 455 305 468" marker-end="url(#arrowDark)"/>
+    <path d="M 285 435 Q 320 450 345 460 L 375 468" marker-end="url(#arrowDark)"/>
+  </g>
+
+  <!-- Step 3 Label -->
+  <g transform="translate(460, 400)">
+    <rect x="0" y="0" width="140" height="55" rx="6" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5"/>
+    <text x="70" y="22" text-anchor="middle" fill="#7c3aed" font-family="system-ui" font-size="12" font-weight="700">3. Mixing</text>
+    <text x="70" y="42" text-anchor="middle" fill="#6b21a8" font-family="system-ui" font-size="13" font-weight="600">H' = Aᵣ·H + B·T</text>
+  </g>
+  <path d="M 460 427 L 300 427" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- Output Streams Section -->
+  <g transform="translate(140, 475)">
+    <rect x="0" y="0" width="50" height="35" rx="4" fill="#ddd6fe" stroke="#7c3aed" stroke-width="1.5"/>
+    <text x="25" y="23" text-anchor="middle" fill="#5b21b6" font-family="system-ui" font-size="13" font-weight="600">h'₁</text>
+  </g>
+  <g transform="translate(210, 475)">
+    <rect x="0" y="0" width="50" height="35" rx="4" fill="#ddd6fe" stroke="#7c3aed" stroke-width="1.5"/>
+    <text x="25" y="23" text-anchor="middle" fill="#5b21b6" font-family="system-ui" font-size="13" font-weight="600">h'₂</text>
+  </g>
+  <g transform="translate(280, 475)">
+    <rect x="0" y="0" width="50" height="35" rx="4" fill="#ddd6fe" stroke="#7c3aed" stroke-width="1.5"/>
+    <text x="25" y="23" text-anchor="middle" fill="#5b21b6" font-family="system-ui" font-size="13" font-weight="600">h'₃</text>
+  </g>
+  <g transform="translate(350, 475)">
+    <rect x="0" y="0" width="50" height="35" rx="4" fill="#ddd6fe" stroke="#7c3aed" stroke-width="1.5"/>
+    <text x="25" y="23" text-anchor="middle" fill="#5b21b6" font-family="system-ui" font-size="13" font-weight="600">h'₄</text>
+  </g>
+
+  <text x="80" y="488" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="11">Output Streams</text>
+  <text x="80" y="504" text-anchor="middle" fill="#1a365d" font-family="system-ui" font-size="13" font-weight="600">H^k</text>
+
+  <!-- Legend at bottom right -->
+  <g transform="translate(630, 475)">
+    <line x1="0" y1="8" x2="25" y2="8" stroke="#f97316" stroke-width="2"/>
+    <text x="32" y="12" fill="#64748b" font-family="system-ui" font-size="10">Learnable weights</text>
+  </g>
+</svg>
